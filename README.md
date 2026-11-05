@@ -6,10 +6,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Phase%202%20Active-0ea5e9?style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/Database-DuckDB%20Embedded-f59e0b?style=for-the-badge" alt="DuckDB">
-  <img src="https://img.shields.io/badge/Integration-Switch%20AI-10b981?style=for-the-badge" alt="Switch AI">
-  <img src="https://img.shields.io/badge/Python-3.10+-38bdf8?style=for-the-badge" alt="Python">
+  <img src="https://img.shields.io/badge/Status-Phase%202%20Active-FF5A36?style=for-the-badge&logoColor=FAF8F5" alt="Status">
+  <img src="https://img.shields.io/badge/Database-DuckDB%20Embedded-16171B?style=for-the-badge&logo=duckdb&logoColor=FAF8F5" alt="DuckDB">
+  <img src="https://img.shields.io/badge/Integration-Switch%20AI-FF7A45?style=for-the-badge&logoColor=FAF8F5" alt="Switch AI">
+  <img src="https://img.shields.io/badge/Python-3.10+-16171B?style=for-the-badge&logo=python&logoColor=FF5A36" alt="Python">
 </p>
 
 ---

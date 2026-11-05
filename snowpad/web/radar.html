@@ -6,44 +6,45 @@
   <title>SnowPad Scope Radar HUD</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .mono { font-family: 'JetBrains Mono', monospace; }
-    .radar-grid {
-      background-image: radial-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px);
-      background-size: 24px 24px;
+    .radar-canvas-container {
+      background: radial-gradient(circle at center, rgba(255, 90, 54, 0.12) 0%, rgba(20, 21, 25, 0.95) 70%, #121316 100%);
     }
   </style>
 </head>
-<body class="bg-[#070b14] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
+<body class="bg-[#121316] text-[#FAF8F5] min-h-screen flex flex-col antialiased selection:bg-[#FF5A36] selection:text-[#FAF8F5]">
 
-  <!-- Navigation / Header -->
-  <header class="border-b border-slate-800/80 bg-[#0c1222]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-30">
-    <div class="flex items-center space-x-3">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 font-bold text-lg">❄️</div>
+  <!-- Top Navigation Header -->
+  <header class="border-b border-[#262830] bg-[#16171b]/90 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center space-x-3.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FF5A36] to-[#FF7A45] flex items-center justify-center shadow-lg shadow-orange-500/20 font-bold text-lg text-[#FAF8F5]">
+        ❄
+      </div>
       <div>
-        <h1 class="text-base font-bold tracking-tight flex items-center gap-2">
+        <h1 class="text-base font-bold tracking-tight flex items-center gap-2 text-[#FAF8F5]">
           SnowPad Scope Radar
-          <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono font-medium">DuckDB Live</span>
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#24262E] text-[#D8D4CB] border border-[#363945] font-mono font-medium">DuckDB Live</span>
         </h1>
-        <p class="text-xs text-slate-400">Team Chat Uncertainty & Scope Intelligence Engine</p>
+        <p class="text-xs text-[#A49E94]">Chat Uncertainty & Scope Horizon Ledger</p>
       </div>
     </div>
 
     <!-- Channel Filter Pills -->
-    <div class="flex items-center space-x-2 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs font-mono" id="channelFilters">
-      <button class="filter-btn px-3 py-1.5 rounded-lg bg-cyan-600 text-white font-semibold transition" data-channel="ALL">All Channels</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition" data-channel="#product-ideas">#product-ideas</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition" data-channel="#backend-core">#backend-core</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition" data-channel="#growth-experiments">#growth-experiments</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition" data-channel="#frontend-chatter">#frontend-chatter</button>
+    <div class="flex items-center space-x-1.5 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono" id="channelFilters">
+      <button class="filter-btn px-3 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition" data-channel="ALL">All Channels</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#product-ideas">#product-ideas</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#backend-core">#backend-core</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#growth-experiments">#growth-experiments</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#frontend-chatter">#frontend-chatter</button>
     </div>
 
-    <!-- Switch Status Indicator -->
-    <div class="flex items-center space-x-2 text-xs font-mono bg-emerald-950/40 border border-emerald-800/50 px-3 py-1.5 rounded-lg text-emerald-400">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-      <span>Switch Connected</span>
+    <!-- Switch Sync Indicator in Warm Coral -->
+    <div class="flex items-center space-x-2 text-xs font-mono bg-[#FF5A36]/10 border border-[#FF5A36]/40 px-3.5 py-1.5 rounded-xl text-[#FF7A45]">
+      <span class="w-2 h-2 rounded-full bg-[#FF5A36] animate-ping"></span>
+      <span class="font-semibold">Switch Synced</span>
     </div>
   </header>
 
@@ -51,16 +52,16 @@
   <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 max-w-7xl mx-auto w-full">
     
     <!-- Left: Radar Screen (Col 8) -->
-    <div class="lg:col-span-8 bg-[#0b101e] border border-slate-800/90 rounded-2xl p-6 flex flex-col relative overflow-hidden shadow-2xl radar-grid">
+    <div class="lg:col-span-8 bg-[#16171B] border border-[#262830] rounded-2xl p-6 flex flex-col relative overflow-hidden shadow-2xl radar-canvas-container">
       
       <!-- Top Legend -->
       <div class="flex items-center justify-between mb-4 z-10">
-        <div class="flex items-center space-x-4 text-xs font-mono">
-          <span class="flex items-center gap-1.5 text-emerald-400"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Inside Circle (r&le;1.0)</span>
-          <span class="flex items-center gap-1.5 text-amber-400"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Borderline Debate</span>
-          <span class="flex items-center gap-1.5 text-rose-400"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Parked Whims (r&gt;1.0)</span>
+        <div class="flex items-center space-x-5 text-xs font-mono">
+          <span class="flex items-center gap-1.5 text-[#FF5A36] font-semibold"><span class="w-2.5 h-2.5 rounded-full bg-[#FF5A36]"></span> Inside Circle (r&le;1.0)</span>
+          <span class="flex items-center gap-1.5 text-[#EAB308] font-semibold"><span class="w-2.5 h-2.5 rounded-full bg-[#EAB308]"></span> Borderline Debate</span>
+          <span class="flex items-center gap-1.5 text-[#848995] font-semibold"><span class="w-2.5 h-2.5 rounded-full bg-[#848995]"></span> Parked Whims (r&gt;1.0)</span>
         </div>
-        <span class="text-xs font-mono text-slate-500" id="radarSignalCount">Tracking 7 Signals</span>
+        <span class="text-xs font-mono text-[#A49E94]" id="radarSignalCount">Tracking 7 Signals</span>
       </div>
 
       <!-- Canvas Radar -->
@@ -68,9 +69,9 @@
         <canvas id="radarCanvas" width="560" height="560" class="cursor-crosshair max-w-full h-auto drop-shadow-2xl"></canvas>
       </div>
 
-      <div class="mt-4 flex items-center justify-between text-xs font-mono text-slate-400 border-t border-slate-800/80 pt-3">
-        <span>Click any blip to inspect chat discussion & decision</span>
-        <span class="text-cyan-400">Sweep Rate: 60 RPM</span>
+      <div class="mt-4 flex items-center justify-between text-xs font-mono text-[#A49E94] border-t border-[#262830] pt-3">
+        <span>Click any blip on the radar to inspect chat context</span>
+        <span class="text-[#FF7A45]">Sweep Engine: 60 RPM</span>
       </div>
     </div>
 
@@ -78,79 +79,79 @@
     <div class="lg:col-span-4 flex flex-col space-y-6">
       
       <!-- Summary Metrics Card -->
-      <div class="bg-[#0b101e] border border-slate-800/90 rounded-2xl p-5 shadow-xl">
-        <h2 class="text-xs font-mono text-slate-400 font-semibold tracking-wider uppercase mb-4">Sprint Scope Telemetry</h2>
+      <div class="bg-[#16171B] border border-[#262830] rounded-2xl p-5 shadow-xl">
+        <h2 class="text-xs font-mono text-[#FF7A45] font-bold tracking-wider uppercase mb-4">Scope Telemetry</h2>
         <div class="grid grid-cols-2 gap-3">
-          <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-            <span class="text-xs text-slate-400">Inside Circle</span>
-            <p class="text-2xl font-bold font-mono text-emerald-400 mt-1" id="statInside">3</p>
-            <span class="text-[11px] text-slate-500">Committed Features</span>
+          <div class="bg-[#121316] border border-[#262830] p-3.5 rounded-xl">
+            <span class="text-xs text-[#A49E94]">Inside Circle</span>
+            <p class="text-2xl font-extrabold font-mono text-[#FF5A36] mt-1" id="statInside">3</p>
+            <span class="text-[11px] text-[#A49E94]">Committed Features</span>
           </div>
-          <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-            <span class="text-xs text-slate-400">Active Debates</span>
-            <p class="text-2xl font-bold font-mono text-amber-400 mt-1" id="statDebates">2</p>
-            <span class="text-[11px] text-slate-500">Pending Resolution</span>
+          <div class="bg-[#121316] border border-[#262830] p-3.5 rounded-xl">
+            <span class="text-xs text-[#A49E94]">In Active Debate</span>
+            <p class="text-2xl font-extrabold font-mono text-[#EAB308] mt-1" id="statDebates">2</p>
+            <span class="text-[11px] text-[#A49E94]">Pending Resolution</span>
           </div>
-          <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-            <span class="text-xs text-slate-400">Whims Parked</span>
-            <p class="text-2xl font-bold font-mono text-rose-400 mt-1" id="statWhims">2</p>
-            <span class="text-[11px] text-slate-500">Filtered Distractions</span>
+          <div class="bg-[#121316] border border-[#262830] p-3.5 rounded-xl">
+            <span class="text-xs text-[#A49E94]">Whims Parked</span>
+            <p class="text-2xl font-extrabold font-mono text-[#D8D4CB] mt-1" id="statWhims">2</p>
+            <span class="text-[11px] text-[#A49E94]">Shielded Focus</span>
           </div>
-          <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
-            <span class="text-xs text-slate-400">SLA Protected</span>
-            <p class="text-2xl font-bold font-mono text-cyan-400 mt-1">-757 ms</p>
-            <span class="text-[11px] text-slate-500">Total Latency Shaved</span>
+          <div class="bg-[#121316] border border-[#262830] p-3.5 rounded-xl">
+            <span class="text-xs text-[#A49E94]">SLA Win</span>
+            <p class="text-2xl font-extrabold font-mono text-[#FAF8F5] mt-1">-757 ms</p>
+            <span class="text-[11px] text-[#A49E94]">Total Latency Shaved</span>
           </div>
         </div>
       </div>
 
       <!-- Selected Signal Detail Panel -->
-      <div id="inspectorPanel" class="bg-[#0b101e] border border-slate-800/90 rounded-2xl p-5 shadow-xl flex-1 flex flex-col">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-          <span class="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold">Signal Inspector</span>
-          <span id="inspStatus" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">INSIDE_CIRCLE</span>
+      <div id="inspectorPanel" class="bg-[#16171B] border border-[#262830] rounded-2xl p-5 shadow-xl flex-1 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-[#262830]">
+          <span class="text-xs font-mono text-[#A49E94] uppercase tracking-wider font-semibold">Signal Inspector</span>
+          <span id="inspStatus" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-[#FF5A36]/20 text-[#FF7A45] border border-[#FF5A36]/40">INSIDE_CIRCLE</span>
         </div>
 
         <div class="mt-4 flex-1 flex flex-col justify-between">
           <div>
-            <span id="inspChannel" class="text-xs font-mono text-cyan-400">#product-ideas</span>
-            <h3 id="inspTitle" class="text-base font-bold text-white mt-1 leading-snug">Batched Multi-Currency Settlement Engine</h3>
-            <p id="inspAuthor" class="text-xs text-slate-400 mt-1">Proposed by <span class="text-slate-200 font-medium">Maya Patel</span></p>
+            <span id="inspChannel" class="text-xs font-mono text-[#FF7A45]">#product-ideas</span>
+            <h3 id="inspTitle" class="text-base font-bold text-[#FAF8F5] mt-1 leading-snug">Batched Multi-Currency Settlement Engine</h3>
+            <p id="inspAuthor" class="text-xs text-[#A49E94] mt-1">Proposed by <span class="text-[#FAF8F5] font-semibold">Maya Patel</span></p>
 
-            <!-- Uncertainty Meter -->
-            <div class="mt-4 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+            <!-- Uncertainty Meter in Warm Coral -->
+            <div class="mt-4 bg-[#121316] p-3 rounded-xl border border-[#262830]">
               <div class="flex justify-between text-xs font-mono mb-1">
-                <span class="text-slate-400">Uncertainty Rating</span>
-                <span id="inspUncertainty" class="text-emerald-400 font-bold">15% (High Certainty)</span>
+                <span class="text-[#A49E94]">Uncertainty Level</span>
+                <span id="inspUncertainty" class="text-[#FF5A36] font-bold">15% (High Certainty)</span>
               </div>
-              <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                <div id="inspBar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 15%"></div>
+              <div class="w-full bg-[#24262E] h-2 rounded-full overflow-hidden">
+                <div id="inspBar" class="bg-[#FF5A36] h-full rounded-full transition-all duration-500" style="width: 15%"></div>
               </div>
             </div>
 
             <!-- Summary / Chat Snippet -->
             <div class="mt-4">
-              <span class="text-xs text-slate-400 font-semibold block mb-1">Chat Discussion Summary</span>
-              <p id="inspSummary" class="text-xs text-slate-300 leading-relaxed bg-slate-900/50 p-3 rounded-xl border border-slate-800/70">
+              <span class="text-xs text-[#A49E94] font-semibold block mb-1">Chat Discussion Snippet</span>
+              <p id="inspSummary" class="text-xs text-[#D8D4CB] leading-relaxed bg-[#121316]/70 p-3 rounded-xl border border-[#262830]">
                 Consolidate euro/dollar payment settlements into single batch run. Reduces Stripe fee churn by 4.2% and cuts p95 API latency by 120ms.
               </p>
             </div>
 
             <!-- KPI Impact -->
             <div class="mt-3">
-              <span class="text-xs text-slate-400 font-semibold block mb-1">Estimated Impact</span>
-              <p id="inspImpact" class="text-xs text-cyan-300 font-mono bg-cyan-950/20 p-2.5 rounded-lg border border-cyan-800/30">
+              <span class="text-xs text-[#A49E94] font-semibold block mb-1">Target Impact</span>
+              <p id="inspImpact" class="text-xs text-[#FAF8F5] font-mono bg-[#1A1C22] p-2.5 rounded-lg border border-[#262830]">
                 p95 Latency: -122 ms | Target: Sprint-42
               </p>
             </div>
           </div>
 
           <!-- Action Buttons -->
-          <div class="pt-5 border-t border-slate-800/80 mt-6 grid grid-cols-2 gap-2">
-            <button onclick="updateSignalStatus('INSIDE_CIRCLE')" class="px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/20">
+          <div class="pt-5 border-t border-[#262830] mt-6 grid grid-cols-2 gap-2.5">
+            <button onclick="updateSignalStatus('INSIDE_CIRCLE')" class="px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#FF5A36] hover:bg-[#FF451D] text-[#FAF8F5] transition flex items-center justify-center gap-1.5 shadow-lg shadow-orange-500/20">
               <span>✔</span> Move to Circle
             </button>
-            <button onclick="updateSignalStatus('OUTSIDE_CIRCLE')" class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition flex items-center justify-center gap-1.5">
+            <button onclick="updateSignalStatus('OUTSIDE_CIRCLE')" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-[#24262E] hover:bg-[#2C2E38] text-[#D8D4CB] transition flex items-center justify-center gap-1.5">
               <span>⏸</span> Park as Whim
             </button>
           </div>
@@ -161,35 +162,34 @@
   </main>
 
   <script>
-    // Signals Dataset (from DuckDB)
     let signals = [
       {
         id: "sig_001",
-        title: "Batched Multi-Currency Settlement Engine",
+        title: "Batched Settlement Engine",
         author: "Maya Patel",
         channel: "#product-ideas",
         distance: 0.25,
         angle: 45,
         uncertainty: 0.15,
         status: "INSIDE_CIRCLE",
-        impact: "Reduces Stripe churn by 4.2% & cuts p95 API latency by 120ms.",
+        impact: "Cuts p95 API latency by 120ms & saves 4.2% fee churn.",
         summary: "Consolidate euro/dollar payment settlements into single batch run. Solves multi-currency reconciliation bottleneck."
       },
       {
         id: "sig_002",
-        title: "Postgres Lock → Redis Redlock",
+        title: "Postgres Lock → Redlock",
         author: "Alex Chen",
         channel: "#backend-core",
         distance: 0.40,
         angle: 140,
         uncertainty: 0.30,
         status: "INSIDE_CIRCLE",
-        impact: "p99 Latency: -635 ms | Prevents 504 gateway drops during peak flash sales.",
+        impact: "p99 Latency: -635 ms | Prevents 504 gateway drops during flash sales.",
         summary: "Spirited debate in #backend-core: Row locks were causing cascading timeouts during flash sales. Replaced with distributed lock."
       },
       {
         id: "sig_003",
-        title: "1-Click Social Sign-in vs Wizard",
+        title: "1-Click Sign-in Pivot",
         author: "Sam Torres",
         channel: "#growth-experiments",
         distance: 0.85,
@@ -201,7 +201,7 @@
       },
       {
         id: "sig_004",
-        title: "SQS → Kafka Audit Log Streaming",
+        title: "SQS → Kafka Audit Stream",
         author: "Alex Chen",
         channel: "#backend-core",
         distance: 0.92,
@@ -213,7 +213,7 @@
       },
       {
         id: "sig_005",
-        title: "Lottie Confetti Animation on Order Success",
+        title: "Lottie Confetti Animation on Order",
         author: "Jordan Lee",
         channel: "#frontend-chatter",
         distance: 1.60,
@@ -225,7 +225,7 @@
       },
       {
         id: "sig_006",
-        title: "Custom Neon Dark Theme for Admin",
+        title: "Custom Neon Theme for Admin",
         author: "Jordan Lee",
         channel: "#frontend-chatter",
         distance: 1.85,
@@ -237,7 +237,7 @@
       },
       {
         id: "sig_007",
-        title: "Enterprise Webhook Dispatcher",
+        title: "Enterprise Webhooks Dispatcher",
         author: "Sam Torres",
         channel: "#product-ideas",
         distance: 0.35,
@@ -252,7 +252,6 @@
     let selectedSignal = signals[0];
     let activeChannelFilter = "ALL";
 
-    // Setup Canvas & Animation Loop
     const canvas = document.getElementById("radarCanvas");
     const ctx = canvas.getContext("2d");
     let sweepAngle = 0;
@@ -266,11 +265,9 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      // Radar Background Rings
-      ctx.strokeStyle = "#1e293b";
+      // Radar Crosshairs in Hairline Off-White
+      ctx.strokeStyle = "rgba(250, 248, 245, 0.08)";
       ctx.lineWidth = 1;
-
-      // Crosshairs
       ctx.beginPath();
       ctx.setLineDash([4, 4]);
       ctx.moveTo(cx - maxR, cy); ctx.lineTo(cx + maxR, cy);
@@ -281,39 +278,39 @@
       // Orbit 3: Out-of-Scope (Radius maxR)
       ctx.beginPath();
       ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
-      ctx.strokeStyle = "#334155";
+      ctx.strokeStyle = "rgba(250, 248, 245, 0.12)";
       ctx.setLineDash([5, 5]);
       ctx.stroke();
 
       // Orbit 2: Borderline (Radius maxR * 0.65)
       ctx.beginPath();
       ctx.arc(cx, cy, maxR * 0.65, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(245, 158, 11, 0.4)";
+      ctx.strokeStyle = "rgba(234, 179, 8, 0.35)";
       ctx.stroke();
 
-      // Orbit 1: The Circle of Scope (Radius maxR * 0.42)
+      // Orbit 1: The Circle of Scope (Radius maxR * 0.42) in Vibrant Coral
       ctx.setLineDash([]);
       ctx.beginPath();
       ctx.arc(cx, cy, maxR * 0.42, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(16, 185, 129, 0.05)";
+      ctx.fillStyle = "rgba(255, 90, 54, 0.08)";
       ctx.fill();
-      ctx.strokeStyle = "#10b981";
+      ctx.strokeStyle = "#FF5A36";
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
       // Center Core
       ctx.beginPath();
       ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-      ctx.fillStyle = "#38bdf8";
+      ctx.fillStyle = "#FAF8F5";
       ctx.fill();
 
-      // Sweep Ray
+      // Sweep Ray in Vibrant Coral / Warm Orange
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(sweepAngle);
       const gradient = ctx.createLinearGradient(0, 0, maxR, 0);
-      gradient.addColorStop(0, "rgba(56, 189, 248, 0.4)");
-      gradient.addColorStop(1, "rgba(56, 189, 248, 0.0)");
+      gradient.addColorStop(0, "rgba(255, 90, 54, 0.40)");
+      gradient.addColorStop(1, "rgba(255, 90, 54, 0.0)");
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.arc(0, 0, maxR, 0, -Math.PI / 4, true);
@@ -326,7 +323,6 @@
       signals.forEach(sig => {
         if (activeChannelFilter !== "ALL" && sig.channel !== activeChannelFilter) return;
 
-        // Position based on distance and angle
         const rNorm = Math.min(sig.distance / 2.0, 1.0) * maxR;
         const rad = (sig.angle * Math.PI) / 180;
         const bx = cx + rNorm * Math.cos(rad);
@@ -335,8 +331,7 @@
         sig.x = bx;
         sig.y = by;
 
-        // Blip Color
-        let color = sig.status === "INSIDE_CIRCLE" ? "#10b981" : sig.status === "BORDERLINE" ? "#f59e0b" : "#ef4444";
+        let color = sig.status === "INSIDE_CIRCLE" ? "#FF5A36" : sig.status === "BORDERLINE" ? "#EAB308" : "#848995";
         const isSelected = selectedSignal && selectedSignal.id === sig.id;
 
         // Outer pulsing ring
@@ -352,13 +347,13 @@
         ctx.arc(bx, by, isSelected ? 8 : 6, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.shadowColor = color;
-        ctx.shadowBlur = isSelected ? 15 : 8;
+        ctx.shadowBlur = isSelected ? 14 : 7;
         ctx.fill();
         ctx.shadowBlur = 0;
 
         // Label
         ctx.font = "600 11px 'Plus Jakarta Sans'";
-        ctx.fillStyle = "#e2e8f0";
+        ctx.fillStyle = "#FAF8F5";
         ctx.fillText(sig.title.substring(0, 22), bx + 10, by - 6);
       });
 
@@ -366,7 +361,6 @@
       requestAnimationFrame(drawRadar);
     }
 
-    // Handle Canvas Click to Select Signal
     canvas.addEventListener("click", e => {
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
@@ -376,8 +370,7 @@
 
       signals.forEach(sig => {
         if (!sig.x || !sig.y) return;
-        const dist = Math.hypot(sig.x - clickX, sig.y - clickY);
-        if (dist < 20) {
+        if (Math.hypot(sig.x - clickX, sig.y - clickY) < 20) {
           selectSignal(sig);
         }
       });
@@ -386,7 +379,7 @@
     function selectSignal(sig) {
       selectedSignal = sig;
       document.getElementById("inspTitle").textContent = sig.title;
-      document.getElementById("inspAuthor").innerHTML = `Proposed by <span class="text-slate-200 font-medium">${sig.author}</span>`;
+      document.getElementById("inspAuthor").innerHTML = `Proposed by <span class="text-[#FAF8F5] font-semibold">${sig.author}</span>`;
       document.getElementById("inspChannel").textContent = sig.channel;
       document.getElementById("inspSummary").textContent = sig.summary;
       document.getElementById("inspImpact").textContent = sig.impact;
@@ -399,11 +392,11 @@
       const statusBadge = document.getElementById("inspStatus");
       statusBadge.textContent = sig.status;
       if (sig.status === "INSIDE_CIRCLE") {
-        statusBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800";
+        statusBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-[#FF5A36]/20 text-[#FF7A45] border border-[#FF5A36]/40";
       } else if (sig.status === "BORDERLINE") {
-        statusBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-amber-950 text-amber-400 border border-amber-800";
+        statusBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-[#EAB308]/20 text-[#EAB308] border border-[#EAB308]/40";
       } else {
-        statusBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-rose-950 text-rose-400 border border-rose-800";
+        statusBadge.className = "px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-[#848995]/20 text-[#D8D4CB] border border-[#848995]/40";
       }
     }
 
@@ -426,18 +419,16 @@
       document.getElementById("statWhims").textContent = whims;
     }
 
-    // Filter Button Clicks
     document.querySelectorAll(".filter-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".filter-btn").forEach(b => {
-          b.className = "filter-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition";
+          b.className = "filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition";
         });
-        btn.className = "filter-btn px-3 py-1.5 rounded-lg bg-cyan-600 text-white font-semibold transition";
+        btn.className = "filter-btn px-3 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition";
         activeChannelFilter = btn.dataset.channel;
       });
     });
 
-    // Initialize
     selectSignal(signals[0]);
     updateCounts();
     drawRadar();
