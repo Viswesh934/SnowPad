@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="50%" stop-color="#070a14" />
+      <stop offset="100%" stop-color="#03050a" />
+    </linearGradient>
+
+    <!-- Glowing Circle Gradient -->
+    <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.18" />
+      <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.0" />
+    </radialGradient>
+
+    <!-- Radar Sweep Gradient -->
+    <linearGradient id="sweepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- Filter for Glow effects -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .mono { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; }
+    .sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    .sweep-line {
+      transform-origin: 300px 260px;
+      animation: sweep 8s linear infinite;
+    }
+    @keyframes sweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <!-- Card Background -->
+  <rect width="960" height="520" rx="16" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="2" />
+
+  <!-- Grid overlay -->
+  <g opacity="0.06">
+    <path d="M 0 65 L 960 65 M 0 130 L 960 130 M 0 195 L 960 195 M 0 260 L 960 260 M 0 325 L 960 325 M 0 390 L 960 390 M 0 455 L 960 455" stroke="#94a3b8" stroke-width="1" />
+    <path d="M 120 0 L 120 520 M 240 0 L 240 520 M 360 0 L 360 520 M 480 0 L 480 520 M 600 0 L 600 520 M 720 0 L 720 520 M 840 0 L 840 520" stroke="#94a3b8" stroke-width="1" />
+  </g>
+
+  <!-- Top Bar -->
+  <rect x="0" y="0" width="960" height="54" fill="#0f172a" fill-opacity="0.6" />
+  <line x1="0" y1="54" x2="960" y2="54" stroke="#1e293b" stroke-width="1" />
+  
+  <circle cx="28" cy="27" r="6" fill="#38bdf8" filter="url(#softGlow)" />
+  <text x="44" y="32" fill="#f8fafc" font-size="15" font-weight="700" class="sans" letter-spacing="0.5">SNOWPAD SCOPE RADAR</text>
+  <text x="250" y="32" fill="#64748b" font-size="12" class="mono">LIVE CHAT UNCERTAINTY LEDGER • DUCKDB ENGINE</text>
+
+  <rect x="790" y="15" width="145" height="24" rx="12" fill="#0369a1" fill-opacity="0.3" stroke="#0ea5e9" stroke-width="1" />
+  <circle cx="804" cy="27" r="4" fill="#10b981" />
+  <text x="816" y="31" fill="#38bdf8" font-size="11" font-weight="600" class="mono">SWITCH CONNECTED</text>
+
+  <!-- ================= RADAR SECTION (Center: 300, 280) ================= -->
+  <g transform="translate(0, 20)">
+    <!-- Radar Ambient Background -->
+    <circle cx="300" cy="260" r="220" fill="url(#radarGlow)" />
+
+    <!-- Crosshairs -->
+    <line x1="80" y1="260" x2="520" y2="260" stroke="#334155" stroke-width="1" stroke-dasharray="4 4" />
+    <line x1="300" y1="40" x2="300" y2="480" stroke="#334155" stroke-width="1" stroke-dasharray="4 4" />
+
+    <!-- Range Rings -->
+    <!-- Orbit 3: Out-of-Scope Whims (Radius 210) -->
+    <circle cx="300" cy="260" r="210" fill="none" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 6" />
+    <text x="306" y="64" fill="#64748b" font-size="10" class="mono">ORBIT: UNVALIDATED WHIMS (r=2.0)</text>
+
+    <!-- Orbit 2: Borderline Debates (Radius 145) -->
+    <circle cx="300" cy="260" r="145" fill="none" stroke="#f59e0b" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="4 4" />
+    <text x="306" y="128" fill="#f59e0b" font-size="10" font-weight="600" class="mono">BORDERLINE DEBATE HORIZON (r=1.0)</text>
+
+    <!-- Orbit 1: Inside The Circle of Scope (Radius 85) -->
+    <circle cx="300" cy="260" r="85" fill="#10b981" fill-opacity="0.05" stroke="#10b981" stroke-width="2.5" filter="url(#softGlow)" />
+    <text x="306" y="188" fill="#10b981" font-size="10" font-weight="700" class="mono">INSIDE CIRCLE: CORE SLA (r=0.5)</text>
+
+    <!-- Radar Center -->
+    <circle cx="300" cy="260" r="4" fill="#38bdf8" filter="url(#glow)" />
+    <circle cx="300" cy="260" r="12" fill="none" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.5" />
+
+    <!-- Radar Sweep Angle -->
+    <path d="M 300 260 L 490 150 A 220 220 0 0 0 300 40 Z" fill="url(#sweepGrad)" class="sweep-line" opacity="0.6" />
+
+    <!-- BLIP 1: INSIDE CIRCLE (Maya Patel - Settlement Engine) -->
+    <g transform="translate(330, 220)">
+      <circle cx="0" cy="0" r="7" fill="#10b981" filter="url(#glow)" />
+      <circle cx="0" cy="0" r="14" fill="none" stroke="#10b981" stroke-width="1" opacity="0.6" />
+      <rect x="14" y="-12" width="190" height="24" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#10b981" stroke-width="1" />
+      <text x="22" y="4" fill="#f8fafc" font-size="10" font-weight="600" class="sans">Batched Multi-Currency</text>
+      <text x="148" y="4" fill="#10b981" font-size="9" font-weight="700" class="mono">15% UNC</text>
+    </g>
+
+    <!-- BLIP 2: INSIDE CIRCLE (Alex Chen - Redlock) -->
+    <g transform="translate(250, 290)">
+      <circle cx="0" cy="0" r="6" fill="#10b981" filter="url(#glow)" />
+      <rect x="-170" y="-12" width="160" height="24" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#10b981" stroke-width="1" />
+      <text x="-162" y="4" fill="#f8fafc" font-size="10" font-weight="600" class="sans">Postgres Lock → Redlock</text>
+      <text x="-35" y="4" fill="#10b981" font-size="9" font-weight="700" class="mono">30%</text>
+    </g>
+
+    <!-- BLIP 3: BORDERLINE (Sam Torres - Social Sign-in Debate) -->
+    <g transform="translate(390, 320)">
+      <circle cx="0" cy="0" r="6" fill="#f59e0b" filter="url(#glow)" />
+      <circle cx="0" cy="0" r="12" fill="none" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3" />
+      <rect x="14" y="-12" width="180" height="24" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#f59e0b" stroke-width="1" />
+      <text x="22" y="4" fill="#f8fafc" font-size="10" font-weight="600" class="sans">1-Click Sign-in Pivot</text>
+      <text x="135" y="4" fill="#f59e0b" font-size="9" font-weight="700" class="mono">55% UNC</text>
+    </g>
+
+    <!-- BLIP 4: BORDERLINE (Alex Chen - Kafka Stream) -->
+    <g transform="translate(210, 160)">
+      <circle cx="0" cy="0" r="6" fill="#f59e0b" filter="url(#glow)" />
+      <rect x="-185" y="-12" width="175" height="24" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#f59e0b" stroke-width="1" />
+      <text x="-177" y="4" fill="#f8fafc" font-size="10" font-weight="600" class="sans">SQS → Kafka Audit Log</text>
+      <text x="-48" y="4" fill="#f59e0b" font-size="9" font-weight="700" class="mono">60% UNC</text>
+    </g>
+
+    <!-- BLIP 5: OUTSIDE CIRCLE (Jordan Lee - Confetti Whim) -->
+    <g transform="translate(460, 140)">
+      <circle cx="0" cy="0" r="6" fill="#ef4444" filter="url(#glow)" />
+      <rect x="14" y="-12" width="170" height="24" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#ef4444" stroke-width="1" />
+      <text x="22" y="4" fill="#f8fafc" font-size="10" font-weight="600" class="sans">Lottie Confetti on Pay</text>
+      <text x="135" y="4" fill="#ef4444" font-size="9" font-weight="700" class="mono">88%</text>
+    </g>
+
+    <!-- BLIP 6: OUTSIDE CIRCLE (Jordan Lee - Theme Whim) -->
+    <g transform="translate(130, 390)">
+      <circle cx="0" cy="0" r="6" fill="#ef4444" filter="url(#glow)" />
+      <rect x="14" y="-12" width="165" height="24" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#ef4444" stroke-width="1" />
+      <text x="22" y="4" fill="#f8fafc" font-size="10" font-weight="600" class="sans">Neon Theme Redesign</text>
+      <text x="135" y="4" fill="#ef4444" font-size="9" font-weight="700" class="mono">95%</text>
+    </g>
+  </g>
+
+  <!-- ================= RIGHT PANEL: ANALYTICS HUD ================= -->
+  <g transform="translate(640, 80)">
+    <!-- Panel Container -->
+    <rect width="295" height="410" rx="12" fill="#0b1329" fill-opacity="0.7" stroke="#1e293b" stroke-width="1.5" />
+
+    <text x="20" y="32" fill="#94a3b8" font-size="11" font-weight="700" class="mono" letter-spacing="1">UNCERTAINTY TELEMETRY</text>
+
+    <!-- Metric Card 1: Inside Circle -->
+    <rect x="16" y="46" width="263" height="68" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <circle cx="34" cy="70" r="5" fill="#10b981" />
+    <text x="48" y="74" fill="#f8fafc" font-size="13" font-weight="600" class="sans">Inside Circle (Locked)</text>
+    <text x="240" y="74" fill="#10b981" font-size="18" font-weight="800" class="mono" text-anchor="end">3</text>
+    <text x="48" y="96" fill="#64748b" font-size="11" class="sans">Approved features moving core SLAs</text>
+
+    <!-- Metric Card 2: Borderline -->
+    <rect x="16" y="124" width="263" height="68" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <circle cx="34" cy="148" r="5" fill="#f59e0b" />
+    <text x="48" y="152" fill="#f8fafc" font-size="13" font-weight="600" class="sans">Active Chat Debates</text>
+    <text x="240" y="152" fill="#f59e0b" font-size="18" font-weight="800" class="mono" text-anchor="end">2</text>
+    <text x="48" y="174" fill="#64748b" font-size="11" class="sans">Uncertainty &gt; 50% • Needs resolution</text>
+
+    <!-- Metric Card 3: Parked Whims -->
+    <rect x="16" y="202" width="263" height="68" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <circle cx="34" cy="226" r="5" fill="#ef4444" />
+    <text x="48" y="230" fill="#f8fafc" font-size="13" font-weight="600" class="sans">Off-Scope Whims Parked</text>
+    <text x="240" y="230" fill="#ef4444" font-size="18" font-weight="800" class="mono" text-anchor="end">2</text>
+    <text x="48" y="252" fill="#64748b" font-size="11" class="sans">Filtered to protect developer sprint time</text>
+
+    <!-- Divider -->
+    <line x1="16" y1="284" x2="279" y2="284" stroke="#1e293b" stroke-width="1" />
+
+    <!-- Bottom Highlights -->
+    <text x="20" y="310" fill="#94a3b8" font-size="11" font-weight="700" class="mono">DEV SPRINT SHIELD</text>
+    
+    <text x="20" y="336" fill="#38bdf8" font-size="20" font-weight="800" class="mono">34.5 hrs</text>
+    <text x="115" y="335" fill="#94a3b8" font-size="12" class="sans">distraction time saved</text>
+
+    <text x="20" y="368" fill="#10b981" font-size="18" font-weight="800" class="mono">-757 ms</text>
+    <text x="115" y="367" fill="#94a3b8" font-size="12" class="sans">p99 latency shaved</text>
+
+    <rect x="16" y="382" width="263" height="18" rx="4" fill="#0284c7" fill-opacity="0.15" />
+    <text x="147" y="395" fill="#38bdf8" font-size="10" font-weight="600" class="mono" text-anchor="middle">DUCKDB ANALYTICAL VIEW: v_circle_radar</text>
+  </g>
+</svg>

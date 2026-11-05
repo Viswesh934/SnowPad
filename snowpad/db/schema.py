@@ -1,7 +1,7 @@
-"""DuckDB Schema DDL and Analytical Views for SnowPad."""
+"""DuckDB Schema DDL and Analytical Views for SnowPad's Chat Uncertainty Ledger."""
 
 SCHEMA_DDL = """
--- 1. Actors: Developers, PMs, Operators mapped in SnowPad
+-- 1. Actors: Developers, PMs, Designers, and Leaders mapped in SnowPad
 CREATE TABLE IF NOT EXISTS actors (
     id VARCHAR PRIMARY KEY,
     name VARCHAR NOT NULL,
@@ -11,30 +11,31 @@ CREATE TABLE IF NOT EXISTS actors (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Pulse Events: Developer actions, hotfixes on a whim, optimizations
-CREATE TABLE IF NOT EXISTS pulse_events (
+-- 2. Chat Signals: Uncertain discussions, feature proposals, scope pivots, and whims
+CREATE TABLE IF NOT EXISTS chat_signals (
     id VARCHAR PRIMARY KEY,
     actor_id VARCHAR NOT NULL REFERENCES actors(id),
-    event_type VARCHAR NOT NULL,
+    signal_type VARCHAR NOT NULL,
     title VARCHAR NOT NULL,
-    description VARCHAR,
-    commit_hash VARCHAR,
-    service_name VARCHAR NOT NULL DEFAULT 'api-gateway',
-    scope_status VARCHAR NOT NULL DEFAULT 'INSIDE_CIRCLE',
-    scope_distance DOUBLE NOT NULL DEFAULT 0.5,
-    tech_debt_flag BOOLEAN DEFAULT FALSE,
-    tech_debt_severity VARCHAR DEFAULT 'NONE',
-    rationale VARCHAR,
+    summary VARCHAR NOT NULL,
+    origin_channel VARCHAR NOT NULL DEFAULT '#product-ideas',
+    thread_url VARCHAR,
+    uncertainty_score DOUBLE NOT NULL DEFAULT 0.5,
+    scope_status VARCHAR NOT NULL DEFAULT 'BORDERLINE',
+    scope_distance DOUBLE NOT NULL DEFAULT 0.8,
+    estimated_kpi_impact VARCHAR,
+    resolution VARCHAR NOT NULL DEFAULT 'UNDER_DEBATE',
+    target_sprint VARCHAR,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. Metric Observations: Performance telemetry, latency deltas, p95/p99 response times
+-- 3. Metric Observations: Telemetry, response times, and KPI impacts
 CREATE TABLE IF NOT EXISTS metric_observations (
     id VARCHAR PRIMARY KEY,
-    event_id VARCHAR REFERENCES pulse_events(id),
+    signal_id VARCHAR REFERENCES chat_signals(id),
     metric_name VARCHAR NOT NULL DEFAULT 'p95_response_time_ms',
     service_name VARCHAR NOT NULL DEFAULT 'api-gateway',
-    endpoint VARCHAR NOT NULL DEFAULT '/api/v1/checkout',
+    endpoint VARCHAR NOT NULL DEFAULT '/api/v1/orders',
     baseline_value DOUBLE NOT NULL,
     observed_value DOUBLE NOT NULL,
     delta_value DOUBLE NOT NULL,
@@ -42,78 +43,79 @@ CREATE TABLE IF NOT EXISTS metric_observations (
     measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 4. Decision Records: Outcomes from team triage discussions (via Switch / chat)
-CREATE TABLE IF NOT EXISTS decision_records (
-    id VARCHAR PRIMARY KEY,
-    event_id VARCHAR NOT NULL REFERENCES pulse_events(id),
-    author_id VARCHAR NOT NULL REFERENCES actors(id),
-    discussion_summary VARCHAR NOT NULL,
-    resolution VARCHAR NOT NULL DEFAULT 'SCHEDULE_REFACTOR',
-    target_sprint VARCHAR,
-    ttl_days INTEGER DEFAULT 14,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Analytical View 1: Weekly Developer Pulse
+-- Analytical View 1: Weekly Operational Pulse
 CREATE OR REPLACE VIEW v_weekly_pulse AS
 SELECT 
-    date_trunc('week', e.created_at) AS pulse_week,
+    date_trunc('week', s.created_at) AS pulse_week,
     a.id AS actor_id,
     a.name AS actor_name,
     a.role AS actor_role,
-    COUNT(e.id) AS total_events,
-    COUNT(CASE WHEN e.event_type = 'HOTFIX' THEN 1 END) AS hotfixes_count,
-    COUNT(CASE WHEN e.scope_status = 'INSIDE_CIRCLE' THEN 1 END) AS inside_circle_count,
-    COUNT(CASE WHEN e.scope_status = 'OUTSIDE_CIRCLE' THEN 1 END) AS outside_circle_count,
-    COUNT(CASE WHEN e.tech_debt_flag = TRUE THEN 1 END) AS tech_debt_logged,
-    ROUND(AVG(m.delta_value), 2) AS avg_latency_delta_ms,
-    ROUND(MIN(m.delta_value), 2) AS max_latency_improvement_ms
+    COUNT(s.id) AS total_signals,
+    COUNT(CASE WHEN s.signal_type = 'FEATURE_PROPOSAL' THEN 1 END) AS features_count,
+    COUNT(CASE WHEN s.signal_type = 'CASUAL_WHIM' THEN 1 END) AS whims_count,
+    COUNT(CASE WHEN s.scope_status = 'INSIDE_CIRCLE' THEN 1 END) AS inside_circle_count,
+    COUNT(CASE WHEN s.scope_status = 'OUTSIDE_CIRCLE' THEN 1 END) AS outside_circle_count,
+    ROUND(AVG(s.uncertainty_score), 2) AS avg_uncertainty,
+    ROUND(AVG(COALESCE(m.delta_value, 0.0)), 2) AS avg_latency_delta_ms
 FROM actors a
-JOIN pulse_events e ON a.id = e.actor_id
-LEFT JOIN metric_observations m ON e.id = m.event_id
+JOIN chat_signals s ON a.id = s.actor_id
+LEFT JOIN metric_observations m ON s.id = m.signal_id
 GROUP BY 1, 2, 3, 4;
 
--- Analytical View 2: Developer Quarterly Impact (The "Brag Sheet" & Perf Review view)
+-- Analytical View 2: Contributor Impact & Focus (The "Brag Sheet" & Review view)
 CREATE OR REPLACE VIEW v_developer_impact AS
 SELECT 
     a.id AS actor_id,
     a.name AS actor_name,
     a.role AS actor_role,
     a.team,
-    COUNT(DISTINCT e.id) AS total_contributions,
-    COUNT(DISTINCT CASE WHEN e.event_type = 'HOTFIX' THEN e.id END) AS hotfixes_shipped,
-    COUNT(DISTINCT CASE WHEN e.event_type = 'PERF_OPTIMIZATION' THEN e.id END) AS perf_optimizations,
-    COUNT(DISTINCT CASE WHEN e.scope_status = 'INSIDE_CIRCLE' THEN e.id END) AS high_impact_circle_count,
-    COUNT(DISTINCT CASE WHEN e.scope_status = 'OUTSIDE_CIRCLE' THEN e.id END) AS low_leverage_churn_count,
+    COUNT(DISTINCT s.id) AS total_contributions,
+    COUNT(DISTINCT CASE WHEN s.signal_type = 'FEATURE_PROPOSAL' AND s.resolution = 'APPROVED_FOR_SPRINT' THEN s.id END) AS confirmed_features,
+    COUNT(DISTINCT CASE WHEN s.signal_type = 'CASUAL_WHIM' OR s.resolution = 'PARKED_AS_WHIM' THEN s.id END) AS whims_quarantined,
+    COUNT(DISTINCT CASE WHEN s.scope_status = 'INSIDE_CIRCLE' THEN s.id END) AS high_impact_circle_count,
+    COUNT(DISTINCT CASE WHEN s.scope_status = 'OUTSIDE_CIRCLE' THEN s.id END) AS low_leverage_churn_count,
     ROUND(
-        100.0 * COUNT(DISTINCT CASE WHEN e.scope_status = 'INSIDE_CIRCLE' THEN e.id END) / 
-        NULLIF(COUNT(DISTINCT e.id), 0), 
+        100.0 * COUNT(DISTINCT CASE WHEN s.scope_status = 'INSIDE_CIRCLE' THEN s.id END) / 
+        NULLIF(COUNT(DISTINCT s.id), 0), 
         1
     ) AS circle_focus_percentage,
-    COUNT(DISTINCT CASE WHEN e.tech_debt_flag = TRUE THEN e.id END) AS debt_items_incurred,
-    ROUND(COALESCE(AVG(m.delta_value), 0.0), 2) AS avg_latency_impact_ms,
+    ROUND(AVG(s.uncertainty_score), 2) AS avg_uncertainty,
     ROUND(COALESCE(SUM(CASE WHEN m.delta_value < 0 THEN ABS(m.delta_value) ELSE 0 END), 0.0), 1) AS total_ms_shaved
 FROM actors a
-LEFT JOIN pulse_events e ON a.id = e.actor_id
-LEFT JOIN metric_observations m ON e.id = m.event_id
+LEFT JOIN chat_signals s ON a.id = s.actor_id
+LEFT JOIN metric_observations m ON s.id = m.signal_id
 GROUP BY a.id, a.name, a.role, a.team;
 
 -- Analytical View 3: Radar Plot Points (Circle of Scope)
 CREATE OR REPLACE VIEW v_circle_radar AS
 SELECT 
-    e.id AS event_id,
-    e.title,
-    e.event_type,
-    e.service_name,
+    s.id AS signal_id,
+    s.title,
+    s.signal_type,
+    s.origin_channel,
     a.name AS actor_name,
-    e.scope_distance,
-    e.scope_status,
-    e.tech_debt_flag,
-    e.tech_debt_severity,
+    s.scope_distance,
+    s.uncertainty_score,
+    s.scope_status,
+    s.resolution,
+    s.estimated_kpi_impact,
     COALESCE(m.delta_value, 0.0) AS latency_delta_ms,
-    e.created_at
-FROM pulse_events e
-JOIN actors a ON e.actor_id = a.id
-LEFT JOIN metric_observations m ON e.id = m.event_id
-ORDER BY e.scope_distance ASC;
+    s.created_at
+FROM chat_signals s
+JOIN actors a ON s.actor_id = a.id
+LEFT JOIN metric_observations m ON s.id = m.signal_id
+ORDER BY s.scope_distance ASC;
+
+-- Analytical View 4: Channel Chatter Breakdown
+CREATE OR REPLACE VIEW v_channel_chatter AS
+SELECT 
+    s.origin_channel,
+    COUNT(s.id) AS total_signals,
+    ROUND(AVG(s.uncertainty_score), 2) AS avg_uncertainty,
+    COUNT(CASE WHEN s.scope_status = 'INSIDE_CIRCLE' THEN 1 END) AS inside_circle_count,
+    COUNT(CASE WHEN s.scope_status = 'OUTSIDE_CIRCLE' THEN 1 END) AS outside_circle_count,
+    COUNT(CASE WHEN s.resolution = 'UNDER_DEBATE' THEN 1 END) AS pending_debates
+FROM chat_signals s
+GROUP BY s.origin_channel
+ORDER BY total_signals DESC;
 """

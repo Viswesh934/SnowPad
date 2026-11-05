@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 import duckdb
 
-from snowpad.core.models import Actor, DecisionRecord, MetricObservation, PulseEvent
+from snowpad.core.models import Actor, ChatSignal, MetricObservation
 from snowpad.db.connection import get_connection
 
 
@@ -35,47 +35,49 @@ class SnowPadRepository:
                 [actor.id, actor.name, actor.role, actor.email, actor.team, actor.created_at]
             )
 
-    def save_pulse_event(self, event: PulseEvent) -> None:
-        """Record an operational event / hotfix."""
+    def save_chat_signal(self, signal: ChatSignal) -> None:
+        """Record an uncertain chat signal, proposal, pivot, or whim."""
         with get_connection(self.db_path) as conn:
             conn.execute(
                 """
-                INSERT OR REPLACE INTO pulse_events (
-                    id, actor_id, event_type, title, description,
-                    commit_hash, service_name, scope_status, scope_distance,
-                    tech_debt_flag, tech_debt_severity, rationale, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT OR REPLACE INTO chat_signals (
+                    id, actor_id, signal_type, title, summary,
+                    origin_channel, thread_url, uncertainty_score,
+                    scope_status, scope_distance, estimated_kpi_impact,
+                    resolution, target_sprint, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 [
-                    event.id,
-                    event.actor_id,
-                    event.event_type.value if hasattr(event.event_type, "value") else str(event.event_type),
-                    event.title,
-                    event.description,
-                    event.commit_hash,
-                    event.service_name,
-                    event.scope_status.value if hasattr(event.scope_status, "value") else str(event.scope_status),
-                    event.scope_distance,
-                    event.tech_debt_flag,
-                    event.tech_debt_severity.value if hasattr(event.tech_debt_severity, "value") else str(event.tech_debt_severity),
-                    event.rationale,
-                    event.created_at,
+                    signal.id,
+                    signal.actor_id,
+                    signal.signal_type.value if hasattr(signal.signal_type, "value") else str(signal.signal_type),
+                    signal.title,
+                    signal.summary,
+                    signal.origin_channel,
+                    signal.thread_url,
+                    signal.uncertainty_score,
+                    signal.scope_status.value if hasattr(signal.scope_status, "value") else str(signal.scope_status),
+                    signal.scope_distance,
+                    signal.estimated_kpi_impact,
+                    signal.resolution.value if hasattr(signal.resolution, "value") else str(signal.resolution),
+                    signal.target_sprint,
+                    signal.created_at,
                 ]
             )
 
     def save_metric_observation(self, metric: MetricObservation) -> None:
-        """Record a performance metric observation correlated to an event."""
+        """Record a performance metric observation correlated to a signal."""
         with get_connection(self.db_path) as conn:
             conn.execute(
                 """
                 INSERT OR REPLACE INTO metric_observations (
-                    id, event_id, metric_name, service_name, endpoint,
+                    id, signal_id, metric_name, service_name, endpoint,
                     baseline_value, observed_value, delta_value, unit, measured_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 [
                     metric.id,
-                    metric.event_id,
+                    metric.signal_id,
                     metric.metric_name,
                     metric.service_name,
                     metric.endpoint,
@@ -84,28 +86,6 @@ class SnowPadRepository:
                     metric.delta_value,
                     metric.unit,
                     metric.measured_at,
-                ]
-            )
-
-    def save_decision(self, decision: DecisionRecord) -> None:
-        """Record a triage decision outcome from chat."""
-        with get_connection(self.db_path) as conn:
-            conn.execute(
-                """
-                INSERT OR REPLACE INTO decision_records (
-                    id, event_id, author_id, discussion_summary,
-                    resolution, target_sprint, ttl_days, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                [
-                    decision.id,
-                    decision.event_id,
-                    decision.author_id,
-                    decision.discussion_summary,
-                    decision.resolution,
-                    decision.target_sprint,
-                    decision.ttl_days,
-                    decision.created_at,
                 ]
             )
 
@@ -127,11 +107,11 @@ class SnowPadRepository:
     def get_weekly_pulse(self) -> List[Dict[str, Any]]:
         """Query the weekly operational pulse aggregated across the team."""
         with get_connection(self.db_path) as conn:
-            rel = conn.execute("SELECT * FROM v_weekly_pulse ORDER BY pulse_week DESC, total_events DESC")
+            rel = conn.execute("SELECT * FROM v_weekly_pulse ORDER BY pulse_week DESC, total_signals DESC")
             return _fetch_all_dicts(rel)
 
     def get_developer_impact(self, actor_id: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Query quarterly developer impact (perf review / brag sheet data)."""
+        """Query quarterly contributor impact (perf review / brag sheet data)."""
         with get_connection(self.db_path) as conn:
             if actor_id:
                 query = "SELECT * FROM v_developer_impact WHERE actor_id = ?"
@@ -142,13 +122,13 @@ class SnowPadRepository:
             return _fetch_all_dicts(rel)
 
     def get_circle_radar_data(self, actor_id: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Retrieve events positioned for the Circle of Scope visual radar."""
+        """Retrieve signals positioned for the Circle of Scope visual radar."""
         with get_connection(self.db_path) as conn:
             if actor_id:
                 query = """
                 SELECT r.* FROM v_circle_radar r
-                JOIN pulse_events e ON r.event_id = e.id
-                WHERE e.actor_id = ?
+                JOIN chat_signals s ON r.signal_id = s.id
+                WHERE s.actor_id = ?
                 ORDER BY r.scope_distance ASC
                 """
                 rel = conn.execute(query, [actor_id])
@@ -157,25 +137,29 @@ class SnowPadRepository:
                 rel = conn.execute(query)
             return _fetch_all_dicts(rel)
 
-    def get_active_tech_debt(self) -> List[Dict[str, Any]]:
-        """Query hotfixes flagged with tech debt that need PRD refactor planning."""
+    def get_channel_chatter(self) -> List[Dict[str, Any]]:
+        """Retrieve breakdown of chatter and uncertainty per channel."""
+        with get_connection(self.db_path) as conn:
+            rel = conn.execute("SELECT * FROM v_channel_chatter")
+            return _fetch_all_dicts(rel)
+
+    def get_pending_debates(self) -> List[Dict[str, Any]]:
+        """Query chat signals that are currently borderline and under active debate."""
         with get_connection(self.db_path) as conn:
             query = """
             SELECT 
-                e.id AS event_id,
-                e.title,
-                e.service_name,
+                s.id AS signal_id,
+                s.title,
+                s.summary,
+                s.origin_channel,
                 a.name AS author_name,
-                e.tech_debt_severity,
-                e.rationale,
-                e.created_at,
-                d.resolution,
-                d.target_sprint
-            FROM pulse_events e
-            JOIN actors a ON e.actor_id = a.id
-            LEFT JOIN decision_records d ON e.id = d.event_id
-            WHERE e.tech_debt_flag = TRUE
-            ORDER BY e.created_at DESC
+                s.uncertainty_score,
+                s.estimated_kpi_impact,
+                s.created_at
+            FROM chat_signals s
+            JOIN actors a ON s.actor_id = a.id
+            WHERE s.resolution = 'UNDER_DEBATE'
+            ORDER BY s.uncertainty_score DESC
             """
             rel = conn.execute(query)
             return _fetch_all_dicts(rel)
