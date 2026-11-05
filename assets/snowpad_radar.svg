@@ -7,7 +7,7 @@
       <stop offset="100%" stop-color="#0c0d0f" />
     </linearGradient>
 
-    <!-- Warm Coral & Orange Ambient Radial Glow -->
+    <!-- Warm Coral &amp; Orange Ambient Radial Glow -->
     <radialGradient id="coralAmbient" cx="35%" cy="50%" r="55%">
       <stop offset="0%" stop-color="#ff5a36" stop-opacity="0.22" />
       <stop offset="45%" stop-color="#ff7a45" stop-opacity="0.10" />
@@ -107,12 +107,12 @@
     <rect x="318" y="126" width="175" height="18" rx="4" fill="#141519" fill-opacity="0.9" />
     <text x="322" y="139" fill="#eab308" font-size="9" font-weight="600" class="font-mono">BORDERLINE DEBATE (r = 1.0)</text>
 
-    <!-- The Circle of Scope: Core SLA & Certainty Horizon (Radius 88) -->
+    <!-- The Circle of Scope: Core SLA &amp; Certainty Horizon (Radius 88) -->
     <circle cx="310" cy="270" r="88" fill="#ff5a36" fill-opacity="0.08" stroke="#ff5a36" stroke-width="2.5" filter="url(#subtleGlow)" />
     <rect x="318" y="186" width="160" height="18" rx="4" fill="#141519" fill-opacity="0.9" />
-    <text x="322" y="199" fill="#ff5a36" font-size="9" font-weight="700" class="font-mono">THE CIRCLE OF SCOPE (r &le; 0.5)</text>
+    <text x="322" y="199" fill="#ff5a36" font-size="9" font-weight="700" class="font-mono">THE CIRCLE OF SCOPE (r &lt;= 0.5)</text>
 
-    <!-- Radar Center Hub in Cream & Coral -->
+    <!-- Radar Center Hub in Cream &amp; Coral -->
     <circle cx="310" cy="270" r="5" fill="#faf8f5" />
     <circle cx="310" cy="270" r="12" fill="none" stroke="#ff5a36" stroke-width="1.5" stroke-opacity="0.6" />
 
@@ -174,7 +174,7 @@
   <g transform="translate(650, 78)">
     <rect width="285" height="420" rx="12" fill="url(#panelBg)" stroke="#262830" stroke-width="1.5" />
 
-    <text x="20" y="30" fill="#ff7a45" font-size="10" font-weight="700" class="font-mono" letter-spacing="1">SCOPE & UNCERTAINTY LEDGER</text>
+    <text x="20" y="30" fill="#ff7a45" font-size="10" font-weight="700" class="font-mono" letter-spacing="1">SCOPE &amp; UNCERTAINTY LEDGER</text>
 
     <!-- Metric Card 1: Inside Circle -->
     <rect x="16" y="44" width="253" height="66" rx="8" fill="#131418" stroke="#ff5a36" stroke-width="1" stroke-opacity="0.4" />
