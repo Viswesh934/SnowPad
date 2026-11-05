@@ -12,6 +12,13 @@
   <img src="https://img.shields.io/badge/Python-3.10+-16171B?style=for-the-badge&logo=python&logoColor=FF5A36" alt="Python">
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Phase%202%20Active-FF5A36?style=for-the-badge&logoColor=FAF8F5" alt="Status">
+  <img src="https://img.shields.io/badge/Database-DuckDB%20Embedded-16171B?style=for-the-badge&logo=duckdb&logoColor=FAF8F5" alt="DuckDB">
+  <img src="https://img.shields.io/badge/Integration-Switch%20AI-FF7A45?style=for-the-badge&logoColor=FAF8F5" alt="Switch AI">
+  <img src="https://img.shields.io/badge/Python-3.10+-16171B?style=for-the-badge&logo=python&logoColor=FF5A36" alt="Python">
+</p>
+
 ---
 
 <p align="center">
@@ -99,15 +106,6 @@ start snowpad/web/radar.html
 ```bash
 python -m snowpad.cli review --actor maya_patel --quarter Q4-2026
 ```
-
----
-
-## 🗺️ Hackathon Roadmap (Nov 4 – 7, 2026)
-
-- [x] **Phase 1: Foundations & DuckDB Core** (Generic schema, analytical views, rich CLI, 100% test coverage)
-- [x] **Phase 2: Circle of Scope & Visual Radar** (Chat signal models, vector SVG HUD, interactive HTML5 canvas radar)
-- [ ] **Phase 3: Switch Agent & Chat Bridge** (Live Slack/Discord bot via Switch, `/snowpad` triage slash command)
-- [ ] **Phase 4: Video Demo, README Finalization & Submission** (YouTube walkthrough & WeMakeDevs submission)
 
 ---
 
