@@ -174,6 +174,60 @@ def cmd_chatter(args: argparse.Namespace) -> None:
     console.print(table)
 
 
+def cmd_sync(args: argparse.Namespace) -> None:
+    """Fetch and sync members & designations from Slack or Discord into DuckDB."""
+    from snowpad.agent.sync import sync_workspace_members
+
+    repo = SnowPadRepository()
+    platform = args.platform
+    console.print(f"[bold cyan]❄️ Fetching members & designations from {platform.title()}...[/]")
+
+    members = sync_workspace_members(platform=platform, repo=repo)
+
+    table = Table(title=f"Synced {platform.title()} Members into DuckDB", header_style="bold magenta")
+    table.add_column("ID", style="dim")
+    table.add_column("Name", style="bold white")
+    table.add_column("Designation / Role", style="green")
+    table.add_column("Team / Server", style="cyan")
+
+    for m in members:
+        table.add_row(m.id, m.name, m.role, m.team)
+
+    console.print(table)
+    console.print(f"[bold green]✔ Successfully synced {len(members)} team members with designations into DuckDB![/]")
+
+
+def cmd_msg(args: argparse.Namespace) -> None:
+    """Simulate or process an incoming chat message from Slack/Discord through Switch."""
+    from snowpad.agent.bot import SnowPadSwitchAgent
+
+    agent = SnowPadSwitchAgent()
+    text = args.text
+    user = args.user
+    channel = args.channel
+
+    console.print(f"[bold cyan]Incoming Message in {channel}:[/] [white]'{text}'[/] from [magenta]{user}[/]")
+
+    if text.startswith("/snowpad"):
+        res = agent.handle_command(text, user_id=user, channel=channel)
+        console.print(Panel(str(res), title="[bold green]Switch Command Response[/]", border_style="green"))
+    else:
+        res = agent.analyze_chat_message(text, user_id=user, channel=channel)
+        if res:
+            color = "green" if res["scope_status"] == "INSIDE_CIRCLE" else "yellow" if res["scope_status"] == "BORDERLINE" else "red"
+            console.print(Panel(
+                f"[bold white]Title:[/] {res['title']}\n"
+                f"[bold]Type:[/] [magenta]{res['signal_type']}[/]\n"
+                f"[bold]Uncertainty Rating:[/] [{color}]{res['uncertainty_pct']}%[/{color}]\n"
+                f"[bold]Scope Status:[/] [{color}]{res['scope_status']}[/{color}]\n"
+                f"[bold]Resolution Action:[/] [cyan]{res['resolution']}[/]",
+                title="[bold cyan]❄️ SnowPad Chat Signal Intercepted & Logged to DuckDB[/]",
+                border_style="cyan"
+            ))
+        else:
+            console.print("[dim]Message ignored (no proposal or whim detected).[/]")
+
+
 def app() -> None:
     """Main CLI entrypoint."""
     parser = argparse.ArgumentParser(
@@ -192,6 +246,16 @@ def app() -> None:
     subparsers.add_parser("radar", help="Display Circle of Scope radar")
     subparsers.add_parser("chatter", help="Display channel chatter breakdown")
 
+    # Sync members command
+    sync_p = subparsers.add_parser("sync", help="Sync members and designations from Slack or Discord")
+    sync_p.add_argument("--platform", default="slack", choices=["slack", "discord"], help="Chat platform (slack or discord)")
+
+    # Message analysis command
+    msg_p = subparsers.add_parser("msg", help="Analyze a chat message via Switch Agent")
+    msg_p.add_argument("--text", required=True, help="Chat message text")
+    msg_p.add_argument("--user", default="U_MAYA_SLACK", help="User ID or handle")
+    msg_p.add_argument("--channel", default="#product-ideas", help="Origin channel")
+
     args = parser.parse_args()
 
     if args.command == "seed":
@@ -204,6 +268,10 @@ def app() -> None:
         cmd_radar(args)
     elif args.command == "chatter":
         cmd_chatter(args)
+    elif args.command == "sync":
+        cmd_sync(args)
+    elif args.command == "msg":
+        cmd_msg(args)
     else:
         parser.print_help()
 
