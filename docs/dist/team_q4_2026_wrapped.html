@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SnowPad Wrapped: The Entire Engineering & Product Team (Q4-2026)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0b0c0e;
+      color: #FAF8F5;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Radial pulsing glow behind story card */
+    .story-card {
+      background: linear-gradient(180deg, rgba(26, 28, 35, 0.95) 0%, rgba(14, 15, 18, 0.98) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 80px -20px #10B98140;
+    }
+
+    .progress-bar {
+      transition: width 0.1s linear;
+    }
+    
+    .floating-badge {
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-0 sm:p-4 bg-gradient-to-br from-[#0c0d10] via-[#121318] to-[#0a0a0d]">
+
+  <!-- Mobile/Desktop Story Container (Wide Widescreen Format) -->
+  <div class="relative w-full max-w-[860px] h-[100dvh] sm:h-[650px] sm:rounded-2xl story-card flex flex-col overflow-hidden select-none">
+    
+    <!-- Top Progress Bars (6 cards) -->
+    <div class="absolute top-0 left-0 right-0 p-4 z-30 flex items-center gap-2 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
+      <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="bar-0" class="h-full bg-white progress-bar w-0"></div>
+      </div>
+      <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="bar-1" class="h-full bg-white progress-bar w-0"></div>
+      </div>
+      <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="bar-2" class="h-full bg-white progress-bar w-0"></div>
+      </div>
+      <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="bar-3" class="h-full bg-white progress-bar w-0"></div>
+      </div>
+      <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="bar-4" class="h-full bg-white progress-bar w-0"></div>
+      </div>
+      <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
+        <div id="bar-5" class="h-full bg-white progress-bar w-0"></div>
+      </div>
+    </div>
+
+    <!-- Top User Badge & Close Button -->
+    <div class="absolute top-7 left-0 right-0 px-6 z-30 flex items-center justify-between text-xs font-mono text-white/80">
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-full bg-[#10B981] text-black flex items-center justify-center font-bold text-[11px]">❄</span>
+        <span class="font-bold tracking-tight text-white">The Entire Engineering & Product Team</span>
+        <span class="text-white/40">•</span>
+        <span class="text-[#10B981]">Q4-2026</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="pauseBtn" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition text-xs font-mono">Pause</button>
+      </div>
+    </div>
+
+    <!-- Tap Navigation Zones (Left 30% prev, Right 70% next) -->
+    <div class="absolute inset-0 z-20 flex">
+      <div id="tapLeft" class="w-[30%] h-full cursor-w-resize"></div>
+      <div id="tapRight" class="w-[70%] h-full cursor-e-resize"></div>
+    </div>
+
+    <!-- SLIDES CONTAINER -->
+    <div class="relative flex-1 flex items-center justify-center p-6 sm:p-10 text-center z-10">
+
+      <!-- SLIDE 0: Welcome & Vibe Check -->
+      <div id="slide-0" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-100 transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">SnowPad Presents</span>
+        </div>
+
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              Your Q4-2026<br>Scope Wrapped.
+            </h1>
+            <p class="text-sm text-[#A1A1AA] mt-3 max-w-[380px]">
+              90 days of chatting, building, debating, and dodging scope drift across engineering and product.
+            </p>
+            <div class="mt-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-[#D4D4D8] w-fit">
+              <span class="w-2 h-2 rounded-full bg-[#10B981] animate-ping"></span>
+              <span>7 Chat Discussions Audited</span>
+            </div>
+          </div>
+          <div class="w-36 h-36 rounded-3xl bg-[#121214] border border-[#10B981]/40 flex items-center justify-center text-7xl shadow-2xl shadow-green-500/10 floating-badge">
+            ❄️
+          </div>
+        </div>
+
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Space / Right Arrow to uncover your scope personality &rarr;</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 1: Top Channel & Chat Habit -->
+      <div id="slide-1" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">The Daily Hangout</span>
+          <h2 class="text-3xl font-extrabold text-white mt-1">Your Favorite Sparring Ground</h2>
+        </div>
+
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <span class="text-xs font-mono text-[#71717A] uppercase tracking-wider">Top Origin Channel</span>
+            <h3 class="text-4xl font-black text-white mt-1 font-mono">#product-ideas</h3>
+            <p class="text-sm text-[#A1A1AA] mt-3 max-w-[340px]">
+              Where you dropped <strong class="text-white">1 proposals</strong> and aligned with teammates this quarter.
+            </p>
+          </div>
+
+          <div class="bg-[#18181B] border border-[#27272A] rounded-2xl p-6 w-full md:w-[320px]">
+            <span class="text-xs font-mono text-[#71717A] uppercase">Circle Focus Alignment</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-4xl font-black font-mono text-[#10B981]">42.9%</span>
+              <span class="text-xs text-[#A1A1AA]">of chatter</span>
+            </div>
+            <p class="text-xs text-[#71717A] mt-2">Directly aligned with active team goals and core response SLAs.</p>
+          </div>
+        </div>
+
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow to see your Archetype &rarr;</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: Scope Personality Archetype -->
+      <div id="slide-2" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Scope Identity</span>
+          <h2 class="text-3xl font-extrabold text-white mt-1">Your Q4 Archetype</h2>
+        </div>
+
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div class="flex items-center gap-5">
+            <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-5xl bg-[#18181B] border border-[#10B981]/50 floating-badge">
+              🛡️
+            </div>
+            <div>
+              <h3 class="text-3xl font-black text-white tracking-tight">The Sprint Guardian</h3>
+              <span class="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 mt-1 inline-block">
+                The Shield Against Scope Creep.
+              </span>
+            </div>
+          </div>
+
+          <div class="space-y-4 max-w-[340px]">
+            <p class="text-xs text-[#D4D4D8] leading-relaxed italic bg-[#18181B] p-4 rounded-xl border border-[#27272A]">
+              "When spontaneous midnight whims threaten the sprint, you stand your ground. You saved the team over 40 hours of aimless churn."
+            </p>
+            <div class="bg-[#18181B] border border-[#27272A] rounded-xl p-3 flex items-center gap-3">
+              <span class="text-2xl">🎧</span>
+              <div class="truncate">
+                <span class="text-[10px] font-mono text-[#71717A] uppercase">Sprint Vibe</span>
+                <p class="text-xs font-semibold text-white truncate">Epic Orchestral with Noise-Cancelling Headphones</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow to see the Bullet You Dodged &rarr;</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: The Dodged Bullet (Top Whim Quarantined) -->
+      <div id="slide-3" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Focus Shield</span>
+          <h2 class="text-3xl font-extrabold text-white mt-1">The Bullet You Dodged</h2>
+        </div>
+
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-8 h-8 rounded-lg bg-[#18181B] border border-[#27272A] flex items-center justify-center text-lg">🛡️</span>
+              <span class="text-xs font-mono text-[#71717A] uppercase font-bold">Whim Safely Quarantined</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white tracking-tight">"Lottie Particle Confetti Animation on Order Success"</h3>
+            <p class="text-xs text-[#A1A1AA] mt-2 max-w-[340px]">
+              Adds 140kb to critical client bundle; zero proven revenue lift.
+            </p>
+          </div>
+
+          <div class="bg-[#18181B] border border-[#10B981]/30 rounded-2xl p-6 w-full md:w-[320px]">
+            <span class="text-xs font-mono text-[#10B981] font-bold">DEVELOPER SANITY SAVED:</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-4xl font-black font-mono text-white">+34h</span>
+              <span class="text-xs text-[#A1A1AA]">shielded</span>
+            </div>
+            <p class="text-xs text-[#71717A] mt-2">Prevented off-scope tasks from diluting critical sprint deliverables.</p>
+          </div>
+        </div>
+
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow to see your Crown Jewel &rarr;</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: The Crown Jewel (Top SLA Win) -->
+      <div id="slide-4" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Hall of Fame</span>
+          <h2 class="text-3xl font-extrabold text-white mt-1">Your Crown Jewel</h2>
+        </div>
+
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-8 h-8 rounded-lg bg-[#18181B] border border-[#27272A] flex items-center justify-center text-lg">🏆</span>
+              <span class="text-xs font-mono text-[#10B981] uppercase font-bold">Inside Circle Delivery</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white tracking-tight">"Batched Multi-Currency Settlement Engine"</h3>
+            <p class="text-xs text-[#A1A1AA] mt-2 max-w-[340px]">
+              Reduces Stripe fee churn by 4.2% & cuts p95 API latency by 120ms.
+            </p>
+          </div>
+
+          <div class="bg-[#18181B] border border-[#10B981]/30 rounded-2xl p-6 w-full md:w-[320px]">
+            <span class="text-xs font-mono text-[#10B981] font-bold">TOTAL SPEED SHAVED:</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-4xl font-black font-mono text-[#10B981]">-757.0 ms</span>
+            </div>
+            <p class="text-xs text-[#71717A] mt-2">p95 latency reduction delivered on core production API endpoints.</p>
+          </div>
+        </div>
+
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow for your Dossier Summary &rarr;</p>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: Shareable Dossier Card -->
+      <div id="slide-5" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Q4 Summary Dossier</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-0.5">SnowPad Wrapped: 2026</h2>
+        </div>
+
+        <!-- Shareable Card Box (Wide) -->
+        <div class="my-auto bg-[#121214] border border-[#27272A] rounded-2xl p-6 text-left relative overflow-hidden shadow-2xl max-w-[720px] mx-auto w-full">
+          <div class="flex items-center justify-between pb-4 border-b border-[#27272A]">
+            <div>
+              <h4 class="font-bold text-white text-lg leading-snug">The Entire Engineering & Product Team</h4>
+              <p class="text-xs text-[#A1A1AA]">Collective Workspace • Unified Product Squads</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold text-[#10B981]">The Sprint Guardian</span>
+              <span class="text-2xl">🛡️</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Scope Focus</span>
+              <p class="text-2xl font-black font-mono text-[#10B981] mt-0.5">42.9%</p>
+            </div>
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Latency Saved</span>
+              <p class="text-2xl font-black font-mono text-[#10B981] mt-0.5">-757.0ms</p>
+            </div>
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Whims Dodged</span>
+              <p class="text-2xl font-black font-mono text-white mt-0.5">2</p>
+            </div>
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Sanity Shielded</span>
+              <p class="text-2xl font-black font-mono text-[#10B981] mt-0.5">+34h</p>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-[#27272A] flex items-center justify-between text-xs font-mono text-[#71717A]">
+            <span>Verified by SnowPad Scope Memory</span>
+            <span class="text-white">Q4-2026 Executive Review</span>
+          </div>
+        </div>
+
+        <div class="mb-2 max-w-[720px] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-3">
+          <button id="copySummaryBtn" class="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[#10B981] hover:bg-[#059669] text-black font-semibold text-xs shadow-md transition flex items-center justify-center gap-2">
+            <span>📋 Copy Wrapped Summary</span>
+          </button>
+          <div class="flex items-center gap-4 text-xs font-mono text-[#71717A]">
+            <a href="radar.html" class="hover:text-white transition">&larr; Scope Radar</a>
+            <a href="flow.html" class="hover:text-white transition">Scope Board</a>
+            <a href="team.html" class="hover:text-white transition">Team Org &amp; Slides &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 6;
+    const slideDuration = 6000; // 6s per slide
+    let timer = null;
+    let isPaused = false;
+    let progressStartTime = 0;
+    let elapsedBeforePause = 0;
+
+    const slides = [
+      document.getElementById('slide-0'),
+      document.getElementById('slide-1'),
+      document.getElementById('slide-2'),
+      document.getElementById('slide-3'),
+      document.getElementById('slide-4'),
+      document.getElementById('slide-5')
+    ];
+
+    const bars = [
+      document.getElementById('bar-0'),
+      document.getElementById('bar-1'),
+      document.getElementById('bar-2'),
+      document.getElementById('bar-3'),
+      document.getElementById('bar-4'),
+      document.getElementById('bar-5')
+    ];
+
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentSlide = index;
+
+      slides.forEach((s, i) => {
+        if (i === currentSlide) {
+          s.classList.remove('opacity-0', 'pointer-events-none');
+          s.classList.add('opacity-100');
+        } else {
+          s.classList.remove('opacity-100');
+          s.classList.add('opacity-0', 'pointer-events-none');
+        }
+      });
+
+      bars.forEach((b, i) => {
+        if (i < currentSlide) b.style.width = '100%';
+        else if (i === currentSlide) b.style.width = '0%';
+        else b.style.width = '0%';
+      });
+
+      startSlideTimer();
+    }
+
+    function startSlideTimer() {
+      if (timer) cancelAnimationFrame(timer);
+      progressStartTime = performance.now();
+      elapsedBeforePause = 0;
+
+      function step(now) {
+        if (isPaused) {
+          timer = requestAnimationFrame(step);
+          return;
+        }
+        const elapsed = now - progressStartTime;
+        const pct = Math.min(100, (elapsed / slideDuration) * 100);
+        bars[currentSlide].style.width = pct + '%';
+
+        if (elapsed < slideDuration) {
+          timer = requestAnimationFrame(step);
+        } else {
+          if (currentSlide < totalSlides - 1) {
+            showSlide(currentSlide + 1);
+          }
+        }
+      }
+      timer = requestAnimationFrame(step);
+    }
+
+    document.getElementById('tapLeft').addEventListener('click', () => {
+      if (currentSlide > 0) showSlide(currentSlide - 1);
+    });
+
+    document.getElementById('tapRight').addEventListener('click', () => {
+      if (currentSlide < totalSlides - 1) showSlide(currentSlide + 1);
+    });
+
+    const pauseBtn = document.getElementById('pauseBtn');
+    pauseBtn.addEventListener('click', () => {
+      isPaused = !isPaused;
+      pauseBtn.textContent = isPaused ? 'Resume' : 'Pause';
+      if (!isPaused) progressStartTime = performance.now() - elapsedBeforePause;
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentSlide < totalSlides - 1) showSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 0) showSlide(currentSlide - 1);
+      }
+    });
+
+    document.getElementById('copySummaryBtn').addEventListener('click', () => {
+      const summaryText = `❄️ SnowPad Wrapped Q4 2026: The Entire Engineering & Product Team
+🎯 Archetype: The Sprint Guardian 🛡️
+📊 Circle Focus Ratio: 42.9%
+⚡ Latency Shaved: -757.0ms
+🛡️ Sanity Shielded: +34h
+🏆 Crown Jewel: "Batched Multi-Currency Settlement Engine"
+🚫 Dodged Bullet: "Lottie Particle Confetti Animation on Order Success"`;
+
+      navigator.clipboard.writeText(summaryText).then(() => {
+        const btn = document.getElementById('copySummaryBtn');
+        btn.innerHTML = '<span>✔ Copied to Clipboard!</span>';
+        setTimeout(() => {
+          btn.innerHTML = '<span>📋 Copy Wrapped Summary</span>';
+        }, 2500);
+      });
+    });
+
+    // Start presentation
+    showSlide(0);
+  </script>
+</body>
+</html>
