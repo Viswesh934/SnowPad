@@ -1,19 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" width="100%" height="100%">
   <defs>
-    <!-- Paper canvas texture background -->
+    <!-- Paper canvas background -->
     <linearGradient id="paperBg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#fdfbf7" />
-      <stop offset="100%" stop-color="#f8f4ec" />
+      <stop offset="100%" stop-color="#f6f2e9" />
     </linearGradient>
 
-    <!-- Warm coral watercolor fill for circle -->
-    <radialGradient id="coralWatercolor" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ff5a36" stop-opacity="0.14" />
-      <stop offset="70%" stop-color="#ff7a45" stop-opacity="0.08" />
-      <stop offset="100%" stop-color="#ff9055" stop-opacity="0.0" />
+    <!-- Coral inner glow -->
+    <radialGradient id="coralGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff5a36" stop-opacity="0.22" />
+      <stop offset="60%" stop-color="#ff7a45" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#ff5a36" stop-opacity="0.0" />
     </radialGradient>
 
-    <!-- Marker Arrowheads -->
+    <!-- Arrow markers -->
     <marker id="arrowCoral" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#ff5a36" />
     </marker>
@@ -35,174 +35,177 @@
     }
   </style>
 
-  <!-- Background Canvas: Warm Cream Paper -->
-  <rect width="920" height="540" rx="14" fill="url(#paperBg)" stroke="#e4ded3" stroke-width="2" />
+  <!-- Canvas Card -->
+  <rect width="920" height="480" rx="16" fill="url(#paperBg)" stroke="#e2dcd0" stroke-width="2" />
 
-  <!-- Title & Hand-Drawn Header -->
-  <g transform="translate(30, 36)">
-    <text x="0" y="0" fill="#1e2025" font-size="22" class="hand-bold">SnowPad Architecture: How It Works</text>
-    <path d="M 0 8 Q 180 14 360 7" stroke="#ff5a36" stroke-width="3" fill="none" stroke-linecap="round" />
-    <text x="380" y="2" fill="#716b61" font-size="13" class="hand">team chats to a real-time Scope Horizon</text>
+  <!-- Title & Header -->
+  <g transform="translate(40, 34)">
+    <text x="0" y="0" fill="#1e2025" font-size="20" class="hand-bold">SnowPad Architecture</text>
+    <path d="M 0 6 Q 105 10 210 5" stroke="#ff5a36" stroke-width="2.8" fill="none" stroke-linecap="round" />
+    <text x="230" y="1" fill="#716b61" font-size="12" class="hand">from loose team chats to quantified scope</text>
   </g>
 
-  <!-- ================= SECTION 1: TEAM CHAT (LEFT) ================= -->
-  <g transform="translate(35, 75)">
-    <!-- Sketched Container (Slack / Discord) -->
-    <path d="M 6 0 L 224 3 Q 229 3 230 8 L 227 342 Q 226 348 221 347 L 4 344 Q -1 343 0 338 L 3 6 Q 4 0 6 0 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M 5 2 L 226 5 L 228 344 L 2 346 Z" fill="none" stroke="#2d3139" stroke-width="0.8" opacity="0.4" />
-    
-    <!-- Header tab -->
-    <rect x="14" y="12" width="135" height="24" rx="6" fill="#ff5a36" fill-opacity="0.12" stroke="#ff5a36" stroke-width="1.2" />
-    <text x="24" y="28" fill="#ff5a36" font-size="12" class="hand-bold">Slack / Discord</text>
-
-    <text x="14" y="58" fill="#524d45" font-size="11" class="hand">Uncertain Discussions:</text>
-
-    <!-- Chat Bubble 1: Feature Proposal -->
-    <g transform="translate(14, 70)">
-      <rect width="200" height="60" rx="10" fill="#fff5f0" stroke="#ff5a36" stroke-width="1.6" />
-      <text x="10" y="22" fill="#1e2025" font-size="11" class="hand-bold">Maya in #product-ideas:</text>
-      <text x="10" y="38" fill="#4a453e" font-size="11" class="hand">"What if we batch euro &amp;</text>
-      <text x="10" y="52" fill="#4a453e" font-size="11" class="hand">dollar payment settlements?"</text>
-    </g>
-
-    <!-- Chat Bubble 2: Arch Debate -->
-    <g transform="translate(14, 142)">
-      <rect width="200" height="60" rx="10" fill="#fdfbf7" stroke="#2d3139" stroke-width="1.6" />
-      <text x="10" y="22" fill="#1e2025" font-size="11" class="hand-bold">Alex in #backend-core:</text>
-      <text x="10" y="38" fill="#4a453e" font-size="11" class="hand">"Row locks cause 504 timeouts.</text>
-      <text x="10" y="52" fill="#4a453e" font-size="11" class="hand">Let's switch to Redis Redlock."</text>
-    </g>
-
-    <!-- Chat Bubble 3: Casual Whim -->
-    <g transform="translate(14, 214)">
-      <rect width="200" height="60" rx="10" fill="#f6f4ee" stroke="#8c857b" stroke-width="1.5" stroke-dasharray="3 3" />
-      <text x="10" y="22" fill="#665f54" font-size="11" class="hand-bold">Jordan in #frontend:</text>
-      <text x="10" y="38" fill="#716b61" font-size="11" class="hand">"Wouldn't confetti animation</text>
-      <text x="10" y="52" fill="#716b61" font-size="11" class="hand">look cool on checkout?"</text>
-    </g>
-
-    <text x="16" y="300" fill="#a0998e" font-size="11" class="hand">Dozens of threads weekly...</text>
-    <text x="16" y="318" fill="#a0998e" font-size="11" class="hand">normally lost or unverified!</text>
-  </g>
-
-  <!-- Hand-drawn Arrow 1: From Chat to Workspace Connector -->
-  <g transform="translate(270, 220)">
-    <path d="M 0 10 Q 30 -5 55 12" stroke="#ff5a36" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arrowCoral)" />
-    <text x="-5" y="-12" fill="#ff5a36" font-size="11" class="hand-bold">Connector</text>
-    <text x="-12" y="35" fill="#716b61" font-size="10" class="hand">listens in channels</text>
-  </g>
-
-  <!-- ================= SECTION 2: SNOWPAD AGENT & RAY-TRACER (MIDDLE) ================= -->
-  <g transform="translate(335, 75)">
+  <!-- ================= 1. TEAM CHAT (LEFT) ================= -->
+  <g transform="translate(40, 65)">
     <!-- Container -->
-    <path d="M 4 2 L 235 0 Q 240 0 241 6 L 238 220 Q 237 226 231 225 L 3 222 Q -2 221 0 215 L 2 7 Q 3 2 4 2 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M 3 4 L 237 2 L 239 222 L 2 224 Z" fill="none" stroke="#2d3139" stroke-width="0.8" opacity="0.4" />
+    <path d="M 4 0 L 226 2 Q 230 3 230 8 L 228 375 Q 227 380 221 380 L 4 378 Q 0 378 0 372 L 2 6 Q 2 0 4 0 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 3 2 L 227 4 L 229 378 L 1 379 Z" fill="none" stroke="#2d3139" stroke-width="0.8" opacity="0.3" />
+
+    <!-- Header Badge -->
+    <rect x="14" y="14" width="130" height="24" rx="6" fill="#ff5a36" fill-opacity="0.12" stroke="#ff5a36" stroke-width="1.2" />
+    <text x="22" y="30" fill="#ff5a36" font-size="12" class="hand-bold">💬 Slack / Discord</text>
+
+    <!-- Subtitle -->
+    <text x="14" y="60" fill="#716b61" font-size="11" class="hand">Incoming proposals &amp; ideas:</text>
+
+    <!-- Bubble 1: Verified Proposal -->
+    <g transform="translate(14, 75)">
+      <rect width="202" height="68" rx="8" fill="#fff5f0" stroke="#ff5a36" stroke-width="1.4" />
+      <text x="10" y="22" fill="#1e2025" font-size="11" class="hand-bold">Batch Settlements</text>
+      <text x="10" y="40" fill="#4a453e" font-size="11" class="hand">"Reduces p95 latency by 120ms</text>
+      <text x="10" y="55" fill="#10b981" font-size="10" class="hand-bold">✔ Verified SLA impact</text>
+    </g>
+
+    <!-- Bubble 2: Architecture Debate -->
+    <g transform="translate(14, 158)">
+      <rect width="202" height="68" rx="8" fill="#fefce8" stroke="#eab308" stroke-width="1.4" />
+      <text x="10" y="22" fill="#1e2025" font-size="11" class="hand-bold">Redis vs PostgreSQL Locks</text>
+      <text x="10" y="40" fill="#4a453e" font-size="11" class="hand">"Fixing 504 gateway timeouts"</text>
+      <text x="10" y="55" fill="#ca8a04" font-size="10" class="hand-bold">⚡ Active team debate</text>
+    </g>
+
+    <!-- Bubble 3: Casual Whim -->
+    <g transform="translate(14, 241)">
+      <rect width="202" height="68" rx="8" fill="#f6f4ee" stroke="#8c857b" stroke-width="1.2" stroke-dasharray="3 3" />
+      <text x="10" y="22" fill="#665f54" font-size="11" class="hand-bold">Checkout Confetti</text>
+      <text x="10" y="40" fill="#716b61" font-size="11" class="hand">"Wouldn't animations look cute?"</text>
+      <text x="10" y="55" fill="#dc2626" font-size="10" class="hand-bold">✘ Unverified whim</text>
+    </g>
+
+    <!-- Footer label -->
+    <text x="14" y="340" fill="#9e978c" font-size="11" class="hand">Captured automatically</text>
+    <text x="14" y="356" fill="#9e978c" font-size="11" class="hand">from public threads</text>
+  </g>
+
+  <!-- Arrow 1: Chat -> Engine -->
+  <g transform="translate(275, 140)">
+    <path d="M 0 5 Q 25 -6 48 5" stroke="#ff5a36" stroke-width="2.4" fill="none" stroke-linecap="round" marker-end="url(#arrowCoral)" />
+    <text x="-4" y="-10" fill="#ff5a36" font-size="11" class="hand-bold">Chat Stream</text>
+  </g>
+
+  <!-- ================= 2. SCOPE RAY-TRACER (CENTER TOP) ================= -->
+  <g transform="translate(335, 65)">
+    <!-- Container -->
+    <path d="M 4 0 L 246 2 Q 250 3 250 8 L 248 185 Q 247 190 241 190 L 4 188 Q 0 188 0 182 L 2 6 Q 2 0 4 0 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 3 2 L 247 4 L 249 188 L 1 189 Z" fill="none" stroke="#2d3139" stroke-width="0.8" opacity="0.3" />
 
     <!-- Badge -->
-    <rect x="14" y="12" width="165" height="24" rx="6" fill="#1e2025" />
-    <text x="24" y="28" fill="#faf8f5" font-size="12" class="hand-bold">SnowPad Assistant</text>
+    <rect x="14" y="14" width="150" height="24" rx="6" fill="#1e2025" />
+    <text x="22" y="30" fill="#faf8f5" font-size="12" class="hand-bold">🎯 Ray-Tracing Engine</text>
 
-    <!-- Ray-Tracing Sub-box -->
-    <g transform="translate(14, 46)">
-      <rect width="210" height="85" rx="8" fill="#fff5f0" stroke="#ff5a36" stroke-width="1.5" />
-      <text x="10" y="20" fill="#ff5a36" font-size="12" class="hand-bold">Ray-Tracing Engine</text>
-      <text x="10" y="38" fill="#3d3830" font-size="11" class="hand">• Casts rays from chat to goals</text>
-      <text x="10" y="56" fill="#3d3830" font-size="11" class="hand">• Scores Uncertainty (0 to 1)</text>
-      <text x="10" y="74" fill="#3d3830" font-size="11" class="hand">• Measures impact &amp; effort</text>
+    <!-- 3 Clean Value Steps -->
+    <g transform="translate(14, 52)">
+      <circle cx="10" cy="12" r="9" fill="#ff5a36" fill-opacity="0.15" />
+      <text x="10" y="16" fill="#ff5a36" font-size="11" class="hand-bold" text-anchor="middle">1</text>
+      <text x="28" y="16" fill="#1e2025" font-size="11" class="hand-bold">Casts Ray to Core Goals</text>
+      <text x="28" y="30" fill="#716b61" font-size="10" class="hand">Tests SLA and sprint impact</text>
     </g>
 
-    <!-- Decision Filter -->
-    <g transform="translate(14, 142)">
-      <text x="0" y="14" fill="#2d3139" font-size="11" class="hand-bold">Evaluation Rule:</text>
-      <text x="0" y="32" fill="#524d45" font-size="11" class="hand">Clear impact $\rightarrow$ Inside Circle</text>
-      <text x="0" y="50" fill="#524d45" font-size="11" class="hand">Vague whim $\rightarrow$ Outside (Parked)</text>
-      <text x="0" y="68" fill="#ff5a36" font-size="11" class="hand-bold">In debate $\rightarrow$ Tags team in thread</text>
+    <g transform="translate(14, 94)">
+      <circle cx="10" cy="12" r="9" fill="#ff5a36" fill-opacity="0.15" />
+      <text x="10" y="16" fill="#ff5a36" font-size="11" class="hand-bold" text-anchor="middle">2</text>
+      <text x="28" y="16" fill="#1e2025" font-size="11" class="hand-bold">Scores Uncertainty (0–100%)</text>
+      <text x="28" y="30" fill="#716b61" font-size="10" class="hand">Detects vagueness &amp; lack of data</text>
+    </g>
+
+    <g transform="translate(14, 136)">
+      <circle cx="10" cy="12" r="9" fill="#ff5a36" fill-opacity="0.15" />
+      <text x="10" y="16" fill="#ff5a36" font-size="11" class="hand-bold" text-anchor="middle">3</text>
+      <text x="28" y="16" fill="#1e2025" font-size="11" class="hand-bold">Calculates Scope Horizon</text>
+      <text x="28" y="30" fill="#716b61" font-size="10" class="hand">Maps radial distance to center</text>
     </g>
   </g>
 
-  <!-- Arrow down to Memory -->
-  <g transform="translate(445, 305)">
-    <path d="M 10 0 Q 8 25 10 48" stroke="#2d3139" stroke-width="2.2" fill="none" stroke-linecap="round" marker-end="url(#arrowCharcoal)" />
-    <text x="20" y="28" fill="#716b61" font-size="11" class="hand">logs to memory</text>
+  <!-- Arrow down to Decision Memory -->
+  <g transform="translate(455, 258)">
+    <path d="M 0 0 L 0 20" stroke="#2d3139" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#arrowCharcoal)" />
+    <text x="10" y="14" fill="#716b61" font-size="10" class="hand">records state</text>
   </g>
 
-  <!-- ================= SECTION 3: LOCAL STORAGE (BOTTOM MIDDLE) ================= -->
-  <g transform="translate(335, 360)">
-    <path d="M 4 2 L 235 0 Q 240 0 241 6 L 238 150 Q 237 156 231 155 L 3 152 Q -2 151 0 145 L 2 7 Q 3 2 4 2 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-
-    <!-- Storage card -->
-    <rect x="14" y="12" width="180" height="24" rx="6" fill="#fdfbf7" stroke="#2d3139" stroke-width="1.5" />
-    <text x="24" y="28" fill="#1e2025" font-size="12" class="hand-bold">Team Decision Memory</text>
-
-    <text x="14" y="56" fill="#3d3830" font-size="11" class="hand">• Private &amp; embedded locally</text>
-    <text x="14" y="74" fill="#3d3830" font-size="11" class="hand">• Zero server setup overhead</text>
-    <text x="14" y="94" fill="#3d3830" font-size="11" class="hand">• Fast team retrospectives</text>
-    <text x="14" y="114" fill="#716b61" font-size="11" class="hand">• No forgotten chat context</text>
-    <text x="14" y="136" fill="#ff5a36" font-size="11" class="hand-bold">Instant sprint analytics</text>
-  </g>
-
-  <!-- Hand-drawn Arrow 2: From Agent to Circle of Scope -->
-  <g transform="translate(580, 150)">
-    <path d="M 0 10 Q 25 -5 48 10" stroke="#ff5a36" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arrowCoral)" />
-    <text x="-2" y="-12" fill="#ff5a36" font-size="11" class="hand-bold">Ray Intersection</text>
-  </g>
-
-  <!-- ================= SECTION 4: THE CIRCLE OF SCOPE (RIGHT) ================= -->
-  <g transform="translate(635, 60)">
+  <!-- ================= 3. DECISION MEMORY (CENTER BOTTOM) ================= -->
+  <g transform="translate(335, 285)">
     <!-- Container -->
-    <path d="M 4 2 L 245 0 Q 250 0 251 6 L 248 450 Q 247 456 241 455 L 3 452 Q -2 451 0 445 L 2 7 Q 3 2 4 2 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 4 0 L 246 2 Q 250 3 250 8 L 248 155 Q 247 160 241 160 L 4 158 Q 0 158 0 152 L 2 6 Q 2 0 4 0 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 3 2 L 247 4 L 249 158 L 1 159 Z" fill="none" stroke="#2d3139" stroke-width="0.8" opacity="0.3" />
 
-    <text x="16" y="28" fill="#1e2025" font-size="14" class="hand-bold">The Circle of Scope</text>
+    <!-- Badge -->
+    <rect x="14" y="12" width="165" height="24" rx="6" fill="#fdfbf7" stroke="#2d3139" stroke-width="1.2" />
+    <text x="22" y="28" fill="#1e2025" font-size="12" class="hand-bold">💾 Team Decision Memory</text>
 
-    <!-- Sketched Circle Radar Graphic -->
-    <g transform="translate(125, 140)">
-      <!-- Outer Orbit (Parked Whims) -->
-      <circle cx="0" cy="0" r="95" fill="none" stroke="#8c857b" stroke-width="1.5" stroke-dasharray="4 4" />
-      <text x="0" y="-102" fill="#8c857b" font-size="10" class="hand" text-anchor="middle">Outer Orbit: Whims</text>
+    <!-- Simple, Clean Feature Points -->
+    <text x="16" y="58" fill="#3d3830" font-size="11" class="hand">• Zero-config local embedded ledger</text>
+    <text x="16" y="78" fill="#3d3830" font-size="11" class="hand">• Syncs member roles &amp; designations</text>
+    <text x="16" y="98" fill="#3d3830" font-size="11" class="hand">• Preserves context for reviews</text>
+    
+    <!-- One-click output pill -->
+    <rect x="14" y="114" width="222" height="28" rx="6" fill="#1e2025" />
+    <text x="22" y="132" fill="#faf8f5" font-size="10" class="hand-bold">Outputs: Slide Decks &amp; Sprint PRDs</text>
+  </g>
 
-      <!-- Mid Orbit (Borderline) -->
-      <circle cx="0" cy="0" r="65" fill="none" stroke="#eab308" stroke-width="1.5" stroke-dasharray="3 3" />
+  <!-- Arrow 2: Engine -> Circle of Scope -->
+  <g transform="translate(590, 140)">
+    <path d="M 0 5 Q 25 -6 48 5" stroke="#ff5a36" stroke-width="2.4" fill="none" stroke-linecap="round" marker-end="url(#arrowCoral)" />
+    <text x="-4" y="-10" fill="#ff5a36" font-size="11" class="hand-bold">Projects Ray</text>
+  </g>
 
-      <!-- Inner Circle of Scope (Warm Coral Sketch) -->
-      <circle cx="0" cy="0" r="40" fill="url(#coralWatercolor)" stroke="#ff5a36" stroke-width="2.6" />
-      <circle cx="0" cy="0" r="42" fill="none" stroke="#ff5a36" stroke-width="0.8" opacity="0.5" />
-      <text x="0" y="4" fill="#ff5a36" font-size="10" class="hand-bold" text-anchor="middle">Core SLAs</text>
-      <text x="0" y="16" fill="#ff5a36" font-size="9" class="hand" text-anchor="middle">(r &lt;= 1.0)</text>
+  <!-- ================= 4. CIRCLE OF SCOPE (RIGHT) ================= -->
+  <g transform="translate(645, 65)">
+    <!-- Container -->
+    <path d="M 4 0 L 230 2 Q 235 3 235 8 L 233 375 Q 232 380 226 380 L 4 378 Q 0 378 0 372 L 2 6 Q 2 0 4 0 Z" fill="#ffffff" stroke="#2d3139" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 3 2 L 231 4 L 233 378 L 1 379 Z" fill="none" stroke="#2d3139" stroke-width="0.8" opacity="0.3" />
 
-      <!-- Blip 1: Inside -->
-      <circle cx="-16" cy="-20" r="5" fill="#ff5a36" />
-      <text x="-12" y="-28" fill="#1e2025" font-size="9" class="hand-bold">Settlement Engine</text>
+    <!-- Header Badge -->
+    <rect x="14" y="14" width="135" height="24" rx="6" fill="#ff5a36" fill-opacity="0.12" stroke="#ff5a36" stroke-width="1.2" />
+    <text x="22" y="30" fill="#ff5a36" font-size="12" class="hand-bold">⭕ Circle of Scope</text>
 
-      <!-- Blip 2: Inside -->
-      <circle cx="18" cy="18" r="5" fill="#ff5a36" />
-      <text x="24" y="26" fill="#1e2025" font-size="9" class="hand-bold">Redis Lock</text>
+    <!-- Radar Visual -->
+    <g transform="translate(118, 140)">
+      <!-- Outer Orbit (Whims) -->
+      <circle cx="0" cy="0" r="80" fill="none" stroke="#a0998e" stroke-width="1.4" stroke-dasharray="3 3" />
+      <text x="0" y="-86" fill="#716b61" font-size="9" class="hand" text-anchor="middle">Outer Orbit: Parked Whims</text>
 
-      <!-- Blip 3: Outside -->
-      <circle cx="68" cy="-55" r="4" fill="#8c857b" />
-      <text x="74" y="-50" fill="#716b61" font-size="9" class="hand">Confetti</text>
+      <!-- Middle Orbit (Debates) -->
+      <circle cx="0" cy="0" r="54" fill="none" stroke="#eab308" stroke-width="1.4" stroke-dasharray="3 3" />
+
+      <!-- Inner Circle (Core Focus) -->
+      <circle cx="0" cy="0" r="32" fill="url(#coralGlow)" stroke="#ff5a36" stroke-width="2.2" />
+      <text x="0" y="3" fill="#ff5a36" font-size="9" class="hand-bold" text-anchor="middle">Core SLAs</text>
+
+      <!-- Blip 1: Inside Circle -->
+      <circle cx="-12" cy="-12" r="5" fill="#ff5a36" />
+      <text x="-8" y="-18" fill="#1e2025" font-size="8" class="hand-bold">Settlement</text>
+
+      <!-- Blip 2: Borderline -->
+      <circle cx="28" cy="32" r="4.5" fill="#eab308" />
+      <text x="34" y="36" fill="#716b61" font-size="8" class="hand">Redis Lock</text>
+
+      <!-- Blip 3: Outside Orbit -->
+      <circle cx="58" cy="-44" r="4.5" fill="#8c857b" />
+      <text x="64" y="-40" fill="#716b61" font-size="8" class="hand">Confetti</text>
     </g>
 
-    <!-- Explanations -->
-    <g transform="translate(16, 260)">
-      <!-- Inside circle note -->
-      <rect width="218" height="52" rx="8" fill="#fff5f0" stroke="#ff5a36" stroke-width="1.2" />
-      <text x="10" y="18" fill="#ff5a36" font-size="11" class="hand-bold">Inside the Circle (Locked):</text>
-      <text x="10" y="34" fill="#3d3830" font-size="10" class="hand">• 120ms p95 latency win</text>
-      <text x="10" y="46" fill="#3d3830" font-size="10" class="hand">• Unblocks $180k enterprise pipeline</text>
+    <!-- 2 Simple Result Cards -->
+    <g transform="translate(14, 240)">
+      <!-- Inside circle -->
+      <rect width="207" height="52" rx="8" fill="#fff5f0" stroke="#ff5a36" stroke-width="1.2" />
+      <text x="10" y="20" fill="#ff5a36" font-size="11" class="hand-bold">Inside Circle (Approved)</text>
+      <text x="10" y="38" fill="#4a453e" font-size="10" class="hand">Moves core SLAs, locked into sprint</text>
 
-      <!-- Outside circle note -->
-      <g transform="translate(0, 62)">
-        <rect width="218" height="52" rx="8" fill="#fdfbf7" stroke="#8c857b" stroke-width="1.2" stroke-dasharray="3 3" />
-        <text x="10" y="18" fill="#716b61" font-size="11" class="hand-bold">Outside Circle (Parked):</text>
-        <text x="10" y="34" fill="#716b61" font-size="10" class="hand">• 2 whims safely quarantined</text>
-        <text x="10" y="46" fill="#ff5a36" font-size="10" class="hand-bold">• Saves 34+ dev hours from churn!</text>
-      </g>
-
-      <!-- Review dossier export note -->
-      <g transform="translate(0, 124)">
-        <rect width="218" height="48" rx="8" fill="#1e2025" />
-        <text x="10" y="18" fill="#faf8f5" font-size="11" class="hand-bold">Deliverable Outputs:</text>
-        <text x="10" y="34" fill="#d8d4cb" font-size="10" class="hand">• Weekly Standup Pulse • Perf Reviews</text>
+      <!-- Outside circle -->
+      <g transform="translate(0, 60)">
+        <rect width="207" height="52" rx="8" fill="#f6f4ee" stroke="#8c857b" stroke-width="1.2" stroke-dasharray="3 3" />
+        <text x="10" y="20" fill="#524d45" font-size="11" class="hand-bold">Outside Circle (Parked)</text>
+        <text x="10" y="38" fill="#716b61" font-size="10" class="hand">Shields developers from scope drift</text>
       </g>
     </g>
   </g>
