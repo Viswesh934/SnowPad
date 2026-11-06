@@ -63,3 +63,4 @@ def test_generate_prd_specification(repo: SnowPadRepository) -> None:
     assert prd_file.exists()
     content = prd_file.read_text(encoding="utf-8")
     assert "# SnowPad Sprint Refactor PRD" in content
+

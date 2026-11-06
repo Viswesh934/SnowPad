@@ -195,3 +195,4 @@ class DiscordSandbox:
 
             except (KeyboardInterrupt, EOFError):
                 break
+
