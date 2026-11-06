@@ -1,0 +1,25 @@
+# Switch Room Specification for SnowPad
+# Declarative room provisioning for Switch Console & Switch Rooms
+
+group:
+  name: "SnowPad Scope Governance"
+
+rooms:
+  - name: "product-ideas"
+    description: "Product roadmap proposals, customer feature requests, and PRD debates"
+    instructions: "SnowPad monitors proposals, scores uncertainty on 0-100%, and attributes p95 latency impact."
+    agents:
+      - "snowpad"
+
+  - name: "backend-core"
+    description: "Infrastructure discussions, database locks, and performance SLAs"
+    instructions: "SnowPad evaluates architectural proposals against core uptime and response time commitments."
+    agents:
+      - "snowpad"
+
+  - name: "frontend-chatter"
+    description: "UI design discussions, animation proposals, and styling whims"
+    instructions: "SnowPad parks unverified whims outside the Circle of Scope to preserve developer focus."
+    agents:
+      - "snowpad"
+
