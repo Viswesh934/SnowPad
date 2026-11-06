@@ -1,0 +1,8 @@
+{
+  "env": {
+    "SWITCH_SERVER_URL": "http://localhost:55439",
+    "SWITCH_API_ENDPOINT": "http://localhost:55439",
+    "SWITCH_AGENT_ID": "snowpad-governor-agent",
+    "SWITCH_API_TOKEN": "wH4-yqEylSNgvNacGuRGGjLRjLfZlyfZ"
+  }
+}

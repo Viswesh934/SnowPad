@@ -1,0 +1,5 @@
+{
+  "description": "Autonomous Scope Governor & Tech Debt Radar for engineering teams",
+  "instructions": "Audit team chatter for uncertainty (0-100%), map to Circle of Scope, and quarantine off-scope whims to protect sprint commitments.",
+  "settings": {}
+}
