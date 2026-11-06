@@ -17,9 +17,9 @@ console = Console()
 def cmd_seed(args: argparse.Namespace) -> None:
     """Initialize schema and seed realistic chat signals."""
     repo = SnowPadRepository()
-    console.print(f"[bold cyan]❄️ Initializing DuckDB at:[/] {settings.db_path}")
+    console.print(f"[bold cyan]❄️ Initializing SnowPad Scope Memory at:[/] {settings.db_path}")
     seed_demo_data(repo)
-    console.print("[bold green]✔ Successfully seeded DuckDB with actors, chat signals, and telemetry metrics![/]")
+    console.print("[bold green]✔ Successfully loaded workspace data with team members, chat signals, and scope metrics![/]")
 
 
 def cmd_weekly(args: argparse.Namespace) -> None:
@@ -91,7 +91,7 @@ def cmd_review(args: argparse.Namespace) -> None:
     ))
 
     # Metrics Summary Table
-    m_table = Table(title="Quantified Impact Ledger (DuckDB)", header_style="bold cyan")
+    m_table = Table(title="Team Impact & Focus Ledger", header_style="bold cyan")
     m_table.add_column("Metric", style="white")
     m_table.add_column("Value", style="bold yellow", justify="right")
 
@@ -175,7 +175,7 @@ def cmd_chatter(args: argparse.Namespace) -> None:
 
 
 def cmd_sync(args: argparse.Namespace) -> None:
-    """Fetch and sync members & designations from Slack or Discord into DuckDB."""
+    """Fetch and sync members & designations from Slack or Discord into SnowPad."""
     from snowpad.agent.sync import sync_workspace_members
 
     repo = SnowPadRepository()
@@ -184,7 +184,7 @@ def cmd_sync(args: argparse.Namespace) -> None:
 
     members = sync_workspace_members(platform=platform, repo=repo)
 
-    table = Table(title=f"Synced {platform.title()} Members into DuckDB", header_style="bold magenta")
+    table = Table(title=f"Connected {platform.title()} Team Members", header_style="bold magenta")
     table.add_column("ID", style="dim")
     table.add_column("Name", style="bold white")
     table.add_column("Designation / Role", style="green")
@@ -194,11 +194,11 @@ def cmd_sync(args: argparse.Namespace) -> None:
         table.add_row(m.id, m.name, m.role, m.team)
 
     console.print(table)
-    console.print(f"[bold green]✔ Successfully synced {len(members)} team members with designations into DuckDB![/]")
+    console.print(f"[bold green]✔ Successfully connected {len(members)} team members with designations into SnowPad![/]")
 
 
 def cmd_msg(args: argparse.Namespace) -> None:
-    """Simulate or process an incoming chat message from Slack/Discord through Switch."""
+    """Simulate or process an incoming chat message from Slack/Discord."""
     from snowpad.agent.bot import SnowPadSwitchAgent
 
     agent = SnowPadSwitchAgent()
@@ -210,7 +210,7 @@ def cmd_msg(args: argparse.Namespace) -> None:
 
     if text.startswith("/snowpad"):
         res = agent.handle_command(text, user_id=user, channel=channel)
-        console.print(Panel(str(res), title="[bold green]Switch Command Response[/]", border_style="green"))
+        console.print(Panel(str(res), title="[bold green]SnowPad Scope Assistant[/]", border_style="green"))
     else:
         res = agent.analyze_chat_message(text, user_id=user, channel=channel)
         if res:
@@ -221,7 +221,7 @@ def cmd_msg(args: argparse.Namespace) -> None:
                 f"[bold]Uncertainty Rating:[/] [{color}]{res['uncertainty_pct']}%[/{color}]\n"
                 f"[bold]Scope Status:[/] [{color}]{res['scope_status']}[/{color}]\n"
                 f"[bold]Resolution Action:[/] [cyan]{res['resolution']}[/]",
-                title="[bold cyan]❄️ SnowPad Chat Signal Intercepted & Logged to DuckDB[/]",
+                title="[bold cyan]❄️ SnowPad Chat Signal Intercepted & Scoped[/]",
                 border_style="cyan"
             ))
         else:
@@ -259,7 +259,7 @@ def cmd_export(args: argparse.Namespace) -> None:
     quarter = args.quarter
 
     if args.prd:
-        console.print("[bold cyan]❄️ Generating Sprint Refactor PRD from DuckDB debates...[/]")
+        console.print("[bold cyan]❄️ Generating Sprint Refactor PRD from active scope debates...[/]")
         prd_file = gen.generate_prd_specification()
         console.print(f"[bold green]✔ Generated Sprint PRD:[/] {prd_file}")
 
@@ -296,7 +296,7 @@ def app() -> None:
     sync_p.add_argument("--platform", default="slack", choices=["slack", "discord"], help="Chat platform (slack or discord)")
 
     # Message analysis command
-    msg_p = subparsers.add_parser("msg", help="Analyze a chat message via Switch Agent")
+    msg_p = subparsers.add_parser("msg", help="Analyze a chat message for scope & uncertainty")
     msg_p.add_argument("--text", required=True, help="Chat message text")
     msg_p.add_argument("--user", default="U_MAYA_SLACK", help="User ID or handle")
     msg_p.add_argument("--channel", default="#product-ideas", help="Origin channel")

@@ -18,7 +18,7 @@ SIGNALS_JSON_PATH = BASE_DIR / "snowpad" / "web" / "signals.json"
 
 
 def update_web_signals_json(repo: SnowPadRepository) -> None:
-    """Exports current DuckDB radar signals to JSON so radar.html can live-sync."""
+    """Exports current radar signals to JSON so radar.html can live-sync."""
     items = repo.get_circle_radar_data()
     SIGNALS_JSON_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(SIGNALS_JSON_PATH, "w", encoding="utf-8") as f:
@@ -56,7 +56,7 @@ class DiscordSandbox:
                 f"[dim]Type:[/] [magenta]{analysis['signal_type']}[/]  |  "
                 f"[dim]Uncertainty:[/] [{color}]{unc}%[/{color}]  |  "
                 f"[dim]Scope Horizon:[/] [{color}]{status}[/{color}]\n"
-                f"[bold cyan]Action:[/] Logged to DuckDB as [bold]{analysis['resolution']}[/]"
+                f"[bold cyan]Action:[/] Tracked on Radar as [bold]{analysis['resolution']}[/]"
             )
 
             console.print(Panel(
@@ -128,7 +128,7 @@ class DiscordSandbox:
                 text=step["text"],
             )
 
-        console.print(f"\n[bold green]✔ Replay sequence complete![/] All signals, uncertainty scores, and radar positions recorded in DuckDB.")
+        console.print(f"\n[bold green]✔ Replay sequence complete![/] All signals, uncertainty scores, and radar positions recorded.")
         console.print(f"[dim]Run 'python -m snowpad.cli radar' or inspect snowpad/web/radar.html to view the updated scope horizon.[/]\n")
 
     def run_interactive_shell(self) -> None:

@@ -9,13 +9,19 @@ from snowpad.core.models import (
     SignalResolution,
     SignalType,
 )
-from snowpad.db.connection import init_db
+from snowpad.db.connection import get_connection, init_db
 from snowpad.db.repository import SnowPadRepository
 
 
 def seed_demo_data(repo: SnowPadRepository) -> None:
     """Populates DuckDB with a rich, realistic dataset of uncertain chat discussions."""
     init_db(repo.db_path)
+
+    # Clean existing records in child-to-parent order before re-seeding
+    with get_connection(repo.db_path) as conn:
+        conn.execute("DELETE FROM metric_observations;")
+        conn.execute("DELETE FROM chat_signals;")
+        conn.execute("DELETE FROM actors;")
 
     # 1. Seed Actors (Devs, PMs, Architects)
     actors = [

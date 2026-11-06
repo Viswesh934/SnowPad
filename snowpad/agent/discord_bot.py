@@ -52,7 +52,7 @@ def start_discord_bot(token: Optional[str] = None, guild_id: Optional[str] = Non
         print(f"\n❄️ SnowPad Discord Agent logged in as: {client.user} (ID: {client.user.id})")
         print(f"Connected to {len(client.guilds)} server(s).")
 
-        # Automatically sync members and designations into DuckDB on boot
+        # Automatically sync members and designations on boot
         if target_guild_id:
             try:
                 members = sync_workspace_members(
@@ -61,7 +61,7 @@ def start_discord_bot(token: Optional[str] = None, guild_id: Optional[str] = Non
                     token=bot_token,
                     guild_id=target_guild_id,
                 )
-                print(f"✔ Auto-synced {len(members)} Discord members and designations into DuckDB.")
+                print(f"✔ Auto-synced {len(members)} Discord members and designations into SnowPad.")
             except Exception as e:
                 print(f"[Warning] Member auto-sync encountered an issue: {e}")
 
@@ -87,7 +87,7 @@ def start_discord_bot(token: Optional[str] = None, guild_id: Optional[str] = Non
             )
 
             if res["type"] == "radar_summary":
-                embed.description = f"**Total Signals:** {res['total']} tracked in DuckDB"
+                embed.description = f"**Total Signals:** {res['total']} tracked on Scope Radar"
                 embed.add_field(name="🟢 Inside Circle (Core)", value=str(res["inside_count"]), inline=True)
                 embed.add_field(name="🟡 In Debate", value=str(res["debates_count"]), inline=True)
                 embed.add_field(name="🔴 Parked Whims", value=str(res["whims_count"]), inline=True)
@@ -119,7 +119,7 @@ def start_discord_bot(token: Optional[str] = None, guild_id: Optional[str] = Non
         )
 
         if analysis:
-            # Look up member's designation from DuckDB
+            # Look up member's designation
             actor = repo.get_actor_by_id(author_id)
             actor_name = actor["name"] if actor else message.author.display_name
             designation = actor["role"] if actor else "Contributor"
@@ -135,7 +135,7 @@ def start_discord_bot(token: Optional[str] = None, guild_id: Optional[str] = Non
             embed.add_field(name="Contributor", value=f"**{actor_name}** ({designation})", inline=True)
             embed.add_field(name="Uncertainty Rating", value=f"**{analysis['uncertainty_pct']}%**", inline=True)
             embed.add_field(name="Scope Horizon", value=f"`{status}`", inline=True)
-            embed.add_field(name="Action Taken", value=f"Logged to DuckDB as `{analysis['resolution']}`", inline=False)
+            embed.add_field(name="Action Taken", value=f"Tracked on Radar as `{analysis['resolution']}`", inline=False)
 
             if status == "OUTSIDE_CIRCLE":
                 embed.set_footer(text="Quarantined outside circle to protect sprint focus.")

@@ -31,7 +31,7 @@ class SnowPadSwitchAgent:
             members = sync_workspace_members(platform=platform, repo=self.repo)
             return {
                 "type": "sync_result",
-                "message": f"Synced {len(members)} members and their designations from {platform.title()} into DuckDB!",
+                "message": f"Connected {len(members)} members and their designations from {platform.title()} into SnowPad!",
                 "members": [{"name": m.name, "role": m.role} for m in members],
             }
 

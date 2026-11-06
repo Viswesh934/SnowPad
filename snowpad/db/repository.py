@@ -29,8 +29,14 @@ class SnowPadRepository:
         with get_connection(self.db_path) as conn:
             conn.execute(
                 """
-                INSERT OR REPLACE INTO actors (id, name, role, email, team, created_at)
+                INSERT INTO actors (id, name, role, email, team, created_at)
                 VALUES (?, ?, ?, ?, ?, ?)
+                ON CONFLICT (id) DO UPDATE SET
+                    name = EXCLUDED.name,
+                    role = EXCLUDED.role,
+                    email = EXCLUDED.email,
+                    team = EXCLUDED.team,
+                    created_at = EXCLUDED.created_at
                 """,
                 [actor.id, actor.name, actor.role, actor.email, actor.team, actor.created_at]
             )
@@ -40,12 +46,26 @@ class SnowPadRepository:
         with get_connection(self.db_path) as conn:
             conn.execute(
                 """
-                INSERT OR REPLACE INTO chat_signals (
+                INSERT INTO chat_signals (
                     id, actor_id, signal_type, title, summary,
                     origin_channel, thread_url, uncertainty_score,
                     scope_status, scope_distance, estimated_kpi_impact,
                     resolution, target_sprint, created_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT (id) DO UPDATE SET
+                    actor_id = EXCLUDED.actor_id,
+                    signal_type = EXCLUDED.signal_type,
+                    title = EXCLUDED.title,
+                    summary = EXCLUDED.summary,
+                    origin_channel = EXCLUDED.origin_channel,
+                    thread_url = EXCLUDED.thread_url,
+                    uncertainty_score = EXCLUDED.uncertainty_score,
+                    scope_status = EXCLUDED.scope_status,
+                    scope_distance = EXCLUDED.scope_distance,
+                    estimated_kpi_impact = EXCLUDED.estimated_kpi_impact,
+                    resolution = EXCLUDED.resolution,
+                    target_sprint = EXCLUDED.target_sprint,
+                    created_at = EXCLUDED.created_at
                 """,
                 [
                     signal.id,
@@ -70,10 +90,20 @@ class SnowPadRepository:
         with get_connection(self.db_path) as conn:
             conn.execute(
                 """
-                INSERT OR REPLACE INTO metric_observations (
+                INSERT INTO metric_observations (
                     id, signal_id, metric_name, service_name, endpoint,
                     baseline_value, observed_value, delta_value, unit, measured_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT (id) DO UPDATE SET
+                    signal_id = EXCLUDED.signal_id,
+                    metric_name = EXCLUDED.metric_name,
+                    service_name = EXCLUDED.service_name,
+                    endpoint = EXCLUDED.endpoint,
+                    baseline_value = EXCLUDED.baseline_value,
+                    observed_value = EXCLUDED.observed_value,
+                    delta_value = EXCLUDED.delta_value,
+                    unit = EXCLUDED.unit,
+                    measured_at = EXCLUDED.measured_at
                 """,
                 [
                     metric.id,

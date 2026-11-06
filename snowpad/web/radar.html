@@ -26,9 +26,9 @@
       <div>
         <h1 class="text-base font-bold tracking-tight flex items-center gap-2 text-[#FAF8F5]">
           SnowPad Scope Radar
-          <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#24262E] text-[#D8D4CB] border border-[#363945] font-mono font-medium">DuckDB Live</span>
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#24262E] text-[#D8D4CB] border border-[#363945] font-mono font-medium">Real-Time</span>
         </h1>
-        <p class="text-xs text-[#A49E94]">Chat Uncertainty & Scope Horizon Ledger</p>
+        <p class="text-xs text-[#A49E94]">Team Chat Uncertainty & Scope Horizon</p>
       </div>
     </div>
 
@@ -41,10 +41,10 @@
       <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#frontend-chatter">#frontend-chatter</button>
     </div>
 
-    <!-- Switch Sync Indicator in Warm Coral -->
+    <!-- Connection Indicator -->
     <div class="flex items-center space-x-2 text-xs font-mono bg-[#FF5A36]/10 border border-[#FF5A36]/40 px-3.5 py-1.5 rounded-xl text-[#FF7A45]">
       <span class="w-2 h-2 rounded-full bg-[#FF5A36] animate-ping"></span>
-      <span class="font-semibold">Switch Synced</span>
+      <span class="font-semibold">Workspace Connected</span>
     </div>
   </header>
 
@@ -429,7 +429,7 @@
       });
     });
 
-    // Attempt to load live signals from DuckDB JSON export if available
+    // Attempt to load live signals from exported JSON feed if available
     try {
       fetch('signals.json')
         .then(res => res.json())

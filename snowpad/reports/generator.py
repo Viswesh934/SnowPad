@@ -127,7 +127,7 @@ class DeliverableGenerator:
           <p style="color: #A49E94; font-size: 0.8em; margin-bottom: 8px;" class="mono">CORE PERFORMANCE VICTORIES</p>
           <ul style="font-size: 0.8em; line-height: 1.8; color: #D8D4CB;">
             <li><strong class="coral">Response Time Shaved:</strong> <span class="mono" style="color: #10B981;">-{metrics.get('total_ms_shaved', 0)} ms</span> across critical payment & checkout endpoints.</li>
-            <li><strong class="coral">Total Contributions:</strong> <span class="mono">{metrics.get('total_contributions', 0)}</span> tracked chat signals audited in DuckDB.</li>
+            <li><strong class="coral">Total Contributions:</strong> <span class="mono">{metrics.get('total_contributions', 0)}</span> tracked chat signals audited by SnowPad.</li>
             <li><strong class="coral">Average Uncertainty:</strong> <span class="mono">{int((metrics.get('avg_uncertainty') or 0.5) * 100)}%</span> across proposed discussions.</li>
           </ul>
         </div>
@@ -174,7 +174,7 @@ class DeliverableGenerator:
         lines = [
             "# SnowPad Sprint Refactor PRD",
             "",
-            "> **Generated on-demand from DuckDB chat ledger**  ",
+            "> **Generated on-demand from SnowPad Scope Memory**  ",
             "> Active discussions and architectural tradeoffs requiring sprint backlog resolution.",
             "",
             "---",

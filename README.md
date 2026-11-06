@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>The Chat Uncertainty &amp; Scope Radar for Engineering and Product Teams</b><br>
-  <i>Powered by DuckDB &amp; Switch AI for the Flip the Switch Hackathon</i>
+  <i>Autonomous Scope Radar &amp; Decision Memory • Built for the Flip the Switch Hackathon</i>
 </p>
 
 ---
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  👉 <b><a href="snowpad/web/radar.html">Open the Interactive Web Radar</a></b> (Live canvas sweep with blip inspection and uncertainty meters)
+  👉 <b><a href="snowpad/web/radar.html">Open the Interactive Scope Radar</a></b> (Live canvas sweep with blip inspection and uncertainty meters)
 </p>
 
 ---
@@ -48,7 +48,7 @@ Because these conversations happen casually in chat:
 
 ## ⭕ The Solution: The Circle of Scope
 
-SnowPad listens to incoming threads through **Switch AI**, evaluates the ambiguity of each proposal, and maps it onto an embedded **DuckDB** ledger:
+SnowPad listens to incoming conversations across your team's channels, evaluates the ambiguity of each proposal in real time, and maps it onto your team's **Circle of Scope**:
 
 | Zone | Radial Distance | Meaning | Real Team Example |
 | :--- | :---: | :--- | :--- |
@@ -60,11 +60,14 @@ SnowPad listens to incoming threads through **Switch AI**, evaluates the ambigui
 
 ## 🚀 Key Capabilities
 
-* 🦆 **Zero-Markdown, Single-File Data Lake:** All chat signals, telemetry observations, and resolution states are stored in a local, embedded `snowpad.duckdb` database. No external servers or configuration needed.
-* 📡 **Channel Chatter Breakdown:** Identifies which chat channels generate the highest ambiguity (`#growth-experiments` vs. `#backend-core`), helping managers keep discussions focused.
+* 🎯 **Circle of Scope Radar:** Real-time visual HUD animating chat proposals as radar blips, scored by uncertainty percentage and scope distance.
+* 👥 **Member &amp; Designation Sync:** Plugs directly into Discord and Slack to map team member designations and organizational hierarchy.
 * 🛡️ **The Developer Sprint Shield:** Tracks how many off-scope whims were successfully quarantined, giving developers concrete proof of their focus during performance reviews:
   > *"Alex didn't just ship 2 critical features; SnowPad records that Alex also contained 3 off-scope whim requests, protecting 34 hours of sprint focus."*
-* 📄 **Instant Performance Review Dossiers:** Generates evidence-backed contribution summaries with a single command (`snowpad review --actor alex_chen`).
+* 🎭 **Live Sandbox Replay Simulator:** Built-in interactive Discord sandbox to test or record product demos with zero setup or external servers.
+* 📊 **One-Click Executive Slide Decks:** Generates sleek Reveal.js executive presentations highlighting team velocity and SLA achievements.
+* 📝 **Automated Sprint PRDs:** Automatically drafts refactor specifications from active team debates for immediate sprint planning.
+* 🧠 **Zero-Config Decision Memory:** Fast, local embedded ledger that runs anywhere out of the box with zero external database configuration.
 
 ---
 
@@ -81,21 +84,21 @@ uv venv
 uv pip install -e ".[dev]"
 ```
 
-### 2. Seed Realistic Chat Signals
+### 2. Initialize Workspace Memory
 
 ```bash
 python -m snowpad.cli seed
 ```
 
-### 3. Review Channel Chatter
+### 3. Run the Live Demo Simulator
+
+Watch simulated team discussions stream across channels and live-audit scope:
 
 ```bash
-# View breakdown of uncertainty across channels
-python -m snowpad.cli chatter
-
-# View the weekly operational pulse across all contributors
-python -m snowpad.cli weekly
+python -m snowpad.cli demo
 ```
+
+*(Open `snowpad/web/radar.html` in your browser side-by-side to watch live radar blips appear during the replay!)*
 
 ### 4. Open the Scope Radar
 
@@ -107,10 +110,27 @@ python -m snowpad.cli radar
 start snowpad/web/radar.html
 ```
 
-### 5. Generate a Contributor Review
+### 5. Review Channel Chatter &amp; Weekly Pulse
 
 ```bash
+# View breakdown of uncertainty across channels
+python -m snowpad.cli chatter
+
+# View the weekly operational pulse across all contributors
+python -m snowpad.cli weekly
+```
+
+### 6. Generate Contributor Reviews &amp; Executive Presentations
+
+```bash
+# Terminal review dossier
 python -m snowpad.cli review --actor maya_patel --quarter Q4-2026
+
+# Export Reveal.js executive slide deck
+python -m snowpad.cli export --actor maya_patel
+
+# Export auto-generated Sprint Refactor PRD
+python -m snowpad.cli export --prd
 ```
 
 ---
