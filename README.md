@@ -8,14 +8,34 @@
 ---
 
 <p align="center">
-  <img src="assets/snowpad_architecture.svg" alt="SnowPad Architecture (Excalidraw Style)" width="100%">
+  <img src="assets/preview_radar.png" alt="SnowPad Circle of Scope Radar HUD" width="100%" style="border-radius: 8px;">
 </p>
 
 <p align="center">
-  👉 <b><a href="snowpad/web/radar.html">Interactive Scope Radar</a></b> • 
-  <b><a href="snowpad/web/flow.html">Jira-Style Scope Board</a></b> • 
-  <b><a href="snowpad/web/team.html">Team Org & Embedded Slides 🌳</a></b> • 
-  <b><a href="dist/team_q4_2026_wrapped.html">Widescreen Wrapped 🎁</a></b>
+  <a href="snowpad/web/radar.html"><img src="https://img.shields.io/badge/Live_HUD-Scope_Radar-10B981?style=flat-square&logo=radar" alt="Radar"></a>
+  <a href="snowpad/web/flow.html"><img src="https://img.shields.io/badge/Kanban-Scope_Board-3B82F6?style=flat-square" alt="Flow"></a>
+  <a href="dist/team_q4_2026_wrapped.html"><img src="https://img.shields.io/badge/Spotify_Style-Q4_Wrapped-EC4899?style=flat-square" alt="Wrapped"></a>
+  <a href="snowpad/web/team.html"><img src="https://img.shields.io/badge/Hierarchy-Team_Org_%26_Slides-8B5CF6?style=flat-square" alt="Team"></a>
+</p>
+
+---
+
+## 📸 Interactive Deliverables & Views
+
+| Interactive Scope Radar HUD | Jira/Linear Style Scope Board |
+| :---: | :---: |
+| [![Scope Radar](assets/preview_radar.png)](snowpad/web/radar.html) | [![Scope Board](assets/preview_flow.png)](snowpad/web/flow.html) |
+| *Real-time 360° ray-marcher sweeping across team channels* | *Feature flow from chat proposal to sprint commitment or parked whim* |
+
+| Spotify-Wrapped Developer Velocity | Team Org Hierarchy & Embedded Slides |
+| :---: | :---: |
+| [![Team Wrapped](assets/preview_wrapped.png)](dist/team_q4_2026_wrapped.html) | [![Team Org](assets/preview_team.png)](snowpad/web/team.html) |
+| *Quarterly wrapped celebration with archetypes & dodged bullets* | *Live org tree with embedded Reveal.js presentation decks* |
+
+<p align="center">
+  <img src="assets/preview_presentation.png" alt="Reveal.js Executive Presentation Deck" width="90%" style="border-radius: 6px;">
+  <br>
+  <i>Watermark-free Reveal.js executive slide decks generated on-demand per contributor</i>
 </p>
 
 ---
@@ -32,6 +52,10 @@ SnowPad applies this exact mathematical principle to team communications in Slac
    * 🟢 **Intersection (Inside the Circle):** If the ray hits a verified KPI (such as reducing p95 latency or unblocking an enterprise customer) with high clarity, it penetrates the perimeter and lands inside the circle.
    * 🔴 **Scatter &amp; Shadow (Outside the Circle):** If the proposal is vague, lacks ownership, or has no measurable impact on active goals, the ray scatters into the outer shadow—quarantined as a parked whim so it does not derail developer focus.
 4. **Visual Ray Sweep:** The radar HUD uses an active radial ray-marcher sweeping 360 degrees across all active channels, rendering the distance and uncertainty of every conversation in real time.
+
+<p align="center">
+  <img src="assets/snowpad_architecture.svg" alt="SnowPad Architecture & Ray Tracing Model" width="90%">
+</p>
 
 ---
 
@@ -95,7 +119,19 @@ uv pip install -e ".[dev]"
 python -m snowpad.cli seed
 ```
 
-### 3. Run the Live Demo Simulator
+### 3. Verify Switch AI Console & Rooms
+
+Verify connection to the Switch Core Gateway, PostgreSQL database, and active engineering rooms:
+
+```bash
+# Check Switch diagnostics & rooms
+python -m snowpad.cli switch --status
+
+# Or auto-provision SnowPad into Switch Console
+python -m snowpad.cli switch --provision
+```
+
+### 4. Run the Live Demo Simulator
 
 Watch simulated team discussions stream across channels and live-audit scope:
 
@@ -105,7 +141,7 @@ python -m snowpad.cli demo
 
 *(Open `snowpad/web/radar.html` in your browser side-by-side to watch live radar blips appear during the replay!)*
 
-### 4. Trace Feature Lifecycle Flowcharts
+### 5. Trace Feature Lifecycle Flowcharts
 
 See where features began in chat, how they were audited, and where they landed:
 
@@ -117,7 +153,7 @@ python -m snowpad.cli flow
 start snowpad/web/flow.html
 ```
 
-### 5. Open the Scope Radar
+### 6. Open the Scope Radar
 
 ```bash
 # Terminal table view
@@ -127,7 +163,7 @@ python -m snowpad.cli radar
 start snowpad/web/radar.html
 ```
 
-### 6. Experience SnowPad Wrapped (Spotify Wrapped for the Quarter) 🎁
+### 7. Experience SnowPad Wrapped (Spotify Wrapped for the Quarter) 🎁
 
 ```bash
 # Contributor Spotify Wrapped story
@@ -138,7 +174,7 @@ python -m snowpad.cli wrapped
 start dist/team_q4_2026_wrapped.html
 ```
 
-### 7. Team Org Chart & Embedded In-Browser Presentations 🌳
+### 8. Team Org Chart & Embedded In-Browser Presentations 🌳
 
 ```bash
 # Open interactive Org Tree with embedded Reveal.js slide decks
@@ -148,7 +184,7 @@ start snowpad/web/team.html
 python -m snowpad.cli export --all
 ```
 
-### 8. Review Channel Chatter & Weekly Pulse
+### 9. Review Channel Chatter & Weekly Pulse
 
 ```bash
 # View breakdown of uncertainty across channels
@@ -158,7 +194,7 @@ python -m snowpad.cli chatter
 python -m snowpad.cli weekly
 ```
 
-### 9. Generate Contributor Reviews & Executive Presentations
+### 10. Generate Contributor Reviews & Executive Presentations
 
 ```bash
 # Terminal review dossier
@@ -171,7 +207,7 @@ python -m snowpad.cli export --actor maya_patel
 python -m snowpad.cli export --prd
 ```
 
-### 10. Autonomous Background Scope Scheduler ⏱️
+### 11. Autonomous Background Scope Scheduler ⏱️
 
 Keep deliverables, radar feeds, and weekly pulses automatically refreshed in the background:
 
