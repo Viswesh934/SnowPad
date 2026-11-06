@@ -12,7 +12,7 @@ from snowpad.core.analytics import build_developer_review_dossier, build_weekly_
 from snowpad.core.flow import build_feature_flows, get_signal_journey
 from snowpad.db.repository import SnowPadRepository
 from snowpad.db.seeder import seed_demo_data
-from snowpad.reports.wrapped import build_wrapped_data, generate_actor_wrapped, generate_team_wrapped
+from snowpad.reports.wrapped import build_wrapped_data, generate_actor_wrapped, generate_team_wrapped, generate_all_actor_wrapped
 
 console = Console()
 
@@ -23,6 +23,9 @@ def cmd_seed(args: argparse.Namespace) -> None:
     console.print(f"[bold cyan]❄️ Initializing SnowPad Scope Memory at:[/] {settings.db_path}")
     seed_demo_data(repo)
     generate_team_wrapped(repo)
+    generate_all_actor_wrapped(repo)
+    from snowpad.reports.generator import DeliverableGenerator
+    DeliverableGenerator().generate_all_actor_slides()
     console.print("[bold green]✔ Successfully loaded workspace data with team members, chat signals, and scope metrics![/]")
 
 
@@ -261,20 +264,27 @@ def cmd_export(args: argparse.Namespace) -> None:
     gen = DeliverableGenerator()
     actor_id = args.actor
     quarter = args.quarter
+    export_all = getattr(args, "all", False)
 
     if args.prd:
         console.print("[bold cyan]❄️ Generating Sprint Refactor PRD from active scope debates...[/]")
         prd_file = gen.generate_prd_specification()
         console.print(f"[bold green]✔ Generated Sprint PRD:[/] {prd_file}")
 
-    if actor_id:
+    if export_all:
+        console.print("[bold cyan]❄️ Generating Reveal.js Executive Slide Decks for all contributors...[/]")
+        paths = gen.generate_all_actor_slides(quarter=quarter)
+        for p in paths:
+            console.print(f"[bold green]✔ Generated Slide Deck:[/] {p}")
+
+    elif actor_id:
         console.print(f"[bold cyan]❄️ Generating Reveal.js Executive Slide Deck for:[/] {actor_id}...")
         slide_file = gen.generate_presentation_slides(actor_id=actor_id, quarter=quarter)
         console.print(f"[bold green]✔ Generated Slide Deck:[/] {slide_file}")
         console.print(f"[dim]Run: start {slide_file} to present in your browser.[/]")
 
-    if not args.prd and not actor_id:
-        console.print("[yellow]Please specify '--actor <id>' for slide deck or '--prd' for sprint specification.[/]")
+    if not args.prd and not actor_id and not export_all:
+        console.print("[yellow]Please specify '--actor <id>', '--all', or '--prd' for sprint specification.[/]")
 
 
 def cmd_flow(args: argparse.Namespace) -> None:
@@ -396,6 +406,7 @@ def app() -> None:
     # Export command
     export_p = subparsers.add_parser("export", help="Export Reveal.js executive slides or sprint refactor PRD")
     export_p.add_argument("--actor", default=None, help="Actor ID to generate review slides for (e.g. maya_patel, alex_chen)")
+    export_p.add_argument("--all", action="store_true", help="Generate executive slide decks for all team members")
     export_p.add_argument("--quarter", default="Q4-2026", help="Reporting quarter (default: Q4-2026)")
     export_p.add_argument("--prd", action="store_true", help="Generate Sprint Refactor PRD specification")
 

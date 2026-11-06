@@ -13,8 +13,9 @@
 
 <p align="center">
   👉 <b><a href="snowpad/web/radar.html">Interactive Scope Radar</a></b> • 
-  <b><a href="snowpad/web/flow.html">Feature Lifecycle Flow</a></b> • 
-  <b><a href="dist/team_q4_2026_wrapped.html">Quarterly Wrapped 🎁</a></b>
+  <b><a href="snowpad/web/flow.html">Jira-Style Scope Board</a></b> • 
+  <b><a href="snowpad/web/team.html">Team Org & Embedded Slides 🌳</a></b> • 
+  <b><a href="dist/team_q4_2026_wrapped.html">Widescreen Wrapped 🎁</a></b>
 </p>
 
 ---
@@ -132,12 +133,22 @@ start snowpad/web/radar.html
 # Contributor Spotify Wrapped story
 python -m snowpad.cli wrapped --actor maya_patel
 
-# Collective Team Wrapped story
+# Collective Team Wrapped story (Widescreen 860px)
 python -m snowpad.cli wrapped
 start dist/team_q4_2026_wrapped.html
 ```
 
-### 7. Review Channel Chatter &amp; Weekly Pulse
+### 7. Team Org Chart & Embedded In-Browser Presentations 🌳
+
+```bash
+# Open interactive Org Tree with embedded Reveal.js slide decks
+start snowpad/web/team.html
+
+# Or generate all slide decks on-demand via CLI
+python -m snowpad.cli export --all
+```
+
+### 8. Review Channel Chatter & Weekly Pulse
 
 ```bash
 # View breakdown of uncertainty across channels

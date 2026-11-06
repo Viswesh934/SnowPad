@@ -64,3 +64,28 @@ def test_generate_prd_specification(repo: SnowPadRepository) -> None:
     content = prd_file.read_text(encoding="utf-8")
     assert "# SnowPad Sprint Refactor PRD" in content
 
+
+def test_generate_all_actor_slides(repo: SnowPadRepository) -> None:
+    """Verify batch generation of executive slide decks for all team members."""
+    gen = DeliverableGenerator(repo=repo)
+    slide_files = gen.generate_all_actor_slides(quarter="Q4-2026")
+
+    assert len(slide_files) >= 4
+    for sf in slide_files:
+        assert sf.exists()
+        content = sf.read_text(encoding="utf-8")
+        assert "Reveal.initialize" in content
+
+
+def test_generate_all_actor_wrapped(repo: SnowPadRepository) -> None:
+    """Verify batch generation of Spotify-Wrapped stories for all team members."""
+    from snowpad.reports.wrapped import generate_all_actor_wrapped
+
+    wrapped_files = generate_all_actor_wrapped(repo, quarter="Q4-2026")
+    assert len(wrapped_files) >= 4
+    for wf in wrapped_files:
+        assert wf.exists()
+        content = wf.read_text(encoding="utf-8")
+        assert "SnowPad Wrapped" in content
+        assert "max-w-[860px]" in content
+

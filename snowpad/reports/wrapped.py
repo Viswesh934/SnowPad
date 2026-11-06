@@ -207,11 +207,11 @@ def generate_wrapped_html(data: Dict[str, Any], output_path: Optional[Path] = No
 </head>
 <body class="flex items-center justify-center min-h-screen p-0 sm:p-4 bg-gradient-to-br from-[#0c0d10] via-[#121318] to-[#0a0a0d]">
 
-  <!-- Mobile/Desktop Story Container -->
-  <div class="relative w-full max-w-[440px] h-[100dvh] sm:h-[840px] sm:max-h-[92vh] sm:rounded-3xl story-card flex flex-col overflow-hidden select-none">
+  <!-- Mobile/Desktop Story Container (Wide Widescreen Format) -->
+  <div class="relative w-full max-w-[860px] h-[100dvh] sm:h-[650px] sm:rounded-2xl story-card flex flex-col overflow-hidden select-none">
     
     <!-- Top Progress Bars (6 cards) -->
-    <div class="absolute top-0 left-0 right-0 p-4 z-30 flex items-center gap-1.5 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
+    <div class="absolute top-0 left-0 right-0 p-4 z-30 flex items-center gap-2 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
       <div class="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
         <div id="bar-0" class="h-full bg-white progress-bar w-0"></div>
       </div>
@@ -233,7 +233,7 @@ def generate_wrapped_html(data: Dict[str, Any], output_path: Optional[Path] = No
     </div>
 
     <!-- Top User Badge & Close Button -->
-    <div class="absolute top-7 left-0 right-0 px-4 z-30 flex items-center justify-between text-xs font-mono text-white/80">
+    <div class="absolute top-7 left-0 right-0 px-6 z-30 flex items-center justify-between text-xs font-mono text-white/80">
       <div class="flex items-center gap-2">
         <span class="w-6 h-6 rounded-full bg-[#10B981] text-black flex items-center justify-center font-bold text-[11px]">❄</span>
         <span class="font-bold tracking-tight text-white">{actor['name']}</span>
@@ -241,205 +241,238 @@ def generate_wrapped_html(data: Dict[str, Any], output_path: Optional[Path] = No
         <span class="text-[#10B981]">{quarter}</span>
       </div>
       <div class="flex items-center gap-2">
-        <button id="pauseBtn" class="px-2 py-0.5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 transition">Pause</button>
+        <button id="pauseBtn" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition text-xs font-mono">Pause</button>
       </div>
     </div>
 
-    <!-- Tap Navigation Zones (Left 35% prev, Right 65% next) -->
+    <!-- Tap Navigation Zones (Left 30% prev, Right 70% next) -->
     <div class="absolute inset-0 z-20 flex">
-      <div id="tapLeft" class="w-[35%] h-full cursor-w-resize"></div>
-      <div id="tapRight" class="w-[65%] h-full cursor-e-resize"></div>
+      <div id="tapLeft" class="w-[30%] h-full cursor-w-resize"></div>
+      <div id="tapRight" class="w-[70%] h-full cursor-e-resize"></div>
     </div>
 
     <!-- SLIDES CONTAINER -->
-    <div class="relative flex-1 flex items-center justify-center p-6 text-center z-10">
+    <div class="relative flex-1 flex items-center justify-center p-6 sm:p-10 text-center z-10">
 
       <!-- SLIDE 0: Welcome & Vibe Check -->
-      <div id="slide-0" class="slide absolute inset-0 p-8 flex flex-col justify-between opacity-100 transition-opacity duration-300">
-        <div class="mt-14 text-left">
+      <div id="slide-0" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-100 transition-opacity duration-300">
+        <div class="mt-8 text-left">
           <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">SnowPad Presents</span>
-          <h1 class="text-4xl font-extrabold tracking-tight mt-1 text-white leading-tight">
-            Your {quarter}<br>Scope Wrapped.
-          </h1>
-          <p class="text-sm text-[#A1A1AA] mt-2">
-            90 days of chatting, building, debating, and dodging scope drift.
-          </p>
         </div>
 
-        <div class="my-auto flex flex-col items-center">
-          <div class="w-32 h-32 rounded-3xl bg-[#121214] border border-[#10B981]/40 flex items-center justify-center text-6xl shadow-2xl shadow-green-500/10 floating-badge">
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              Your {quarter}<br>Scope Wrapped.
+            </h1>
+            <p class="text-sm text-[#A1A1AA] mt-3 max-w-[380px]">
+              90 days of chatting, building, debating, and dodging scope drift across engineering and product.
+            </p>
+            <div class="mt-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-[#D4D4D8] w-fit">
+              <span class="w-2 h-2 rounded-full bg-[#10B981] animate-ping"></span>
+              <span>{data['total_signals']} Chat Discussions Audited</span>
+            </div>
+          </div>
+          <div class="w-36 h-36 rounded-3xl bg-[#121214] border border-[#10B981]/40 flex items-center justify-center text-7xl shadow-2xl shadow-green-500/10 floating-badge">
             ❄️
           </div>
-          <div class="mt-6 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-[#D4D4D8]">
-            <span class="w-2 h-2 rounded-full bg-[#10B981] animate-ping"></span>
-            <span>{data['total_signals']} Chat Discussions Audited</span>
-          </div>
         </div>
 
-        <div class="mb-4 text-center">
-          <p class="text-xs font-mono text-[#71717A]">Tap right to uncover your scope personality &rarr;</p>
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Space / Right Arrow to uncover your scope personality &rarr;</p>
         </div>
       </div>
 
       <!-- SLIDE 1: Top Channel & Chat Habit -->
-      <div id="slide-1" class="slide absolute inset-0 p-8 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="mt-14 text-left">
-          <span class="text-xs font-mono uppercase tracking-widest text-[#EAB308] font-bold">The Daily Hangout</span>
+      <div id="slide-1" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">The Daily Hangout</span>
           <h2 class="text-3xl font-extrabold text-white mt-1">Your Favorite Sparring Ground</h2>
         </div>
 
-        <div class="my-auto flex flex-col items-center text-center">
-          <div class="text-6xl mb-4">💬</div>
-          <span class="text-sm font-mono text-[#A49E94] uppercase tracking-wider">Top Origin Channel</span>
-          <h3 class="text-3xl font-black text-[#FAF8F5] mt-1 font-mono">{data['top_channel']}</h3>
-          <p class="text-sm text-[#D8D4CB] mt-3 max-w-[280px]">
-            Where you dropped <strong class="text-[#FF7A45]">{data['top_channel_count']} proposals</strong> and brainstormed with teammates this quarter.
-          </p>
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <span class="text-xs font-mono text-[#71717A] uppercase tracking-wider">Top Origin Channel</span>
+            <h3 class="text-4xl font-black text-white mt-1 font-mono">{data['top_channel']}</h3>
+            <p class="text-sm text-[#A1A1AA] mt-3 max-w-[340px]">
+              Where you dropped <strong class="text-white">{data['top_channel_count']} proposals</strong> and aligned with teammates this quarter.
+            </p>
+          </div>
+
+          <div class="bg-[#18181B] border border-[#27272A] rounded-2xl p-6 w-full md:w-[320px]">
+            <span class="text-xs font-mono text-[#71717A] uppercase">Circle Focus Alignment</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-4xl font-black font-mono text-[#10B981]">{data['focus_pct']}%</span>
+              <span class="text-xs text-[#A1A1AA]">of chatter</span>
+            </div>
+            <p class="text-xs text-[#71717A] mt-2">Directly aligned with active team goals and core response SLAs.</p>
+          </div>
         </div>
 
-        <div class="mb-4 bg-white/5 border border-white/10 rounded-2xl p-4 text-left">
-          <span class="text-xs font-mono text-[#A49E94]">Circle Focus Alignment:</span>
-          <div class="flex items-center justify-between mt-1">
-            <span class="text-2xl font-black font-mono text-[#10B981]">{data['focus_pct']}%</span>
-            <span class="text-xs text-[#D8D4CB]">Inside Circle Commitments</span>
-          </div>
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow to see your Archetype &rarr;</p>
         </div>
       </div>
 
       <!-- SLIDE 2: Scope Personality Archetype -->
-      <div id="slide-2" class="slide absolute inset-0 p-8 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="mt-14 text-left">
-          <span class="text-xs font-mono uppercase tracking-widest text-[#FF7A45] font-bold">Scope Identity</span>
+      <div id="slide-2" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Scope Identity</span>
           <h2 class="text-3xl font-extrabold text-white mt-1">Your Q4 Archetype</h2>
         </div>
 
-        <div class="my-auto flex flex-col items-center">
-          <div class="w-24 h-24 rounded-3xl flex items-center justify-center text-5xl shadow-2xl floating-badge" style="background: radial-gradient(circle, {arch['aura_color']}40 0%, #16171b 100%); border: 2px solid {arch['aura_color']};">
-            {arch['emoji']}
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div class="flex items-center gap-5">
+            <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-5xl bg-[#18181B] border border-[#10B981]/50 floating-badge">
+              {arch['emoji']}
+            </div>
+            <div>
+              <h3 class="text-3xl font-black text-white tracking-tight">{arch['name']}</h3>
+              <span class="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 mt-1 inline-block">
+                {arch['tagline']}
+              </span>
+            </div>
           </div>
-          <h3 class="text-2xl font-black text-white mt-4 tracking-tight">{arch['name']}</h3>
-          <span class="text-xs font-mono font-semibold px-3 py-1 rounded-full mt-1" style="background: {arch['aura_color']}20; color: {arch['aura_color']};">
-            {arch['tagline']}
-          </span>
-          <p class="text-xs text-[#D8D4CB] mt-4 leading-relaxed max-w-[300px]">
-            "{arch['description']}"
-          </p>
+
+          <div class="space-y-4 max-w-[340px]">
+            <p class="text-xs text-[#D4D4D8] leading-relaxed italic bg-[#18181B] p-4 rounded-xl border border-[#27272A]">
+              "{arch['description']}"
+            </p>
+            <div class="bg-[#18181B] border border-[#27272A] rounded-xl p-3 flex items-center gap-3">
+              <span class="text-2xl">🎧</span>
+              <div class="truncate">
+                <span class="text-[10px] font-mono text-[#71717A] uppercase">Sprint Vibe</span>
+                <p class="text-xs font-semibold text-white truncate">{arch['soundtrack']}</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="mb-4 bg-white/5 border border-white/10 rounded-2xl p-3.5 text-left flex items-center gap-3">
-          <span class="text-2xl">🎧</span>
-          <div>
-            <span class="text-[10px] font-mono text-[#A49E94] uppercase">Your Sprint Vibe</span>
-            <p class="text-xs font-semibold text-white truncate max-w-[240px]">{arch['soundtrack']}</p>
-          </div>
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow to see the Bullet You Dodged &rarr;</p>
         </div>
       </div>
 
       <!-- SLIDE 3: The Dodged Bullet (Top Whim Quarantined) -->
-      <div id="slide-3" class="slide absolute inset-0 p-8 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="mt-14 text-left">
+      <div id="slide-3" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
           <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Focus Shield</span>
           <h2 class="text-3xl font-extrabold text-white mt-1">The Bullet You Dodged</h2>
         </div>
 
-        <div class="my-auto flex flex-col items-center">
-          <div class="w-20 h-20 rounded-full bg-[#10B981]/10 border border-[#10B981]/40 flex items-center justify-center text-4xl mb-3">
-            🛡️
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-8 h-8 rounded-lg bg-[#18181B] border border-[#27272A] flex items-center justify-center text-lg">🛡️</span>
+              <span class="text-xs font-mono text-[#71717A] uppercase font-bold">Whim Safely Quarantined</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white tracking-tight">"{db['title']}"</h3>
+            <p class="text-xs text-[#A1A1AA] mt-2 max-w-[340px]">
+              {db['risk']}
+            </p>
           </div>
-          <span class="text-xs font-mono text-[#10B981] uppercase tracking-wider font-bold">Whim Safely Quarantined</span>
-          <h3 class="text-lg font-bold text-white mt-2 px-2">"{db['title']}"</h3>
-          <p class="text-xs text-[#A49E94] mt-2 max-w-[280px]">
-            {db['risk']}
-          </p>
+
+          <div class="bg-[#18181B] border border-[#10B981]/30 rounded-2xl p-6 w-full md:w-[320px]">
+            <span class="text-xs font-mono text-[#10B981] font-bold">DEVELOPER SANITY SAVED:</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-4xl font-black font-mono text-white">+{data['hours_shielded']}h</span>
+              <span class="text-xs text-[#A1A1AA]">shielded</span>
+            </div>
+            <p class="text-xs text-[#71717A] mt-2">Prevented off-scope tasks from diluting critical sprint deliverables.</p>
+          </div>
         </div>
 
-        <div class="mb-4 bg-gradient-to-r from-[#10B981]/20 to-transparent border border-[#10B981]/30 rounded-2xl p-4 text-left">
-          <span class="text-[11px] font-mono text-[#10B981] font-bold">DEV SANITY SAVED:</span>
-          <div class="flex items-baseline gap-2 mt-1">
-            <span class="text-3xl font-black font-mono text-white">+{data['hours_shielded']} hrs</span>
-            <span class="text-xs text-[#D8D4CB]">of unverified sprint churn prevented</span>
-          </div>
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow to see your Crown Jewel &rarr;</p>
         </div>
       </div>
 
       <!-- SLIDE 4: The Crown Jewel (Top SLA Win) -->
-      <div id="slide-4" class="slide absolute inset-0 p-8 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="mt-14 text-left">
+      <div id="slide-4" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
           <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Hall of Fame</span>
           <h2 class="text-3xl font-extrabold text-white mt-1">Your Crown Jewel</h2>
         </div>
 
-        <div class="my-auto flex flex-col items-center">
-          <div class="w-20 h-20 rounded-full bg-[#10B981]/10 border border-[#10B981]/40 flex items-center justify-center text-4xl mb-3">
-            🏆
+        <div class="my-auto flex flex-col md:flex-row items-center justify-between gap-8 max-w-[720px] mx-auto w-full text-left">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-8 h-8 rounded-lg bg-[#18181B] border border-[#27272A] flex items-center justify-center text-lg">🏆</span>
+              <span class="text-xs font-mono text-[#10B981] uppercase font-bold">Inside Circle Delivery</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white tracking-tight">"{cj['title']}"</h3>
+            <p class="text-xs text-[#A1A1AA] mt-2 max-w-[340px]">
+              {cj['impact']}
+            </p>
           </div>
-          <span class="text-xs font-mono text-[#10B981] uppercase tracking-wider font-bold">Inside Circle Delivery</span>
-          <h3 class="text-xl font-black text-white mt-2 tracking-tight">"{cj['title']}"</h3>
-          <p class="text-xs text-[#A1A1AA] mt-2 max-w-[280px]">
-            {cj['impact']}
-          </p>
+
+          <div class="bg-[#18181B] border border-[#10B981]/30 rounded-2xl p-6 w-full md:w-[320px]">
+            <span class="text-xs font-mono text-[#10B981] font-bold">TOTAL SPEED SHAVED:</span>
+            <div class="flex items-baseline gap-2 mt-2">
+              <span class="text-4xl font-black font-mono text-[#10B981]">-{data['total_ms_shaved']} ms</span>
+            </div>
+            <p class="text-xs text-[#71717A] mt-2">p95 latency reduction delivered on core production API endpoints.</p>
+          </div>
         </div>
 
-        <div class="mb-4 bg-gradient-to-r from-[#10B981]/15 to-transparent border border-[#10B981]/30 rounded-2xl p-4 text-left">
-          <span class="text-[11px] font-mono text-[#10B981] font-bold">TOTAL SPEED SHAVED:</span>
-          <div class="flex items-baseline gap-2 mt-1">
-            <span class="text-3xl font-black font-mono text-[#10B981]">-{data['total_ms_shaved']} ms</span>
-            <span class="text-xs text-[#A1A1AA]">p95 response time saved on core endpoints</span>
-          </div>
+        <div class="mb-2 text-center">
+          <p class="text-xs font-mono text-[#71717A]">Press Right Arrow for your Dossier Summary &rarr;</p>
         </div>
       </div>
 
       <!-- SLIDE 5: Shareable Dossier Card -->
-      <div id="slide-5" class="slide absolute inset-0 p-6 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="mt-12 text-left">
+      <div id="slide-5" class="slide absolute inset-0 p-8 sm:p-12 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="mt-8 text-left">
           <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Q4 Summary Dossier</span>
-          <h2 class="text-2xl font-extrabold text-white mt-0.5">SnowPad Wrapped: 2026</h2>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-0.5">SnowPad Wrapped: 2026</h2>
         </div>
 
-        <!-- Shareable Card Box -->
-        <div class="my-auto bg-[#121214] border border-[#27272A] rounded-2xl p-5 text-left relative overflow-hidden shadow-2xl">
-          <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-[#10B981]/10 blur-xl"></div>
-          
-          <div class="flex items-center justify-between pb-3 border-b border-[#27272A]">
+        <!-- Shareable Card Box (Wide) -->
+        <div class="my-auto bg-[#121214] border border-[#27272A] rounded-2xl p-6 text-left relative overflow-hidden shadow-2xl max-w-[720px] mx-auto w-full">
+          <div class="flex items-center justify-between pb-4 border-b border-[#27272A]">
             <div>
-              <h4 class="font-bold text-white text-base leading-snug">{actor['name']}</h4>
+              <h4 class="font-bold text-white text-lg leading-snug">{actor['name']}</h4>
               <p class="text-xs text-[#A1A1AA]">{actor['role']} • {actor['team']}</p>
             </div>
-            <span class="text-3xl">{arch['emoji']}</span>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold text-[#10B981]">{arch['name']}</span>
+              <span class="text-2xl">{arch['emoji']}</span>
+            </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3 my-3">
-            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
               <span class="text-[10px] font-mono text-[#71717A] uppercase">Scope Focus</span>
-              <p class="text-xl font-black font-mono text-[#10B981]">{data['focus_pct']}%</p>
+              <p class="text-2xl font-black font-mono text-[#10B981] mt-0.5">{data['focus_pct']}%</p>
             </div>
-            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
               <span class="text-[10px] font-mono text-[#71717A] uppercase">Latency Saved</span>
-              <p class="text-xl font-black font-mono text-[#10B981]">-{data['total_ms_shaved']}ms</p>
+              <p class="text-2xl font-black font-mono text-[#10B981] mt-0.5">-{data['total_ms_shaved']}ms</p>
             </div>
-            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
               <span class="text-[10px] font-mono text-[#71717A] uppercase">Whims Dodged</span>
-              <p class="text-xl font-black font-mono text-white">{data['whims_count']}</p>
+              <p class="text-2xl font-black font-mono text-white mt-0.5">{data['whims_count']}</p>
             </div>
-            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+            <div class="bg-[#18181B] p-3 rounded-xl border border-[#27272A]">
               <span class="text-[10px] font-mono text-[#71717A] uppercase">Sanity Shielded</span>
-              <p class="text-xl font-black font-mono text-[#10B981]">+{data['hours_shielded']}h</p>
+              <p class="text-2xl font-black font-mono text-[#10B981] mt-0.5">+{data['hours_shielded']}h</p>
             </div>
           </div>
 
-          <div class="pt-2 border-t border-[#27272A] flex items-center justify-between text-[11px] font-mono text-[#71717A]">
-            <span class="text-[#10B981] font-bold">{arch['name']}</span>
-            <span>SnowPad Scope OS</span>
+          <div class="pt-3 border-t border-[#27272A] flex items-center justify-between text-xs font-mono text-[#71717A]">
+            <span>Verified by SnowPad Scope Memory</span>
+            <span class="text-white">Q4-2026 Executive Review</span>
           </div>
         </div>
 
-        <div class="mb-3 space-y-2">
-          <button id="copySummaryBtn" class="w-full py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-black font-bold text-sm shadow-lg shadow-green-500/20 transition flex items-center justify-center gap-2">
+        <div class="mb-2 max-w-[720px] mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-3">
+          <button id="copySummaryBtn" class="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[#10B981] hover:bg-[#059669] text-black font-semibold text-xs shadow-md transition flex items-center justify-center gap-2">
             <span>📋 Copy Wrapped Summary</span>
           </button>
-          <div class="flex items-center justify-between text-xs text-[#71717A] px-1 font-mono">
+          <div class="flex items-center gap-4 text-xs font-mono text-[#71717A]">
             <a href="radar.html" class="hover:text-white transition">&larr; Scope Radar</a>
-            <a href="flow.html" class="hover:text-white transition">Scope Board &rarr;</a>
+            <a href="flow.html" class="hover:text-white transition">Scope Board</a>
+            <a href="team.html" class="hover:text-white transition">Team Org &amp; Slides &rarr;</a>
           </div>
         </div>
       </div>
@@ -588,4 +621,17 @@ def generate_team_wrapped(repo: SnowPadRepository, quarter: str = "Q4-2026") -> 
     data = build_wrapped_data(repo=repo, actor_id=None, quarter=quarter)
     output_path = DIST_DIR / f"team_{quarter.lower().replace('-', '_')}_wrapped.html"
     return generate_wrapped_html(data, output_path=output_path)
+
+
+def generate_all_actor_wrapped(repo: SnowPadRepository, quarter: str = "Q4-2026") -> List[Path]:
+    """Generates Wrapped story HTML for all team members."""
+    actors = repo.get_all_actors()
+    paths = []
+    for a in actors:
+        try:
+            p = generate_actor_wrapped(repo, actor_id=a["id"], quarter=quarter)
+            paths.append(p)
+        except Exception:
+            pass
+    return paths
 
