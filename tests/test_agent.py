@@ -93,3 +93,25 @@ def test_agent_handle_slash_commands(repo: SnowPadRepository) -> None:
     sync_res = agent.handle_command("/snowpad sync slack", user_id="U_ALEX_SLACK")
     assert sync_res["type"] == "sync_result"
     assert len(sync_res["members"]) >= 4
+
+
+def test_switch_bridge_payload(repo: SnowPadRepository) -> None:
+    """Verify Switch Bridge handles JSON payloads and slash commands from Switch rooms."""
+    from snowpad.agent.switch_bridge import SwitchBridge
+    bridge = SwitchBridge(repo=repo)
+
+    # 1. JSON payload from Switch room
+    payload = '{"text": "What if we added Kafka for event streaming?", "user": "Alex Chen", "channel": "#backend-core"}'
+    res = bridge.process_payload(payload)
+    assert res["status"] == "audited"
+    assert res["data"]["signal_type"] == "ARCH_DEBATE"
+
+    # 2. Slash command over bridge
+    cmd_payload = '{"text": "/snowpad weekly", "user": "Sam Torres", "channel": "#product-ideas"}'
+    cmd_res = bridge.process_payload(cmd_payload)
+    assert cmd_res["status"] == "command_executed"
+    assert cmd_res["result"]["type"] == "weekly_pulse"
+
+    # 3. Plain text banter
+    banter_res = bridge.process_payload("Hey team, lunch?")
+    assert banter_res["status"] == "ignored"

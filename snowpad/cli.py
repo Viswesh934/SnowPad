@@ -410,6 +410,13 @@ def cmd_schedule(args: argparse.Namespace) -> None:
     scheduler.run_daemon(interval_mode=interval, custom_interval_sec=custom_sec, max_cycles=args.max_cycles)
 
 
+def cmd_bridge(args: argparse.Namespace) -> None:
+    """Run standard stdio listener for Switch Console and Switch Room message streaming."""
+    from snowpad.agent.switch_bridge import SwitchBridge
+    bridge = SwitchBridge()
+    bridge.run_stdio_loop()
+
+
 def app() -> None:
     """Main CLI entrypoint."""
     parser = argparse.ArgumentParser(
@@ -476,6 +483,9 @@ def app() -> None:
     schedule_p.add_argument("--max-cycles", type=int, default=None, help="Maximum daemon cycles before stopping (optional)")
     schedule_p.add_argument("--quarter", default="Q4-2026", help="Reporting quarter (default: Q4-2026)")
 
+    # Switch Bridge command (for Switch Console / stdio orchestration)
+    subparsers.add_parser("bridge", help="Run Switch Console stdio/JSON stream bridge")
+
     args = parser.parse_args()
 
     if args.command == "seed":
@@ -504,6 +514,8 @@ def app() -> None:
         cmd_wrapped(args)
     elif args.command == "schedule":
         cmd_schedule(args)
+    elif args.command == "bridge":
+        cmd_bridge(args)
     else:
         parser.print_help()
 
