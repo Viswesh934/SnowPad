@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnowPad Feature Lifecycle Flow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Flow connector canvas styling */
+    .flow-card {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .flow-card.selected {
+      border-color: #FF5A36 !important;
+      box-shadow: 0 0 25px rgba(255, 90, 54, 0.35);
+      transform: translateY(-2px);
+    }
+    .flow-card.dimmed {
+      opacity: 0.35;
+      filter: grayscale(0.6);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #121316; }
+    ::-webkit-scrollbar-thumb { background: #262830; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3d414d; }
+  </style>
+</head>
+<body class="bg-[#121316] text-[#FAF8F5] min-h-screen flex flex-col antialiased selection:bg-[#FF5A36] selection:text-[#FAF8F5]">
+
+  <!-- Top Navigation Header -->
+  <header class="border-b border-[#262830] bg-[#16171b]/90 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center space-x-3.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FF5A36] to-[#FF7A45] flex items-center justify-center shadow-lg shadow-orange-500/20 font-bold text-lg text-[#FAF8F5]">
+        ❄
+      </div>
+      <div>
+        <h1 class="text-base font-bold tracking-tight flex items-center gap-2 text-[#FAF8F5]">
+          SnowPad Lifecycle Flow
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#24262E] text-[#D8D4CB] border border-[#363945] font-mono font-medium">Traceability</span>
+        </h1>
+        <p class="text-xs text-[#A49E94]">End-to-End Journey from Chat Spark to Sprint SLA</p>
+      </div>
+    </div>
+
+    <!-- View Switcher Tabs -->
+    <nav class="flex items-center space-x-1 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono">
+      <a href="radar.html" class="px-3.5 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition flex items-center gap-1.5">
+        <span>🎯</span> Scope Radar
+      </a>
+      <a href="flow.html" class="px-3.5 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition flex items-center gap-1.5 shadow-md shadow-orange-500/20">
+        <span>🔀</span> Lifecycle Flow
+      </a>
+      <a href="wrapped.html" target="_blank" class="px-3.5 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition flex items-center gap-1.5">
+        <span>🎁</span> Q4 Wrapped
+      </a>
+    </nav>
+
+    <!-- Channel Filter Pills -->
+    <div class="hidden xl:flex items-center space-x-1.5 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono" id="channelFilters">
+      <button class="filter-btn px-3 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition" data-channel="ALL">All Channels</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#product-ideas">#product-ideas</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#backend-core] text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#backend-core">#backend-core</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#growth-experiments">#growth-experiments</button>
+      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#frontend-chatter">#frontend-chatter</button>
+    </div>
+  </header>
+
+  <!-- Subheader Overview Metrics -->
+  <div class="border-b border-[#262830] bg-[#16171B]/50 px-6 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
+      <div class="flex items-center gap-6">
+        <span class="text-[#A49E94]">Click any feature below to highlight its journey path:</span>
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5 text-[#10B981]"><span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span> Inside Circle (Delivered)</span>
+          <span class="flex items-center gap-1.5 text-[#EAB308]"><span class="w-2.5 h-2.5 rounded-full bg-[#EAB308]"></span> Borderline Debate</span>
+          <span class="flex items-center gap-1.5 text-[#848995]"><span class="w-2.5 h-2.5 rounded-full bg-[#848995]"></span> Parked Whim (Shielded)</span>
+        </div>
+      </div>
+      <div class="text-[#FF7A45]">
+        <span id="activeSelectionLabel">Showing All Active Flows</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flowchart Visual Canvas & Columns -->
+  <main class="flex-1 p-6 max-w-7xl mx-auto w-full flex flex-col relative">
+
+    <!-- 5 Horizontal Stages Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10" id="stagesContainer">
+
+      <!-- STAGE 1: ORIGIN CHANNELS -->
+      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
+          <span class="text-[11px] font-mono text-[#FF7A45] font-bold uppercase tracking-wider">1. Origin Channel</span>
+          <span class="text-xs">💬</span>
+        </div>
+        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Where conversations spark in Slack or Discord threads</p>
+        
+        <div class="space-y-3 flex-1" id="col-channels">
+          <!-- Dynamic Channel Cards -->
+        </div>
+      </div>
+
+      <!-- STAGE 2: CHAT SIGNALS & PROPOSALS -->
+      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
+          <span class="text-[11px] font-mono text-[#FAF8F5] font-bold uppercase tracking-wider">2. Team Proposal</span>
+          <span class="text-xs">💡</span>
+        </div>
+        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Captured idea, ad-hoc change, or spontaneous tweak</p>
+
+        <div class="space-y-3 flex-1" id="col-proposals">
+          <!-- Dynamic Proposal Cards -->
+        </div>
+      </div>
+
+      <!-- STAGE 3: RAY-TRACING AUDIT -->
+      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
+          <span class="text-[11px] font-mono text-[#FF5A36] font-bold uppercase tracking-wider">3. Ray-Tracing Audit</span>
+          <span class="text-xs">🎯</span>
+        </div>
+        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Uncertainty scored (0–100%) &amp; tested against core SLAs</p>
+
+        <div class="space-y-3 flex-1" id="col-audits">
+          <!-- Dynamic Audit Cards -->
+        </div>
+      </div>
+
+      <!-- STAGE 4: SCOPE HORIZON -->
+      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
+          <span class="text-[11px] font-mono text-[#EAB308] font-bold uppercase tracking-wider">4. Scope Horizon</span>
+          <span class="text-xs">⭕</span>
+        </div>
+        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Positioned on the radar by radial scope distance</p>
+
+        <div class="space-y-3 flex-1" id="col-horizons">
+          <!-- Dynamic Horizon Cards -->
+        </div>
+      </div>
+
+      <!-- STAGE 5: RESOLUTION & IMPACT -->
+      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
+          <span class="text-[11px] font-mono text-[#10B981] font-bold uppercase tracking-wider">5. Business Impact</span>
+          <span class="text-xs">⚡</span>
+        </div>
+        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Committed to sprint, PRD refactor, or shielded focus</p>
+
+        <div class="space-y-3 flex-1" id="col-resolutions">
+          <!-- Dynamic Resolution Cards -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Active Feature Journey Detail Bar (Appears when clicked) -->
+    <div id="journeyDrawer" class="mt-6 bg-[#16171B] border border-[#FF5A36]/40 rounded-2xl p-5 shadow-2xl transition-all duration-300 hidden">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-4 border-b border-[#262830]">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="drawerBadge" class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#FF5A36]/20 text-[#FF5A36]">INSIDE CIRCLE</span>
+            <span class="text-xs font-mono text-[#A49E94]" id="drawerSignalId">sig_feat_001</span>
+          </div>
+          <h2 class="text-xl font-bold text-white mt-1" id="drawerTitle">Batched Settlement Engine</h2>
+        </div>
+        <button id="closeDrawerBtn" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-[#24262E] hover:bg-[#343743] text-[#D8D4CB] transition">
+          ✕ Clear Selection
+        </button>
+      </div>
+
+      <!-- Horizontal Step Tracker in Drawer -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 text-xs font-mono">
+        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
+          <span class="text-[#A49E94]">Origin &amp; Author:</span>
+          <p class="text-white font-bold mt-1 text-sm" id="drawerAuthor">Maya Patel</p>
+          <p class="text-[#FF7A45] text-xs" id="drawerChannel">#product-ideas</p>
+        </div>
+        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
+          <span class="text-[#A49E94]">Ray-Tracing Confidence:</span>
+          <p class="text-[#10B981] font-bold mt-1 text-sm" id="drawerUncertainty">15% Uncertainty</p>
+          <p class="text-[#A49E94] text-xs" id="drawerConfidence">High Certainty (SLA Match)</p>
+        </div>
+        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
+          <span class="text-[#A49E94]">Scope Resolution:</span>
+          <p class="text-white font-bold mt-1 text-sm" id="drawerResolution">Approved for Sprint-42</p>
+          <p class="text-[#A49E94] text-xs" id="drawerTarget">Target: Sprint-42</p>
+        </div>
+        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
+          <span class="text-[#A49E94]">Verified Impact:</span>
+          <p class="text-[#10B981] font-bold mt-1 text-sm" id="drawerImpact">-122.0 ms p95 response time</p>
+          <p class="text-[#A49E94] text-xs" id="drawerMetricName">billing-service batch run</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Canonical flow dataset
+    const featureFlows = [
+      {
+        id: "sig_feat_001",
+        title: "Batched Settlement Engine",
+        author: "Maya Patel",
+        role: "Principal Product Architect",
+        channel: "#product-ideas",
+        rawQuote: "Proposing Batched Settlement Engine: benchmarked p95 latency drops by 120ms on Stripe batching, PR ready.",
+        uncertaintyPct: 15,
+        confidence: "High Certainty",
+        scopeStatus: "INSIDE_CIRCLE",
+        scopeDistance: 0.25,
+        resolution: "APPROVED_FOR_SPRINT",
+        target: "Sprint-42",
+        impact: "-122.0 ms p95 response time saved on /api/v1/settlements",
+        impactType: "PERFORMANCE_WIN",
+        color: "#10B981"
+      },
+      {
+        id: "sig_arch_002",
+        title: "Redis Redlock on Checkout",
+        author: "Alex Chen",
+        role: "Staff Backend Engineer",
+        channel: "#backend-core",
+        rawQuote: "Row-level PostgreSQL locks were causing 504 timeouts during flash sales. Proposing Redis Redlock pipeline.",
+        uncertaintyPct: 30,
+        confidence: "High Certainty",
+        scopeStatus: "INSIDE_CIRCLE",
+        scopeDistance: 0.40,
+        resolution: "APPROVED_FOR_SPRINT",
+        target: "Sprint-41",
+        impact: "Eliminated 504 gateway timeouts on /checkout (-635ms lock time)",
+        impactType: "PERFORMANCE_WIN",
+        color: "#10B981"
+      },
+      {
+        id: "sig_piv_003",
+        title: "1-Click Social Sign-in",
+        author: "Sam Torres",
+        role: "Lead Product Manager",
+        channel: "#growth-experiments",
+        rawQuote: "What if we deprecate multi-step onboarding wizard for 1-click social sign-in? Might boost conversion by 18%.",
+        uncertaintyPct: 55,
+        confidence: "Active Debate",
+        scopeStatus: "BORDERLINE",
+        scopeDistance: 0.85,
+        resolution: "UNDER_DEBATE",
+        target: "Backlog / RFC",
+        impact: "Scheduled for fraud risk vs conversion evaluation in sprint PRD",
+        impactType: "RFC_PENDING",
+        color: "#EAB308"
+      },
+      {
+        id: "sig_arch_004",
+        title: "Migrate SQS to Apache Kafka",
+        author: "Alex Chen",
+        role: "Staff Backend Engineer",
+        channel: "#backend-core",
+        rawQuote: "SQS costs spiking on 10k req/sec peak. Proposing Kafka sidecar: estimated $1,400/mo AWS saving.",
+        uncertaintyPct: 60,
+        confidence: "Active Debate",
+        scopeStatus: "BORDERLINE",
+        scopeDistance: 0.92,
+        resolution: "UNDER_DEBATE",
+        target: "Sprint-43 PRD",
+        impact: "2-week migration risk vs $1,400/mo AWS saving logged in PRD",
+        impactType: "RFC_PENDING",
+        color: "#EAB308"
+      },
+      {
+        id: "sig_whim_005",
+        title: "Confetti on Order Success",
+        author: "Jordan Lee",
+        role: "Senior UI Engineer",
+        channel: "#frontend-chatter",
+        rawQuote: "Hey, wouldn't it be cute if confetti burst on every purchase? Thinking of adding a quick Lottie animation.",
+        uncertaintyPct: 88,
+        confidence: "Casual Whim",
+        scopeStatus: "OUTSIDE_CIRCLE",
+        scopeDistance: 1.60,
+        resolution: "PARKED_AS_WHIM",
+        target: "Quarantined",
+        impact: "Shielded critical client bundle from +140kb bloat; saved 34 dev hours",
+        impactType: "CHURN_SHIELDED",
+        color: "#848995"
+      },
+      {
+        id: "sig_whim_006",
+        title: "Neon Theme for Admin Panel",
+        author: "Jordan Lee",
+        role: "Senior UI Engineer",
+        channel: "#frontend-chatter",
+        rawQuote: "Thinking of redesigning the internal admin drawer with a custom neon dark theme this afternoon.",
+        uncertaintyPct: 85,
+        confidence: "Casual Whim",
+        scopeStatus: "OUTSIDE_CIRCLE",
+        scopeDistance: 1.65,
+        resolution: "PARKED_AS_WHIM",
+        target: "Quarantined",
+        impact: "Protected 22 hours of sprint focus from non-critical UI rewrite",
+        impactType: "CHURN_SHIELDED",
+        color: "#848995"
+      }
+    ];
+
+    let selectedFeatureId = null;
+    let activeChannelFilter = "ALL";
+
+    function renderStages() {
+      const colChannels = document.getElementById("col-channels");
+      const colProposals = document.getElementById("col-proposals");
+      const colAudits = document.getElementById("col-audits");
+      const colHorizons = document.getElementById("col-horizons");
+      const colResolutions = document.getElementById("col-resolutions");
+
+      colChannels.innerHTML = "";
+      colProposals.innerHTML = "";
+      colAudits.innerHTML = "";
+      colHorizons.innerHTML = "";
+      colResolutions.innerHTML = "";
+
+      const filtered = featureFlows.filter(f => activeChannelFilter === "ALL" || f.channel === activeChannelFilter);
+
+      filtered.forEach(feat => {
+        const isSel = selectedFeatureId === feat.id;
+        const isDim = selectedFeatureId !== null && selectedFeatureId !== feat.id;
+
+        const cardBaseClass = `flow-card p-3 rounded-xl border bg-[#121316] cursor-pointer transition ${isSel ? 'selected' : isDim ? 'dimmed' : 'border-[#262830] hover:border-[#3d414d]'}`;
+
+        // 1. Channel Node
+        const chEl = document.createElement("div");
+        chEl.className = cardBaseClass;
+        chEl.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-[#FF7A45]">${feat.channel}</span>
+            <span class="w-2 h-2 rounded-full" style="background-color: ${feat.color}"></span>
+          </div>
+          <p class="text-[11px] text-[#A49E94] mt-1 truncate">${feat.author}</p>
+        `;
+        chEl.addEventListener("click", () => selectFeature(feat.id));
+        colChannels.appendChild(chEl);
+
+        // 2. Proposal Node
+        const propEl = document.createElement("div");
+        propEl.className = cardBaseClass;
+        propEl.innerHTML = `
+          <h4 class="text-xs font-bold text-white truncate">${feat.title}</h4>
+          <p class="text-[10px] text-[#A49E94] mt-1 line-clamp-2">"${feat.rawQuote}"</p>
+        `;
+        propEl.addEventListener("click", () => selectFeature(feat.id));
+        colProposals.appendChild(propEl);
+
+        // 3. Ray-Tracing Audit Node
+        const auditEl = document.createElement("div");
+        auditEl.className = cardBaseClass;
+        auditEl.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="font-bold" style="color: ${feat.color}">${feat.uncertaintyPct}% Unc.</span>
+            <span class="text-[10px] text-[#A49E94]">${feat.confidence}</span>
+          </div>
+          <div class="w-full h-1.5 bg-[#1F2128] rounded-full mt-2 overflow-hidden">
+            <div class="h-full rounded-full" style="width: ${feat.uncertaintyPct}%; background-color: ${feat.color}"></div>
+          </div>
+        `;
+        auditEl.addEventListener("click", () => selectFeature(feat.id));
+        colAudits.appendChild(auditEl);
+
+        // 4. Horizon Node
+        const horizEl = document.createElement("div");
+        horizEl.className = cardBaseClass;
+        horizEl.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="font-bold text-white">${feat.scopeStatus}</span>
+            <span class="text-[10px] text-[#A49E94]">r = ${feat.scopeDistance}</span>
+          </div>
+          <p class="text-[10px] text-[#A49E94] mt-1 truncate">${feat.scopeStatus === 'INSIDE_CIRCLE' ? 'Core Focus (r ≤ 1.0)' : feat.scopeStatus === 'BORDERLINE' ? 'Debate Ring' : 'Outer Orbit'}</p>
+        `;
+        horizEl.addEventListener("click", () => selectFeature(feat.id));
+        colHorizons.appendChild(horizEl);
+
+        // 5. Resolution & Impact Node
+        const resEl = document.createElement("div");
+        resEl.className = cardBaseClass;
+        resEl.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="font-bold text-white truncate">${feat.resolution}</span>
+          </div>
+          <p class="text-[10px] mt-1 leading-snug line-clamp-2" style="color: ${feat.color}">${feat.impact}</p>
+        `;
+        resEl.addEventListener("click", () => selectFeature(feat.id));
+        colResolutions.appendChild(resEl);
+      });
+    }
+
+    function selectFeature(id) {
+      if (selectedFeatureId === id) {
+        selectedFeatureId = null;
+        document.getElementById("journeyDrawer").classList.add("hidden");
+        document.getElementById("activeSelectionLabel").textContent = "Showing All Active Flows";
+      } else {
+        selectedFeatureId = id;
+        const feat = featureFlows.find(f => f.id === id);
+        if (feat) {
+          document.getElementById("drawerTitle").textContent = feat.title;
+          document.getElementById("drawerSignalId").textContent = feat.id;
+          document.getElementById("drawerAuthor").textContent = `${feat.author} (${feat.role})`;
+          document.getElementById("drawerChannel").textContent = feat.channel;
+          document.getElementById("drawerUncertainty").textContent = `${feat.uncertaintyPct}% Uncertainty`;
+          document.getElementById("drawerConfidence").textContent = feat.confidence;
+          document.getElementById("drawerResolution").textContent = feat.resolution;
+          document.getElementById("drawerTarget").textContent = `Target: ${feat.target}`;
+          document.getElementById("drawerImpact").textContent = feat.impact;
+          document.getElementById("drawerMetricName").textContent = `Raw Chat Spark: "${feat.rawQuote}"`;
+          
+          const badge = document.getElementById("drawerBadge");
+          badge.textContent = feat.scopeStatus;
+          badge.style.backgroundColor = `${feat.color}25`;
+          badge.style.color = feat.color;
+
+          document.getElementById("journeyDrawer").classList.remove("hidden");
+          document.getElementById("activeSelectionLabel").textContent = `Highlighted Flow: ${feat.title}`;
+        }
+      }
+      renderStages();
+    }
+
+    document.getElementById("closeDrawerBtn").addEventListener("click", () => {
+      selectedFeatureId = null;
+      document.getElementById("journeyDrawer").classList.add("hidden");
+      document.getElementById("activeSelectionLabel").textContent = "Showing All Active Flows";
+      renderStages();
+    });
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => {
+          b.className = "filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition";
+        });
+        btn.className = "filter-btn px-3 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition";
+        activeChannelFilter = btn.dataset.channel;
+        renderStages();
+      });
+    });
+
+    // Initial render
+    renderStages();
+  </script>
+</body>
+</html>

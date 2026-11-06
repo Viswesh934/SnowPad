@@ -32,8 +32,21 @@
       </div>
     </div>
 
+    <!-- View Switcher Tabs -->
+    <nav class="flex items-center space-x-1 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono">
+      <a href="radar.html" class="px-3.5 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition flex items-center gap-1.5 shadow-md shadow-orange-500/20">
+        <span>🎯</span> Scope Radar
+      </a>
+      <a href="flow.html" class="px-3.5 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition flex items-center gap-1.5">
+        <span>🔀</span> Lifecycle Flow
+      </a>
+      <a href="wrapped.html" target="_blank" class="px-3.5 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition flex items-center gap-1.5">
+        <span>🎁</span> Q4 Wrapped
+      </a>
+    </nav>
+
     <!-- Channel Filter Pills -->
-    <div class="flex items-center space-x-1.5 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono" id="channelFilters">
+    <div class="hidden xl:flex items-center space-x-1.5 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono" id="channelFilters">
       <button class="filter-btn px-3 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition" data-channel="ALL">All Channels</button>
       <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#product-ideas">#product-ideas</button>
       <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#backend-core">#backend-core</button>

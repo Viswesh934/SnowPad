@@ -5,11 +5,14 @@ import sys
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+from rich.tree import Tree
 
 from snowpad.config import settings
 from snowpad.core.analytics import build_developer_review_dossier, build_weekly_pulse_digest
+from snowpad.core.flow import build_feature_flows, get_signal_journey
 from snowpad.db.repository import SnowPadRepository
 from snowpad.db.seeder import seed_demo_data
+from snowpad.reports.wrapped import build_wrapped_data, generate_actor_wrapped, generate_team_wrapped
 
 console = Console()
 
@@ -19,6 +22,7 @@ def cmd_seed(args: argparse.Namespace) -> None:
     repo = SnowPadRepository()
     console.print(f"[bold cyan]❄️ Initializing SnowPad Scope Memory at:[/] {settings.db_path}")
     seed_demo_data(repo)
+    generate_team_wrapped(repo)
     console.print("[bold green]✔ Successfully loaded workspace data with team members, chat signals, and scope metrics![/]")
 
 
@@ -273,6 +277,83 @@ def cmd_export(args: argparse.Namespace) -> None:
         console.print("[yellow]Please specify '--actor <id>' for slide deck or '--prd' for sprint specification.[/]")
 
 
+def cmd_flow(args: argparse.Namespace) -> None:
+    """Display feature lifecycle flow charts showing where signals originated and landed."""
+    repo = SnowPadRepository()
+    signal_filter = getattr(args, "signal", None)
+    actor_filter = getattr(args, "actor", None)
+    channel_filter = getattr(args, "channel", None)
+
+    if signal_filter:
+        journey = get_signal_journey(repo, signal_filter)
+        if not journey:
+            console.print(f"[bold red]Signal '{signal_filter}' not found.[/]")
+            return
+        flows = [journey]
+    else:
+        flows = build_feature_flows(repo, actor_id=actor_filter, channel=channel_filter)
+
+    tree = Tree("[bold cyan]❄️ SnowPad: Feature Lifecycle Journey & Scope Traceability[/]")
+
+    for f in flows:
+        status = f["scope_status"]
+        color = "green" if status == "INSIDE_CIRCLE" else "yellow" if status == "BORDERLINE" else "red"
+
+        f_node = tree.add(f"[{color}]● {f['title']}[/] [dim]({f['signal_id']})[/]")
+        stages = f["stages"]
+        f_node.add(f"[dim]1. Origin Channel:[/] [magenta]{stages[0]['channel']}[/] by [bold white]{stages[0]['author']}[/] ({stages[0]['signal_type']})")
+        f_node.add(f"[dim]2. Ray Audit:[/] [{color}]{stages[1]['uncertainty_pct']}% Uncertainty[/] [dim]({stages[1]['confidence_label']} • {stages[1]['sla_check']})[/]")
+        f_node.add(f"[dim]3. Circle Horizon:[/] [{color}]{stages[2]['scope_status']}[/] [dim]({stages[2]['zone_label']} • Distance: {f['scope_distance']:.2f})[/]")
+        f_node.add(f"[dim]4. Resolution:[/] [cyan]{stages[3]['resolution_label']}[/] [dim]➔ Destination: {stages[3]['destination']}[/]")
+        f_node.add(f"[dim]5. Business Impact:[/] [bold {color}]{stages[4]['impact_summary']}[/]")
+
+    console.print(tree)
+    console.print("\n[dim]Interactive visual flowchart available at:[/] [bold #FF5A36]snowpad/web/flow.html[/]")
+    console.print("[dim]Run: 'start snowpad/web/flow.html' to inspect animated pipeline paths.[/]\n")
+
+
+def cmd_wrapped(args: argparse.Namespace) -> None:
+    """Generate and display Spotify-Wrapped style quarterly celebration."""
+    repo = SnowPadRepository()
+    actor_id = getattr(args, "actor", None)
+    quarter = getattr(args, "quarter", "Q4-2026")
+
+    wrapped = build_wrapped_data(repo, actor_id=actor_id, quarter=quarter)
+    actor = wrapped["actor"]
+    arch = wrapped["archetype"]
+    cj = wrapped["crown_jewel"]
+    db = wrapped["dodged_bullet"]
+
+    # Generate HTML file
+    if actor_id:
+        out_html = generate_actor_wrapped(repo, actor_id=actor_id, quarter=quarter)
+    else:
+        out_html = generate_team_wrapped(repo, quarter=quarter)
+
+    # Print Spotify Wrapped terminal experience
+    console.print(Panel(
+        f"[bold #FF5A36]❄️ SNOWPAD WRAPPED: {quarter.upper()}[/]\n"
+        f"[bold white]{actor['name']}[/] [dim]({actor['role']} • {actor['team']})[/]\n\n"
+        f"🎯 [bold]Scope Archetype:[/] [bold {arch['aura_color']}]{arch['name']} {arch['emoji']}[/]\n"
+        f"   [italic #FAF8F5]\"{arch['description']}\"[/]\n\n"
+        f"📊 [bold]Circle Focus Ratio:[/] [bold green]{wrapped['focus_pct']}%[/]\n"
+        f"⚡ [bold]Latency Shaved:[/] [bold green]-{wrapped['total_ms_shaved']} ms[/] on core endpoints\n"
+        f"🛡️ [bold]Sanity Shielded:[/] [bold green]+{wrapped['hours_shielded']} hours[/] preserved from unverified churn\n"
+        f"💬 [bold]Top Sparring Arena:[/] [bold cyan]{wrapped['top_channel']}[/] ({wrapped['top_channel_count']} proposals)\n\n"
+        f"🏆 [bold]Crown Jewel Victory:[/] [bold white]{cj['title']}[/]\n"
+        f"   [dim]{cj['impact']}[/]\n\n"
+        f"🚫 [bold]The Dodged Bullet:[/] [bold red]{db['title']}[/]\n"
+        f"   [dim]{db['risk']} (+{db['hours_saved']}h dev sanity saved)[/]\n\n"
+        f"🎧 [bold]Sprint Soundtrack:[/] [dim]{arch['soundtrack']}[/]",
+        title=f"[bold #FF5A36]🎁 SnowPad Wrapped {quarter}[/]",
+        border_style="#FF5A36",
+        padding=(1, 2)
+    ))
+
+    console.print(f"[bold green]✔ Interactive Spotify Wrapped Story Generated:[/] {out_html}")
+    console.print(f"[dim]Run: start {out_html} to experience your full-screen animated story deck![/]\n")
+
+
 def app() -> None:
     """Main CLI entrypoint."""
     parser = argparse.ArgumentParser(
@@ -318,6 +399,17 @@ def app() -> None:
     export_p.add_argument("--quarter", default="Q4-2026", help="Reporting quarter (default: Q4-2026)")
     export_p.add_argument("--prd", action="store_true", help="Generate Sprint Refactor PRD specification")
 
+    # Flow command
+    flow_p = subparsers.add_parser("flow", help="Display feature lifecycle flow charts and traceability")
+    flow_p.add_argument("--signal", default=None, help="Filter by Signal ID (e.g. sig_feat_001)")
+    flow_p.add_argument("--actor", default=None, help="Filter by Actor ID (e.g. maya_patel)")
+    flow_p.add_argument("--channel", default=None, help="Filter by Channel (e.g. #product-ideas)")
+
+    # Wrapped command
+    wrapped_p = subparsers.add_parser("wrapped", help="Generate Spotify-Wrapped style quarterly celebration")
+    wrapped_p.add_argument("--actor", default=None, help="Actor ID (leave empty for collective team wrapped)")
+    wrapped_p.add_argument("--quarter", default="Q4-2026", help="Reporting quarter (default: Q4-2026)")
+
     args = parser.parse_args()
 
     if args.command == "seed":
@@ -340,6 +432,10 @@ def app() -> None:
         cmd_demo(args)
     elif args.command == "export":
         cmd_export(args)
+    elif args.command == "flow":
+        cmd_flow(args)
+    elif args.command == "wrapped":
+        cmd_wrapped(args)
     else:
         parser.print_help()
 

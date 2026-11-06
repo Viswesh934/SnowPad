@@ -12,7 +12,9 @@
 </p>
 
 <p align="center">
-  👉 <b><a href="snowpad/web/radar.html">Open the Interactive Scope Radar</a></b> (Live canvas sweep with blip inspection and uncertainty meters)
+  👉 <b><a href="snowpad/web/radar.html">Interactive Scope Radar</a></b> • 
+  <b><a href="snowpad/web/flow.html">Feature Lifecycle Flow</a></b> • 
+  <b><a href="dist/team_q4_2026_wrapped.html">Quarterly Wrapped 🎁</a></b>
 </p>
 
 ---
@@ -61,6 +63,8 @@ SnowPad listens to incoming conversations across your team's channels, evaluates
 ## 🚀 Key Capabilities
 
 * 🎯 **Circle of Scope Radar:** Real-time visual HUD animating chat proposals as radar blips, scored by uncertainty percentage and scope distance.
+* 🔀 **Feature Lifecycle Flowcharts & Traceability:** Full visibility into where each feature sparks in chat, how its uncertainty is audited, its scope horizon, and its final sprint SLA impact.
+* 🎁 **Wholesome Quarterly Spotify-Wrapped:** Celebrates quarterly developer velocity with custom archetypes (*The Laser Architect*, *The Sprint Guardian*), dodged bullets, crown jewels, hours guarded, and shareable dossier cards.
 * 👥 **Member &amp; Designation Sync:** Plugs directly into Discord and Slack to map team member designations and organizational hierarchy.
 * 🛡️ **The Developer Sprint Shield:** Tracks how many off-scope whims were successfully quarantined, giving developers concrete proof of their focus during performance reviews:
   > *"Alex didn't just ship 2 critical features; SnowPad records that Alex also contained 3 off-scope whim requests, protecting 34 hours of sprint focus."*
@@ -100,7 +104,19 @@ python -m snowpad.cli demo
 
 *(Open `snowpad/web/radar.html` in your browser side-by-side to watch live radar blips appear during the replay!)*
 
-### 4. Open the Scope Radar
+### 4. Trace Feature Lifecycle Flowcharts
+
+See where features began in chat, how they were audited, and where they landed:
+
+```bash
+# Terminal lifecycle flow tree
+python -m snowpad.cli flow
+
+# Interactive web pipeline visualizer
+start snowpad/web/flow.html
+```
+
+### 5. Open the Scope Radar
 
 ```bash
 # Terminal table view
@@ -110,7 +126,18 @@ python -m snowpad.cli radar
 start snowpad/web/radar.html
 ```
 
-### 5. Review Channel Chatter &amp; Weekly Pulse
+### 6. Experience SnowPad Wrapped (Spotify Wrapped for the Quarter) 🎁
+
+```bash
+# Contributor Spotify Wrapped story
+python -m snowpad.cli wrapped --actor maya_patel
+
+# Collective Team Wrapped story
+python -m snowpad.cli wrapped
+start dist/team_q4_2026_wrapped.html
+```
+
+### 7. Review Channel Chatter &amp; Weekly Pulse
 
 ```bash
 # View breakdown of uncertainty across channels
@@ -120,7 +147,7 @@ python -m snowpad.cli chatter
 python -m snowpad.cli weekly
 ```
 
-### 6. Generate Contributor Reviews &amp; Executive Presentations
+### 8. Generate Contributor Reviews &amp; Executive Presentations
 
 ```bash
 # Terminal review dossier
