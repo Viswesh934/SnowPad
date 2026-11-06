@@ -429,6 +429,33 @@
       });
     });
 
+    // Attempt to load live signals from DuckDB JSON export if available
+    try {
+      fetch('signals.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            signals = data.map((d, i) => ({
+              id: d.signal_id || `sig_${i}`,
+              title: d.title || 'Untitled Signal',
+              author: d.actor_name || 'Contributor',
+              channel: d.origin_channel || '#general',
+              distance: parseFloat(d.scope_distance) || 0.8,
+              angle: (i * 53 + 45) % 360,
+              uncertainty: parseFloat(d.uncertainty_score) || 0.5,
+              status: d.scope_status || 'BORDERLINE',
+              impact: d.estimated_kpi_impact || (d.latency_delta_ms ? `p95 Delta: ${d.latency_delta_ms} ms` : 'Core Scope'),
+              summary: d.title
+            }));
+            selectSignal(signals[0]);
+            updateCounts();
+          }
+        })
+        .catch(() => { /* use embedded fallback dataset */ });
+    } catch (e) {
+      /* ignore fetch errors on strict local file policies */
+    }
+
     selectSignal(signals[0]);
     updateCounts();
     drawRadar();

@@ -239,6 +239,40 @@ def cmd_listen(args: argparse.Namespace) -> None:
         console.print(f"[bold yellow]Platform '{platform}' is coming soon. Use '--platform discord' for live bot.[/]")
 
 
+def cmd_demo(args: argparse.Namespace) -> None:
+    """Run simulated Discord sandbox or live automated replay for demo videos."""
+    from snowpad.agent.sandbox import DiscordSandbox
+
+    sandbox = DiscordSandbox()
+    if args.interactive:
+        sandbox.run_interactive_shell()
+    else:
+        sandbox.run_live_replay(speed_delay=args.delay)
+
+
+def cmd_export(args: argparse.Namespace) -> None:
+    """Generate executive Reveal.js slide decks or PRD specifications on-demand."""
+    from snowpad.reports.generator import DeliverableGenerator
+
+    gen = DeliverableGenerator()
+    actor_id = args.actor
+    quarter = args.quarter
+
+    if args.prd:
+        console.print("[bold cyan]❄️ Generating Sprint Refactor PRD from DuckDB debates...[/]")
+        prd_file = gen.generate_prd_specification()
+        console.print(f"[bold green]✔ Generated Sprint PRD:[/] {prd_file}")
+
+    if actor_id:
+        console.print(f"[bold cyan]❄️ Generating Reveal.js Executive Slide Deck for:[/] {actor_id}...")
+        slide_file = gen.generate_presentation_slides(actor_id=actor_id, quarter=quarter)
+        console.print(f"[bold green]✔ Generated Slide Deck:[/] {slide_file}")
+        console.print(f"[dim]Run: start {slide_file} to present in your browser.[/]")
+
+    if not args.prd and not actor_id:
+        console.print("[yellow]Please specify '--actor <id>' for slide deck or '--prd' for sprint specification.[/]")
+
+
 def app() -> None:
     """Main CLI entrypoint."""
     parser = argparse.ArgumentParser(
@@ -273,6 +307,17 @@ def app() -> None:
     listen_p.add_argument("--token", default=None, help="Bot Token override")
     listen_p.add_argument("--guild", default=None, help="Discord Guild/Server ID override")
 
+    # Demo & Sandbox command
+    demo_p = subparsers.add_parser("demo", help="Run simulated Discord sandbox or live replay for screen recording")
+    demo_p.add_argument("--interactive", action="store_true", help="Launch interactive shell where you can type messages")
+    demo_p.add_argument("--delay", type=float, default=1.5, help="Delay between replayed messages in seconds (default: 1.5s)")
+
+    # Export command
+    export_p = subparsers.add_parser("export", help="Export Reveal.js executive slides or sprint refactor PRD")
+    export_p.add_argument("--actor", default=None, help="Actor ID to generate review slides for (e.g. maya_patel, alex_chen)")
+    export_p.add_argument("--quarter", default="Q4-2026", help="Reporting quarter (default: Q4-2026)")
+    export_p.add_argument("--prd", action="store_true", help="Generate Sprint Refactor PRD specification")
+
     args = parser.parse_args()
 
     if args.command == "seed":
@@ -291,6 +336,10 @@ def app() -> None:
         cmd_msg(args)
     elif args.command == "listen":
         cmd_listen(args)
+    elif args.command == "demo":
+        cmd_demo(args)
+    elif args.command == "export":
+        cmd_export(args)
     else:
         parser.print_help()
 
