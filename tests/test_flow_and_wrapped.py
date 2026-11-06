@@ -90,3 +90,4 @@ def test_generate_wrapped_html(repo: SnowPadRepository, tmp_path: Path) -> None:
     assert team_file.exists()
     team_content = team_file.read_text(encoding="utf-8")
     assert "The Entire Engineering & Product Team" in team_content
+

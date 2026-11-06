@@ -3,455 +3,492 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SnowPad Feature Lifecycle Flow</title>
+  <title>SnowPad Scope Board</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
     .mono { font-family: 'JetBrains Mono', monospace; }
-    
-    /* Flow connector canvas styling */
-    .flow-card {
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Jira / Linear style board column styling */
+    .kanban-col {
+      background-color: #121214;
+      border: 1px solid #27272A;
     }
-    .flow-card.selected {
-      border-color: #FF5A36 !important;
-      box-shadow: 0 0 25px rgba(255, 90, 54, 0.35);
-      transform: translateY(-2px);
+    .ticket-card {
+      background-color: #18181B;
+      border: 1px solid #27272A;
+      transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .flow-card.dimmed {
-      opacity: 0.35;
-      filter: grayscale(0.6);
+    .ticket-card:hover {
+      border-color: #3F3F46;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #121316; }
-    ::-webkit-scrollbar-thumb { background: #262830; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #3d414d; }
+    .ticket-card.selected {
+      border-color: #10B981 !important;
+      background-color: #1a1e1c;
+      box-shadow: 0 0 0 1px #10B981;
+    }
+
+    /* Clean custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #09090B; }
+    ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3F3F46; }
   </style>
 </head>
-<body class="bg-[#121316] text-[#FAF8F5] min-h-screen flex flex-col antialiased selection:bg-[#FF5A36] selection:text-[#FAF8F5]">
+<body class="bg-[#09090B] text-[#FAFAFA] min-h-screen flex flex-col antialiased selection:bg-[#10B981] selection:text-black">
 
-  <!-- Top Navigation Header -->
-  <header class="border-b border-[#262830] bg-[#16171b]/90 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-40">
-    <div class="flex items-center space-x-3.5">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#FF5A36] to-[#FF7A45] flex items-center justify-center shadow-lg shadow-orange-500/20 font-bold text-lg text-[#FAF8F5]">
+  <!-- Top Navigation Header (Linear / Jira Minimalist) -->
+  <header class="border-b border-[#27272A] bg-[#0E0E10] px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center space-x-4">
+      <div class="w-7 h-7 rounded-lg bg-[#10B981] flex items-center justify-center font-bold text-sm text-black">
         ❄
       </div>
       <div>
-        <h1 class="text-base font-bold tracking-tight flex items-center gap-2 text-[#FAF8F5]">
-          SnowPad Lifecycle Flow
-          <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#24262E] text-[#D8D4CB] border border-[#363945] font-mono font-medium">Traceability</span>
-        </h1>
-        <p class="text-xs text-[#A49E94]">End-to-End Journey from Chat Spark to Sprint SLA</p>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono text-[#A1A1AA]">WORKSPACE /</span>
+          <h1 class="text-sm font-semibold tracking-tight text-white">Scope Board</h1>
+          <span class="text-[11px] px-2 py-0.5 rounded bg-[#18181B] text-[#10B981] border border-[#27272A] font-mono font-medium">Sprint Active</span>
+        </div>
       </div>
     </div>
 
     <!-- View Switcher Tabs -->
-    <nav class="flex items-center space-x-1 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono">
-      <a href="radar.html" class="px-3.5 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition flex items-center gap-1.5">
-        <span>🎯</span> Scope Radar
+    <nav class="flex items-center space-x-1 bg-[#121214] p-1 rounded-lg border border-[#27272A] text-xs font-mono">
+      <a href="radar.html" class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>🎯</span> Radar
       </a>
-      <a href="flow.html" class="px-3.5 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition flex items-center gap-1.5 shadow-md shadow-orange-500/20">
-        <span>🔀</span> Lifecycle Flow
+      <a href="flow.html" class="px-3 py-1 rounded bg-[#27272A] text-white font-medium transition flex items-center gap-1.5">
+        <span>📋</span> Board
       </a>
-      <a href="wrapped.html" target="_blank" class="px-3.5 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition flex items-center gap-1.5">
-        <span>🎁</span> Q4 Wrapped
+      <a href="wrapped.html" target="_blank" class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>🎁</span> Wrapped
       </a>
     </nav>
 
-    <!-- Channel Filter Pills -->
-    <div class="hidden xl:flex items-center space-x-1.5 bg-[#1A1C22] p-1.5 rounded-xl border border-[#262830] text-xs font-mono" id="channelFilters">
-      <button class="filter-btn px-3 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition" data-channel="ALL">All Channels</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#product-ideas">#product-ideas</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#backend-core] text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#backend-core">#backend-core</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#growth-experiments">#growth-experiments</button>
-      <button class="filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition" data-channel="#frontend-chatter">#frontend-chatter</button>
+    <!-- Right: Workspace Status Pill -->
+    <div class="flex items-center space-x-2 text-xs font-mono bg-[#18181B] border border-[#27272A] px-3 py-1.5 rounded-lg text-[#A1A1AA]">
+      <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+      <span class="text-white font-medium">Real-Time Sync</span>
     </div>
   </header>
 
-  <!-- Subheader Overview Metrics -->
-  <div class="border-b border-[#262830] bg-[#16171B]/50 px-6 py-3">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
-      <div class="flex items-center gap-6">
-        <span class="text-[#A49E94]">Click any feature below to highlight its journey path:</span>
-        <div class="flex items-center gap-4">
-          <span class="flex items-center gap-1.5 text-[#10B981]"><span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span> Inside Circle (Delivered)</span>
-          <span class="flex items-center gap-1.5 text-[#EAB308]"><span class="w-2.5 h-2.5 rounded-full bg-[#EAB308]"></span> Borderline Debate</span>
-          <span class="flex items-center gap-1.5 text-[#848995]"><span class="w-2.5 h-2.5 rounded-full bg-[#848995]"></span> Parked Whim (Shielded)</span>
+  <!-- Filter & Controls Toolbar (Jira style) -->
+  <div class="border-b border-[#27272A] bg-[#0E0E10] px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+      <div class="flex items-center gap-3">
+        <!-- Search Input -->
+        <div class="relative">
+          <input type="text" id="searchInput" placeholder="Filter issues..." class="bg-[#18181B] border border-[#27272A] text-white placeholder-[#71717A] text-xs rounded-md px-3 py-1.5 w-52 focus:outline-none focus:border-[#10B981] transition font-sans">
+        </div>
+
+        <div class="h-4 w-px bg-[#27272A]"></div>
+
+        <!-- Channel Pills -->
+        <div class="flex items-center space-x-1" id="channelPills">
+          <button class="filter-pill px-2.5 py-1 rounded bg-[#27272A] text-white font-medium transition" data-channel="ALL">All</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition" data-channel="#product-ideas">#product-ideas</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition" data-channel="#backend-core">#backend-core</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition" data-channel="#growth-experiments">#growth-experiments</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition" data-channel="#frontend-chatter">#frontend-chatter</button>
         </div>
       </div>
-      <div class="text-[#FF7A45]">
-        <span id="activeSelectionLabel">Showing All Active Flows</span>
+
+      <!-- Quick Metrics Summary -->
+      <div class="flex items-center gap-4 text-[#A1A1AA]">
+        <span>Total: <strong class="text-white" id="statTotal">6</strong></span>
+        <span>Confirmed: <strong class="text-[#10B981]" id="statConfirmed">2</strong></span>
+        <span>Debates: <strong class="text-white" id="statDebates">2</strong></span>
+        <span>Parked: <strong class="text-[#71717A]" id="statParked">2</strong></span>
       </div>
     </div>
   </div>
 
-  <!-- Flowchart Visual Canvas & Columns -->
-  <main class="flex-1 p-6 max-w-7xl mx-auto w-full flex flex-col relative">
+  <!-- Main Kanban Board Grid -->
+  <main class="flex-1 p-6 max-w-7xl mx-auto w-full flex flex-col relative overflow-x-auto">
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1 items-start min-w-[900px]">
 
-    <!-- 5 Horizontal Stages Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10" id="stagesContainer">
-
-      <!-- STAGE 1: ORIGIN CHANNELS -->
-      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
-        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
-          <span class="text-[11px] font-mono text-[#FF7A45] font-bold uppercase tracking-wider">1. Origin Channel</span>
-          <span class="text-xs">💬</span>
+      <!-- COLUMN 1: INCOMING CHATTER -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#71717A]"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[#A1A1AA]">Incoming Chatter</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#18181B] text-[#A1A1AA] border border-[#27272A]" id="count-incoming">6</span>
         </div>
-        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Where conversations spark in Slack or Discord threads</p>
-        
-        <div class="space-y-3 flex-1" id="col-channels">
-          <!-- Dynamic Channel Cards -->
-        </div>
-      </div>
-
-      <!-- STAGE 2: CHAT SIGNALS & PROPOSALS -->
-      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
-        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
-          <span class="text-[11px] font-mono text-[#FAF8F5] font-bold uppercase tracking-wider">2. Team Proposal</span>
-          <span class="text-xs">💡</span>
-        </div>
-        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Captured idea, ad-hoc change, or spontaneous tweak</p>
-
-        <div class="space-y-3 flex-1" id="col-proposals">
-          <!-- Dynamic Proposal Cards -->
+        <div class="space-y-2.5 flex-1" id="col-incoming">
+          <!-- Dynamically populated -->
         </div>
       </div>
 
-      <!-- STAGE 3: RAY-TRACING AUDIT -->
-      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
-        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
-          <span class="text-[11px] font-mono text-[#FF5A36] font-bold uppercase tracking-wider">3. Ray-Tracing Audit</span>
-          <span class="text-xs">🎯</span>
+      <!-- COLUMN 2: UNDER DEBATE -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-white"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-white">Under Debate</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#18181B] text-white border border-[#27272A]" id="count-debates">2</span>
         </div>
-        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Uncertainty scored (0–100%) &amp; tested against core SLAs</p>
-
-        <div class="space-y-3 flex-1" id="col-audits">
-          <!-- Dynamic Audit Cards -->
-        </div>
-      </div>
-
-      <!-- STAGE 4: SCOPE HORIZON -->
-      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
-        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
-          <span class="text-[11px] font-mono text-[#EAB308] font-bold uppercase tracking-wider">4. Scope Horizon</span>
-          <span class="text-xs">⭕</span>
-        </div>
-        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Positioned on the radar by radial scope distance</p>
-
-        <div class="space-y-3 flex-1" id="col-horizons">
-          <!-- Dynamic Horizon Cards -->
+        <div class="space-y-2.5 flex-1" id="col-debates">
+          <!-- Dynamically populated -->
         </div>
       </div>
 
-      <!-- STAGE 5: RESOLUTION & IMPACT -->
-      <div class="bg-[#16171B]/80 border border-[#262830] rounded-2xl p-4 flex flex-col">
-        <div class="flex items-center justify-between pb-3 border-b border-[#262830] mb-3">
-          <span class="text-[11px] font-mono text-[#10B981] font-bold uppercase tracking-wider">5. Business Impact</span>
-          <span class="text-xs">⚡</span>
+      <!-- COLUMN 3: CONFIRMED SCOPE (GREEN) -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px] border-[#10B981]/40 bg-[#10B981]/[0.02]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[#10B981]">Confirmed Scope</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30" id="count-confirmed">2</span>
         </div>
-        <p class="text-[11px] text-[#A49E94] mb-3 leading-snug">Committed to sprint, PRD refactor, or shielded focus</p>
+        <div class="space-y-2.5 flex-1" id="col-confirmed">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
 
-        <div class="space-y-3 flex-1" id="col-resolutions">
-          <!-- Dynamic Resolution Cards -->
+      <!-- COLUMN 4: PARKED WHIMS -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#52525B]"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[#71717A]">Parked Whims</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#18181B] text-[#71717A] border border-[#27272A]" id="count-parked">2</span>
+        </div>
+        <div class="space-y-2.5 flex-1" id="col-parked">
+          <!-- Dynamically populated -->
         </div>
       </div>
 
     </div>
 
-    <!-- Active Feature Journey Detail Bar (Appears when clicked) -->
-    <div id="journeyDrawer" class="mt-6 bg-[#16171B] border border-[#FF5A36]/40 rounded-2xl p-5 shadow-2xl transition-all duration-300 hidden">
-      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-4 border-b border-[#262830]">
-        <div>
-          <div class="flex items-center gap-2">
-            <span id="drawerBadge" class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#FF5A36]/20 text-[#FF5A36]">INSIDE CIRCLE</span>
-            <span class="text-xs font-mono text-[#A49E94]" id="drawerSignalId">sig_feat_001</span>
-          </div>
-          <h2 class="text-xl font-bold text-white mt-1" id="drawerTitle">Batched Settlement Engine</h2>
+    <!-- Slide-in Issue Detail Drawer (Jira Style) -->
+    <div id="issueDrawer" class="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-[#121214] border-l border-[#27272A] p-6 shadow-2xl z-50 transform translate-x-full transition-transform duration-200 flex flex-col overflow-y-auto">
+      
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-[#27272A]">
+        <div class="flex items-center gap-2.5">
+          <span id="drawerKey" class="text-xs font-mono font-bold text-[#10B981]">SNOW-01</span>
+          <span class="text-[#52525B]">/</span>
+          <span id="drawerStatusBadge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] font-semibold border border-[#10B981]/30">CONFIRMED</span>
         </div>
-        <button id="closeDrawerBtn" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-[#24262E] hover:bg-[#343743] text-[#D8D4CB] transition">
-          ✕ Clear Selection
+        <button id="closeDrawerBtn" class="w-7 h-7 rounded-md hover:bg-[#27272A] text-[#A1A1AA] hover:text-white flex items-center justify-center transition">
+          ✕
         </button>
       </div>
 
-      <!-- Horizontal Step Tracker in Drawer -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 text-xs font-mono">
-        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
-          <span class="text-[#A49E94]">Origin &amp; Author:</span>
-          <p class="text-white font-bold mt-1 text-sm" id="drawerAuthor">Maya Patel</p>
-          <p class="text-[#FF7A45] text-xs" id="drawerChannel">#product-ideas</p>
+      <!-- Drawer Content -->
+      <div class="py-5 space-y-5 flex-1">
+        <div>
+          <h3 id="drawerTitle" class="text-lg font-bold text-white leading-snug">Batched Settlement Engine</h3>
+          <p id="drawerChannel" class="text-xs font-mono text-[#A1A1AA] mt-1">Origin: #product-ideas</p>
         </div>
-        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
-          <span class="text-[#A49E94]">Ray-Tracing Confidence:</span>
-          <p class="text-[#10B981] font-bold mt-1 text-sm" id="drawerUncertainty">15% Uncertainty</p>
-          <p class="text-[#A49E94] text-xs" id="drawerConfidence">High Certainty (SLA Match)</p>
+
+        <!-- Raw Chat Quote -->
+        <div class="bg-[#18181B] border border-[#27272A] rounded-lg p-3.5">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-[#71717A] font-bold">Chat Proposal Spark</span>
+          <p id="drawerQuote" class="text-xs text-[#E4E4E7] mt-1.5 leading-relaxed italic">"Proposing Batched Settlement Engine: benchmarked p95 latency drops by 120ms on Stripe batching, PR ready."</p>
+          <div class="flex items-center gap-2 mt-3 pt-2.5 border-t border-[#27272A] text-[11px] text-[#A1A1AA]">
+            <span class="w-4 h-4 rounded-full bg-[#27272A] text-white flex items-center justify-center text-[9px] font-bold" id="drawerAvatar">M</span>
+            <span id="drawerAuthor" class="font-medium text-white">Maya Patel</span>
+            <span class="text-[#52525B]">•</span>
+            <span id="drawerRole">Product Architect</span>
+          </div>
         </div>
-        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
-          <span class="text-[#A49E94]">Scope Resolution:</span>
-          <p class="text-white font-bold mt-1 text-sm" id="drawerResolution">Approved for Sprint-42</p>
-          <p class="text-[#A49E94] text-xs" id="drawerTarget">Target: Sprint-42</p>
+
+        <!-- Audit & Decision Metrics -->
+        <div class="grid grid-cols-2 gap-3 text-xs font-mono">
+          <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+            <span class="text-[10px] text-[#71717A] uppercase">Uncertainty</span>
+            <p id="drawerUncertainty" class="text-base font-bold text-[#10B981] mt-0.5">15%</p>
+            <span class="text-[10px] text-[#A1A1AA]">High Certainty</span>
+          </div>
+          <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+            <span class="text-[10px] text-[#71717A] uppercase">Radar Horizon</span>
+            <p id="drawerHorizon" class="text-base font-bold text-white mt-0.5">r = 0.25</p>
+            <span class="text-[10px] text-[#A1A1AA]">Inside Circle</span>
+          </div>
         </div>
-        <div class="bg-[#121316] p-3 rounded-xl border border-[#262830]">
-          <span class="text-[#A49E94]">Verified Impact:</span>
-          <p class="text-[#10B981] font-bold mt-1 text-sm" id="drawerImpact">-122.0 ms p95 response time</p>
-          <p class="text-[#A49E94] text-xs" id="drawerMetricName">billing-service batch run</p>
+
+        <!-- Business & Telemetry Impact -->
+        <div class="bg-[#18181B] border border-[#27272A] rounded-lg p-3.5 space-y-2">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-[#71717A] font-bold">Verified Impact</span>
+          <p id="drawerImpact" class="text-xs font-medium text-[#10B981] leading-relaxed">-122.0 ms p95 response time saved</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-[#A1A1AA] pt-2 border-t border-[#27272A]">
+            <span>Target Destination:</span>
+            <strong id="drawerTarget" class="text-white">Sprint-42</strong>
+          </div>
         </div>
       </div>
+
+      <!-- Drawer Footer -->
+      <div class="pt-4 border-t border-[#27272A] flex items-center justify-between text-xs font-mono text-[#71717A]">
+        <span>SnowPad Decision Ledger</span>
+        <button id="copyDrawerBtn" class="px-3 py-1.5 rounded bg-[#27272A] hover:bg-[#3F3F46] text-white transition">
+          Copy Context
+        </button>
+      </div>
+
     </div>
 
   </main>
 
   <script>
-    // Canonical flow dataset
-    const featureFlows = [
+    const issues = [
       {
-        id: "sig_feat_001",
+        key: "SNOW-101",
         title: "Batched Settlement Engine",
         author: "Maya Patel",
         role: "Principal Product Architect",
+        avatar: "M",
         channel: "#product-ideas",
-        rawQuote: "Proposing Batched Settlement Engine: benchmarked p95 latency drops by 120ms on Stripe batching, PR ready.",
+        quote: "Proposing Batched Settlement Engine: benchmarked p95 latency drops by 120ms on Stripe batching, PR ready.",
         uncertaintyPct: 15,
-        confidence: "High Certainty",
-        scopeStatus: "INSIDE_CIRCLE",
-        scopeDistance: 0.25,
-        resolution: "APPROVED_FOR_SPRINT",
-        target: "Sprint-42",
-        impact: "-122.0 ms p95 response time saved on /api/v1/settlements",
-        impactType: "PERFORMANCE_WIN",
-        color: "#10B981"
+        horizon: "r = 0.25",
+        status: "CONFIRMED",
+        column: "confirmed",
+        impact: "⚡ -122.0 ms p95 response time saved",
+        target: "Sprint-42"
       },
       {
-        id: "sig_arch_002",
-        title: "Redis Redlock on Checkout",
+        key: "SNOW-102",
+        title: "Redis Redlock on /checkout",
         author: "Alex Chen",
         role: "Staff Backend Engineer",
+        avatar: "A",
         channel: "#backend-core",
-        rawQuote: "Row-level PostgreSQL locks were causing 504 timeouts during flash sales. Proposing Redis Redlock pipeline.",
+        quote: "Row-level PostgreSQL locks were causing 504 timeouts during flash sales. Replaced with distributed Redis Redlock.",
         uncertaintyPct: 30,
-        confidence: "High Certainty",
-        scopeStatus: "INSIDE_CIRCLE",
-        scopeDistance: 0.40,
-        resolution: "APPROVED_FOR_SPRINT",
-        target: "Sprint-41",
-        impact: "Eliminated 504 gateway timeouts on /checkout (-635ms lock time)",
-        impactType: "PERFORMANCE_WIN",
-        color: "#10B981"
+        horizon: "r = 0.40",
+        status: "CONFIRMED",
+        column: "confirmed",
+        impact: "⚡ Eliminated 504 gateway timeouts (-635ms)",
+        target: "Sprint-41"
       },
       {
-        id: "sig_piv_003",
+        key: "SNOW-103",
         title: "1-Click Social Sign-in",
         author: "Sam Torres",
         role: "Lead Product Manager",
+        avatar: "S",
         channel: "#growth-experiments",
-        rawQuote: "What if we deprecate multi-step onboarding wizard for 1-click social sign-in? Might boost conversion by 18%.",
+        quote: "What if we deprecate multi-step onboarding wizard for 1-click social sign-in? Might boost conversion by 18%.",
         uncertaintyPct: 55,
-        confidence: "Active Debate",
-        scopeStatus: "BORDERLINE",
-        scopeDistance: 0.85,
-        resolution: "UNDER_DEBATE",
-        target: "Backlog / RFC",
-        impact: "Scheduled for fraud risk vs conversion evaluation in sprint PRD",
-        impactType: "RFC_PENDING",
-        color: "#EAB308"
+        horizon: "r = 0.85",
+        status: "UNDER_DEBATE",
+        column: "debates",
+        impact: "📄 PRD RFC: +18% signup vs unknown fraud risk",
+        target: "Backlog / RFC"
       },
       {
-        id: "sig_arch_004",
-        title: "Migrate SQS to Apache Kafka",
+        key: "SNOW-104",
+        title: "SQS to Kafka Audit Stream",
         author: "Alex Chen",
         role: "Staff Backend Engineer",
+        avatar: "A",
         channel: "#backend-core",
-        rawQuote: "SQS costs spiking on 10k req/sec peak. Proposing Kafka sidecar: estimated $1,400/mo AWS saving.",
+        quote: "SQS costs spiking on 10k req/sec peak. Proposing Kafka sidecar: estimated $1,400/mo AWS saving.",
         uncertaintyPct: 60,
-        confidence: "Active Debate",
-        scopeStatus: "BORDERLINE",
-        scopeDistance: 0.92,
-        resolution: "UNDER_DEBATE",
-        target: "Sprint-43 PRD",
-        impact: "2-week migration risk vs $1,400/mo AWS saving logged in PRD",
-        impactType: "RFC_PENDING",
-        color: "#EAB308"
+        horizon: "r = 0.92",
+        status: "UNDER_DEBATE",
+        column: "debates",
+        impact: "📄 PRD RFC: $1,400/mo AWS saving vs 2-week risk",
+        target: "Sprint-43 PRD"
       },
       {
-        id: "sig_whim_005",
+        key: "SNOW-105",
         title: "Confetti on Order Success",
         author: "Jordan Lee",
         role: "Senior UI Engineer",
+        avatar: "J",
         channel: "#frontend-chatter",
-        rawQuote: "Hey, wouldn't it be cute if confetti burst on every purchase? Thinking of adding a quick Lottie animation.",
+        quote: "Hey, wouldn't it be cute if confetti burst on checkout? Thinking of adding a quick Lottie animation this afternoon.",
         uncertaintyPct: 88,
-        confidence: "Casual Whim",
-        scopeStatus: "OUTSIDE_CIRCLE",
-        scopeDistance: 1.60,
-        resolution: "PARKED_AS_WHIM",
-        target: "Quarantined",
-        impact: "Shielded critical client bundle from +140kb bloat; saved 34 dev hours",
-        impactType: "CHURN_SHIELDED",
-        color: "#848995"
+        horizon: "r = 1.60",
+        status: "PARKED",
+        column: "parked",
+        impact: "🛡️ Protected client bundle from +140kb bloat",
+        target: "Quarantined"
       },
       {
-        id: "sig_whim_006",
-        title: "Neon Theme for Admin Panel",
+        key: "SNOW-106",
+        title: "Neon Dark Theme for Admin",
         author: "Jordan Lee",
         role: "Senior UI Engineer",
+        avatar: "J",
         channel: "#frontend-chatter",
-        rawQuote: "Thinking of redesigning the internal admin drawer with a custom neon dark theme this afternoon.",
+        quote: "Thinking of redesigning the internal admin drawer with a custom neon dark theme this afternoon.",
         uncertaintyPct: 85,
-        confidence: "Casual Whim",
-        scopeStatus: "OUTSIDE_CIRCLE",
-        scopeDistance: 1.65,
-        resolution: "PARKED_AS_WHIM",
-        target: "Quarantined",
-        impact: "Protected 22 hours of sprint focus from non-critical UI rewrite",
-        impactType: "CHURN_SHIELDED",
-        color: "#848995"
+        horizon: "r = 1.65",
+        status: "PARKED",
+        column: "parked",
+        impact: "🛡️ Shielded 22 hours of sprint focus",
+        target: "Quarantined"
       }
     ];
 
-    let selectedFeatureId = null;
-    let activeChannelFilter = "ALL";
+    let selectedKey = null;
+    let channelFilter = "ALL";
+    let searchQuery = "";
 
-    function renderStages() {
-      const colChannels = document.getElementById("col-channels");
-      const colProposals = document.getElementById("col-proposals");
-      const colAudits = document.getElementById("col-audits");
-      const colHorizons = document.getElementById("col-horizons");
-      const colResolutions = document.getElementById("col-resolutions");
+    function renderBoard() {
+      const colIncoming = document.getElementById("col-incoming");
+      const colDebates = document.getElementById("col-debates");
+      const colConfirmed = document.getElementById("col-confirmed");
+      const colParked = document.getElementById("col-parked");
 
-      colChannels.innerHTML = "";
-      colProposals.innerHTML = "";
-      colAudits.innerHTML = "";
-      colHorizons.innerHTML = "";
-      colResolutions.innerHTML = "";
+      colIncoming.innerHTML = "";
+      colDebates.innerHTML = "";
+      colConfirmed.innerHTML = "";
+      colParked.innerHTML = "";
 
-      const filtered = featureFlows.filter(f => activeChannelFilter === "ALL" || f.channel === activeChannelFilter);
-
-      filtered.forEach(feat => {
-        const isSel = selectedFeatureId === feat.id;
-        const isDim = selectedFeatureId !== null && selectedFeatureId !== feat.id;
-
-        const cardBaseClass = `flow-card p-3 rounded-xl border bg-[#121316] cursor-pointer transition ${isSel ? 'selected' : isDim ? 'dimmed' : 'border-[#262830] hover:border-[#3d414d]'}`;
-
-        // 1. Channel Node
-        const chEl = document.createElement("div");
-        chEl.className = cardBaseClass;
-        chEl.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-bold text-[#FF7A45]">${feat.channel}</span>
-            <span class="w-2 h-2 rounded-full" style="background-color: ${feat.color}"></span>
-          </div>
-          <p class="text-[11px] text-[#A49E94] mt-1 truncate">${feat.author}</p>
-        `;
-        chEl.addEventListener("click", () => selectFeature(feat.id));
-        colChannels.appendChild(chEl);
-
-        // 2. Proposal Node
-        const propEl = document.createElement("div");
-        propEl.className = cardBaseClass;
-        propEl.innerHTML = `
-          <h4 class="text-xs font-bold text-white truncate">${feat.title}</h4>
-          <p class="text-[10px] text-[#A49E94] mt-1 line-clamp-2">"${feat.rawQuote}"</p>
-        `;
-        propEl.addEventListener("click", () => selectFeature(feat.id));
-        colProposals.appendChild(propEl);
-
-        // 3. Ray-Tracing Audit Node
-        const auditEl = document.createElement("div");
-        auditEl.className = cardBaseClass;
-        auditEl.innerHTML = `
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span class="font-bold" style="color: ${feat.color}">${feat.uncertaintyPct}% Unc.</span>
-            <span class="text-[10px] text-[#A49E94]">${feat.confidence}</span>
-          </div>
-          <div class="w-full h-1.5 bg-[#1F2128] rounded-full mt-2 overflow-hidden">
-            <div class="h-full rounded-full" style="width: ${feat.uncertaintyPct}%; background-color: ${feat.color}"></div>
-          </div>
-        `;
-        auditEl.addEventListener("click", () => selectFeature(feat.id));
-        colAudits.appendChild(auditEl);
-
-        // 4. Horizon Node
-        const horizEl = document.createElement("div");
-        horizEl.className = cardBaseClass;
-        horizEl.innerHTML = `
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span class="font-bold text-white">${feat.scopeStatus}</span>
-            <span class="text-[10px] text-[#A49E94]">r = ${feat.scopeDistance}</span>
-          </div>
-          <p class="text-[10px] text-[#A49E94] mt-1 truncate">${feat.scopeStatus === 'INSIDE_CIRCLE' ? 'Core Focus (r ≤ 1.0)' : feat.scopeStatus === 'BORDERLINE' ? 'Debate Ring' : 'Outer Orbit'}</p>
-        `;
-        horizEl.addEventListener("click", () => selectFeature(feat.id));
-        colHorizons.appendChild(horizEl);
-
-        // 5. Resolution & Impact Node
-        const resEl = document.createElement("div");
-        resEl.className = cardBaseClass;
-        resEl.innerHTML = `
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span class="font-bold text-white truncate">${feat.resolution}</span>
-          </div>
-          <p class="text-[10px] mt-1 leading-snug line-clamp-2" style="color: ${feat.color}">${feat.impact}</p>
-        `;
-        resEl.addEventListener("click", () => selectFeature(feat.id));
-        colResolutions.appendChild(resEl);
+      const filtered = issues.filter(item => {
+        const matchChannel = channelFilter === "ALL" || item.channel === channelFilter;
+        const matchSearch = !searchQuery || 
+          item.title.toLowerCase().includes(searchQuery) ||
+          item.key.toLowerCase().includes(searchQuery) ||
+          item.author.toLowerCase().includes(searchQuery);
+        return matchChannel && matchSearch;
       });
-    }
 
-    function selectFeature(id) {
-      if (selectedFeatureId === id) {
-        selectedFeatureId = null;
-        document.getElementById("journeyDrawer").classList.add("hidden");
-        document.getElementById("activeSelectionLabel").textContent = "Showing All Active Flows";
-      } else {
-        selectedFeatureId = id;
-        const feat = featureFlows.find(f => f.id === id);
-        if (feat) {
-          document.getElementById("drawerTitle").textContent = feat.title;
-          document.getElementById("drawerSignalId").textContent = feat.id;
-          document.getElementById("drawerAuthor").textContent = `${feat.author} (${feat.role})`;
-          document.getElementById("drawerChannel").textContent = feat.channel;
-          document.getElementById("drawerUncertainty").textContent = `${feat.uncertaintyPct}% Uncertainty`;
-          document.getElementById("drawerConfidence").textContent = feat.confidence;
-          document.getElementById("drawerResolution").textContent = feat.resolution;
-          document.getElementById("drawerTarget").textContent = `Target: ${feat.target}`;
-          document.getElementById("drawerImpact").textContent = feat.impact;
-          document.getElementById("drawerMetricName").textContent = `Raw Chat Spark: "${feat.rawQuote}"`;
-          
-          const badge = document.getElementById("drawerBadge");
-          badge.textContent = feat.scopeStatus;
-          badge.style.backgroundColor = `${feat.color}25`;
-          badge.style.color = feat.color;
+      // Update counters
+      document.getElementById("statTotal").textContent = filtered.length;
+      document.getElementById("statConfirmed").textContent = filtered.filter(i => i.column === "confirmed").length;
+      document.getElementById("statDebates").textContent = filtered.filter(i => i.column === "debates").length;
+      document.getElementById("statParked").textContent = filtered.filter(i => i.column === "parked").length;
 
-          document.getElementById("journeyDrawer").classList.remove("hidden");
-          document.getElementById("activeSelectionLabel").textContent = `Highlighted Flow: ${feat.title}`;
+      document.getElementById("count-incoming").textContent = filtered.length;
+      document.getElementById("count-debates").textContent = filtered.filter(i => i.column === "debates").length;
+      document.getElementById("count-confirmed").textContent = filtered.filter(i => i.column === "confirmed").length;
+      document.getElementById("count-parked").textContent = filtered.filter(i => i.column === "parked").length;
+
+      filtered.forEach(item => {
+        // Create ticket card element
+        const card = document.createElement("div");
+        const isSelected = selectedKey === item.key;
+        card.className = `ticket-card p-3 rounded-lg cursor-pointer ${isSelected ? 'selected' : ''}`;
+        
+        const statusColor = item.status === "CONFIRMED" ? "text-[#10B981]" : item.status === "UNDER_DEBATE" ? "text-white" : "text-[#71717A]";
+        const uncColor = item.uncertaintyPct <= 35 ? "text-[#10B981]" : item.uncertaintyPct <= 65 ? "text-white" : "text-[#71717A]";
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-[11px] font-mono mb-1.5">
+            <span class="font-semibold text-[#A1A1AA] hover:underline">${item.key}</span>
+            <span class="text-[#71717A] text-[10px]">${item.channel}</span>
+          </div>
+          <h4 class="text-xs font-semibold text-white leading-snug mb-1.5">${item.title}</h4>
+          <p class="text-[11px] text-[#71717A] line-clamp-2 leading-relaxed mb-3">"${item.quote}"</p>
+          <div class="flex items-center justify-between pt-2 border-t border-[#27272A] text-[11px] font-mono">
+            <div class="flex items-center gap-1.5">
+              <span class="w-4 h-4 rounded-full bg-[#27272A] text-white flex items-center justify-center text-[9px] font-bold">${item.avatar}</span>
+              <span class="text-[#A1A1AA] text-[10px] truncate max-w-[75px]">${item.author.split(' ')[0]}</span>
+            </div>
+            <span class="${uncColor} font-medium">${item.uncertaintyPct}% Unc</span>
+          </div>
+        `;
+
+        card.addEventListener("click", () => openDrawer(item));
+
+        // Add to Incoming column (all items originate here)
+        colIncoming.appendChild(card.cloneNode(true));
+        colIncoming.lastChild.addEventListener("click", () => openDrawer(item));
+
+        // Add to their specific workflow stage column
+        if (item.column === "confirmed") {
+          colConfirmed.appendChild(card);
+        } else if (item.column === "debates") {
+          colDebates.appendChild(card);
+        } else if (item.column === "parked") {
+          colParked.appendChild(card);
         }
-      }
-      renderStages();
+      });
     }
 
-    document.getElementById("closeDrawerBtn").addEventListener("click", () => {
-      selectedFeatureId = null;
-      document.getElementById("journeyDrawer").classList.add("hidden");
-      document.getElementById("activeSelectionLabel").textContent = "Showing All Active Flows";
-      renderStages();
+    function openDrawer(item) {
+      selectedKey = item.key;
+      document.getElementById("drawerKey").textContent = item.key;
+      document.getElementById("drawerTitle").textContent = item.title;
+      document.getElementById("drawerChannel").textContent = `Origin: ${item.channel}`;
+      document.getElementById("drawerQuote").textContent = `"${item.quote}"`;
+      document.getElementById("drawerAuthor").textContent = item.author;
+      document.getElementById("drawerRole").textContent = item.role;
+      document.getElementById("drawerAvatar").textContent = item.avatar;
+      document.getElementById("drawerUncertainty").textContent = `${item.uncertaintyPct}%`;
+      document.getElementById("drawerHorizon").textContent = item.horizon;
+      document.getElementById("drawerImpact").textContent = item.impact;
+      document.getElementById("drawerTarget").textContent = item.target;
+
+      const badge = document.getElementById("drawerStatusBadge");
+      badge.textContent = item.status;
+      if (item.status === "CONFIRMED") {
+        badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] font-semibold border border-[#10B981]/30";
+      } else if (item.status === "UNDER_DEBATE") {
+        badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-white/10 text-white font-semibold border border-white/20";
+      } else {
+        badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-[#27272A] text-[#71717A] font-semibold border border-[#3F3F46]";
+      }
+
+      document.getElementById("issueDrawer").classList.remove("translate-x-full");
+      renderBoard();
+    }
+
+    function closeDrawer() {
+      selectedKey = null;
+      document.getElementById("issueDrawer").classList.add("translate-x-full");
+      renderBoard();
+    }
+
+    document.getElementById("closeDrawerBtn").addEventListener("click", closeDrawer);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeDrawer();
     });
 
-    document.querySelectorAll(".filter-btn").forEach(btn => {
+    // Channel Filters
+    document.querySelectorAll(".filter-pill").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn").forEach(b => {
-          b.className = "filter-btn px-3 py-1.5 rounded-lg text-[#A49E94] hover:text-[#FAF8F5] transition";
+        document.querySelectorAll(".filter-pill").forEach(b => {
+          b.className = "filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition";
         });
-        btn.className = "filter-btn px-3 py-1.5 rounded-lg bg-[#FF5A36] text-[#FAF8F5] font-semibold transition";
-        activeChannelFilter = btn.dataset.channel;
-        renderStages();
+        btn.className = "filter-pill px-2.5 py-1 rounded bg-[#27272A] text-white font-medium transition";
+        channelFilter = btn.dataset.channel;
+        renderBoard();
       });
     });
 
-    // Initial render
-    renderStages();
+    // Search Input Filter
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderBoard();
+    });
+
+    // Copy context button
+    document.getElementById("copyDrawerBtn").addEventListener("click", () => {
+      const item = issues.find(i => i.key === selectedKey);
+      if (!item) return;
+      const copyText = `[${item.key}] ${item.title}
+Origin: ${item.channel} by ${item.author} (${item.role})
+Status: ${item.status} | Uncertainty: ${item.uncertaintyPct}%
+Quote: "${item.quote}"
+Impact: ${item.impact}`;
+
+      navigator.clipboard.writeText(copyText).then(() => {
+        const btn = document.getElementById("copyDrawerBtn");
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = "Copy Context"; }, 2000);
+      });
+    });
+
+    // Initial load
+    renderBoard();
   </script>
 </body>
 </html>

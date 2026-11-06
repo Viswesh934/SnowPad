@@ -101,8 +101,8 @@ def build_wrapped_data(repo: SnowPadRepository, actor_id: Optional[str] = None, 
             "emoji": "🎯",
             "tagline": "Zero Fluff. Precision Execution.",
             "description": "You treat p95 latency like a personal vendetta. When you speak in chat, PRs merge and response times plummet.",
-            "aura_color": "#FF5A36",
-            "aura_secondary": "#FF7A45",
+            "aura_color": "#10B981",
+            "aura_secondary": "#059669",
             "soundtrack": "Lo-Fi Beats to Refactor Payment Microservices To",
         }
     elif whims_count >= 2:
@@ -112,7 +112,7 @@ def build_wrapped_data(repo: SnowPadRepository, actor_id: Optional[str] = None, 
             "tagline": "The Shield Against Scope Creep.",
             "description": "When spontaneous midnight whims threaten the sprint, you stand your ground. You saved the team over 40 hours of aimless churn.",
             "aura_color": "#10B981",
-            "aura_secondary": "#34D399",
+            "aura_secondary": "#047857",
             "soundtrack": "Epic Orchestral with Noise-Cancelling Headphones",
         }
     elif debates_count >= 1:
@@ -121,8 +121,8 @@ def build_wrapped_data(repo: SnowPadRepository, actor_id: Optional[str] = None, 
             "emoji": "🧠",
             "tagline": "The Master of Trade-offs.",
             "description": "Why rush when we can analyze the CAP theorem? You ask the tough questions that prevent 3 AM production fires.",
-            "aura_color": "#EAB308",
-            "aura_secondary": "#FDE047",
+            "aura_color": "#FFFFFF",
+            "aura_secondary": "#A1A1AA",
             "soundtrack": "Ambient Synthwave & Whiteboard Squeaks",
         }
     else:
@@ -131,8 +131,8 @@ def build_wrapped_data(repo: SnowPadRepository, actor_id: Optional[str] = None, 
             "emoji": "⚡",
             "tagline": "Curious, Fast, and Unstoppable.",
             "description": "You spark new ideas and keep discussions moving forward while staying inside the team's circle of scope.",
-            "aura_color": "#8B5CF6",
-            "aura_secondary": "#A78BFA",
+            "aura_color": "#10B981",
+            "aura_secondary": "#34D399",
             "soundtrack": "Upbeat Hyperpop Sprint Velocity",
         }
 
@@ -235,10 +235,10 @@ def generate_wrapped_html(data: Dict[str, Any], output_path: Optional[Path] = No
     <!-- Top User Badge & Close Button -->
     <div class="absolute top-7 left-0 right-0 px-4 z-30 flex items-center justify-between text-xs font-mono text-white/80">
       <div class="flex items-center gap-2">
-        <span class="w-6 h-6 rounded-full bg-[#FF5A36] text-white flex items-center justify-center font-bold text-[11px]">❄</span>
+        <span class="w-6 h-6 rounded-full bg-[#10B981] text-black flex items-center justify-center font-bold text-[11px]">❄</span>
         <span class="font-bold tracking-tight text-white">{actor['name']}</span>
         <span class="text-white/40">•</span>
-        <span class="text-[#FF7A45]">{quarter}</span>
+        <span class="text-[#10B981]">{quarter}</span>
       </div>
       <div class="flex items-center gap-2">
         <button id="pauseBtn" class="px-2 py-0.5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 transition">Pause</button>
@@ -257,27 +257,27 @@ def generate_wrapped_html(data: Dict[str, Any], output_path: Optional[Path] = No
       <!-- SLIDE 0: Welcome & Vibe Check -->
       <div id="slide-0" class="slide absolute inset-0 p-8 flex flex-col justify-between opacity-100 transition-opacity duration-300">
         <div class="mt-14 text-left">
-          <span class="text-xs font-mono uppercase tracking-widest text-[#FF7A45] font-bold">SnowPad Presents</span>
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">SnowPad Presents</span>
           <h1 class="text-4xl font-extrabold tracking-tight mt-1 text-white leading-tight">
             Your {quarter}<br>Scope Wrapped.
           </h1>
-          <p class="text-sm text-[#A49E94] mt-2">
+          <p class="text-sm text-[#A1A1AA] mt-2">
             90 days of chatting, building, debating, and dodging scope drift.
           </p>
         </div>
 
         <div class="my-auto flex flex-col items-center">
-          <div class="w-32 h-32 rounded-3xl bg-gradient-to-tr from-[#FF5A36] to-[#FF7A45] flex items-center justify-center text-6xl shadow-2xl shadow-orange-500/30 floating-badge">
+          <div class="w-32 h-32 rounded-3xl bg-[#121214] border border-[#10B981]/40 flex items-center justify-center text-6xl shadow-2xl shadow-green-500/10 floating-badge">
             ❄️
           </div>
-          <div class="mt-6 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-[#D8D4CB]">
+          <div class="mt-6 flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-[#D4D4D8]">
             <span class="w-2 h-2 rounded-full bg-[#10B981] animate-ping"></span>
             <span>{data['total_signals']} Chat Discussions Audited</span>
           </div>
         </div>
 
         <div class="mb-4 text-center">
-          <p class="text-xs font-mono text-[#A49E94]">Tap right to uncover your scope personality &rarr;</p>
+          <p class="text-xs font-mono text-[#71717A]">Tap right to uncover your scope personality &rarr;</p>
         </div>
       </div>
 
@@ -365,26 +365,26 @@ def generate_wrapped_html(data: Dict[str, Any], output_path: Optional[Path] = No
       <!-- SLIDE 4: The Crown Jewel (Top SLA Win) -->
       <div id="slide-4" class="slide absolute inset-0 p-8 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="mt-14 text-left">
-          <span class="text-xs font-mono uppercase tracking-widest text-[#FF5A36] font-bold">Hall of Fame</span>
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Hall of Fame</span>
           <h2 class="text-3xl font-extrabold text-white mt-1">Your Crown Jewel</h2>
         </div>
 
         <div class="my-auto flex flex-col items-center">
-          <div class="w-20 h-20 rounded-full bg-[#FF5A36]/10 border border-[#FF5A36]/40 flex items-center justify-center text-4xl mb-3">
+          <div class="w-20 h-20 rounded-full bg-[#10B981]/10 border border-[#10B981]/40 flex items-center justify-center text-4xl mb-3">
             🏆
           </div>
-          <span class="text-xs font-mono text-[#FF5A36] uppercase tracking-wider font-bold">Inside Circle Delivery</span>
+          <span class="text-xs font-mono text-[#10B981] uppercase tracking-wider font-bold">Inside Circle Delivery</span>
           <h3 class="text-xl font-black text-white mt-2 tracking-tight">"{cj['title']}"</h3>
-          <p class="text-xs text-[#D8D4CB] mt-2 max-w-[280px]">
+          <p class="text-xs text-[#A1A1AA] mt-2 max-w-[280px]">
             {cj['impact']}
           </p>
         </div>
 
-        <div class="mb-4 bg-gradient-to-r from-[#FF5A36]/20 to-transparent border border-[#FF5A36]/30 rounded-2xl p-4 text-left">
-          <span class="text-[11px] font-mono text-[#FF7A45] font-bold">TOTAL SPEED SHAVED:</span>
+        <div class="mb-4 bg-gradient-to-r from-[#10B981]/15 to-transparent border border-[#10B981]/30 rounded-2xl p-4 text-left">
+          <span class="text-[11px] font-mono text-[#10B981] font-bold">TOTAL SPEED SHAVED:</span>
           <div class="flex items-baseline gap-2 mt-1">
             <span class="text-3xl font-black font-mono text-[#10B981]">-{data['total_ms_shaved']} ms</span>
-            <span class="text-xs text-[#D8D4CB]">p95 response time saved on core endpoints</span>
+            <span class="text-xs text-[#A1A1AA]">p95 response time saved on core endpoints</span>
           </div>
         </div>
       </div>
@@ -392,54 +392,54 @@ def generate_wrapped_html(data: Dict[str, Any], output_path: Optional[Path] = No
       <!-- SLIDE 5: Shareable Dossier Card -->
       <div id="slide-5" class="slide absolute inset-0 p-6 flex flex-col justify-between opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="mt-12 text-left">
-          <span class="text-xs font-mono uppercase tracking-widest text-[#FF7A45] font-bold">Q4 Summary Dossier</span>
+          <span class="text-xs font-mono uppercase tracking-widest text-[#10B981] font-bold">Q4 Summary Dossier</span>
           <h2 class="text-2xl font-extrabold text-white mt-0.5">SnowPad Wrapped: 2026</h2>
         </div>
 
         <!-- Shareable Card Box -->
-        <div class="my-auto bg-[#16171B] border border-[#2D3139] rounded-2xl p-5 text-left relative overflow-hidden shadow-2xl">
-          <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-[#FF5A36]/10 blur-xl"></div>
+        <div class="my-auto bg-[#121214] border border-[#27272A] rounded-2xl p-5 text-left relative overflow-hidden shadow-2xl">
+          <div class="absolute -right-8 -top-8 w-28 h-28 rounded-full bg-[#10B981]/10 blur-xl"></div>
           
-          <div class="flex items-center justify-between pb-3 border-b border-[#262830]">
+          <div class="flex items-center justify-between pb-3 border-b border-[#27272A]">
             <div>
               <h4 class="font-bold text-white text-base leading-snug">{actor['name']}</h4>
-              <p class="text-xs text-[#A49E94]">{actor['role']} • {actor['team']}</p>
+              <p class="text-xs text-[#A1A1AA]">{actor['role']} • {actor['team']}</p>
             </div>
             <span class="text-3xl">{arch['emoji']}</span>
           </div>
 
           <div class="grid grid-cols-2 gap-3 my-3">
-            <div class="bg-[#121316] p-2.5 rounded-xl border border-[#262830]">
-              <span class="text-[10px] font-mono text-[#A49E94] uppercase">Scope Focus</span>
+            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Scope Focus</span>
               <p class="text-xl font-black font-mono text-[#10B981]">{data['focus_pct']}%</p>
             </div>
-            <div class="bg-[#121316] p-2.5 rounded-xl border border-[#262830]">
-              <span class="text-[10px] font-mono text-[#A49E94] uppercase">Latency Saved</span>
-              <p class="text-xl font-black font-mono text-[#FF7A45]">-{data['total_ms_shaved']}ms</p>
+            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Latency Saved</span>
+              <p class="text-xl font-black font-mono text-[#10B981]">-{data['total_ms_shaved']}ms</p>
             </div>
-            <div class="bg-[#121316] p-2.5 rounded-xl border border-[#262830]">
-              <span class="text-[10px] font-mono text-[#A49E94] uppercase">Whims Dodged</span>
+            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Whims Dodged</span>
               <p class="text-xl font-black font-mono text-white">{data['whims_count']}</p>
             </div>
-            <div class="bg-[#121316] p-2.5 rounded-xl border border-[#262830]">
-              <span class="text-[10px] font-mono text-[#A49E94] uppercase">Sanity Shielded</span>
+            <div class="bg-[#18181B] p-2.5 rounded-xl border border-[#27272A]">
+              <span class="text-[10px] font-mono text-[#71717A] uppercase">Sanity Shielded</span>
               <p class="text-xl font-black font-mono text-[#10B981]">+{data['hours_shielded']}h</p>
             </div>
           </div>
 
-          <div class="pt-2 border-t border-[#262830] flex items-center justify-between text-[11px] font-mono text-[#A49E94]">
-            <span class="text-[#FF7A45] font-bold">{arch['name']}</span>
+          <div class="pt-2 border-t border-[#27272A] flex items-center justify-between text-[11px] font-mono text-[#71717A]">
+            <span class="text-[#10B981] font-bold">{arch['name']}</span>
             <span>SnowPad Scope OS</span>
           </div>
         </div>
 
         <div class="mb-3 space-y-2">
-          <button id="copySummaryBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#FF5A36] to-[#FF7A45] hover:opacity-95 text-white font-bold text-sm shadow-lg shadow-orange-500/25 transition flex items-center justify-center gap-2">
+          <button id="copySummaryBtn" class="w-full py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-black font-bold text-sm shadow-lg shadow-green-500/20 transition flex items-center justify-center gap-2">
             <span>📋 Copy Wrapped Summary</span>
           </button>
-          <div class="flex items-center justify-between text-xs text-[#A49E94] px-1 font-mono">
-            <a href="radar.html" class="hover:text-white transition">&larr; Back to Scope Radar</a>
-            <a href="flow.html" class="hover:text-white transition">Lifecycle Flow &rarr;</a>
+          <div class="flex items-center justify-between text-xs text-[#71717A] px-1 font-mono">
+            <a href="radar.html" class="hover:text-white transition">&larr; Scope Radar</a>
+            <a href="flow.html" class="hover:text-white transition">Scope Board &rarr;</a>
           </div>
         </div>
       </div>
@@ -588,3 +588,4 @@ def generate_team_wrapped(repo: SnowPadRepository, quarter: str = "Q4-2026") -> 
     data = build_wrapped_data(repo=repo, actor_id=None, quarter=quarter)
     output_path = DIST_DIR / f"team_{quarter.lower().replace('-', '_')}_wrapped.html"
     return generate_wrapped_html(data, output_path=output_path)
+
