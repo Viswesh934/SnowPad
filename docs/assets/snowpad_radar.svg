@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="100%" height="100%">
+  <defs>
+    <!-- Background Canvas Gradient: Deep Charcoal with subtle warm tone -->
+    <linearGradient id="charcoalBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141519" />
+      <stop offset="50%" stop-color="#111215" />
+      <stop offset="100%" stop-color="#0c0d0f" />
+    </linearGradient>
+
+    <!-- Warm Coral &amp; Orange Ambient Radial Glow -->
+    <radialGradient id="coralAmbient" cx="35%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#ff5a36" stop-opacity="0.22" />
+      <stop offset="45%" stop-color="#ff7a45" stop-opacity="0.10" />
+      <stop offset="75%" stop-color="#ff9466" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#ff5a36" stop-opacity="0.0" />
+    </radialGradient>
+
+    <!-- Radar Sweep Gradient in Warm Coral -->
+    <linearGradient id="coralSweep" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff5a36" stop-opacity="0.45" />
+      <stop offset="60%" stop-color="#ff7e47" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#ff5a36" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- Button / Pill Coral Gradient -->
+    <linearGradient id="coralBtn" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff5a36" />
+      <stop offset="100%" stop-color="#ff733f" />
+    </linearGradient>
+
+    <!-- Card Background Gradient -->
+    <linearGradient id="panelBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1c22" />
+      <stop offset="100%" stop-color="#15161b" />
+    </linearGradient>
+
+    <!-- Glow Filters -->
+    <filter id="coralGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .font-sans { font-family: -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', 'Inter', Roboto, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace; }
+    .sweep-anim {
+      transform-origin: 310px 270px;
+      animation: rotateSweep 9s linear infinite;
+    }
+    @keyframes rotateSweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <!-- Deep Charcoal Canvas Base -->
+  <rect width="960" height="520" rx="16" fill="url(#charcoalBg)" stroke="#262830" stroke-width="1.5" />
+
+  <!-- Subtle Warm Texture Dot Grid -->
+  <g opacity="0.04" fill="#faf8f5">
+    <circle cx="60" cy="80" r="1.5" /><circle cx="120" cy="80" r="1.5" /><circle cx="180" cy="80" r="1.5" /><circle cx="240" cy="80" r="1.5" /><circle cx="300" cy="80" r="1.5" /><circle cx="360" cy="80" r="1.5" /><circle cx="420" cy="80" r="1.5" /><circle cx="480" cy="80" r="1.5" />
+    <circle cx="60" cy="160" r="1.5" /><circle cx="120" cy="160" r="1.5" /><circle cx="180" cy="160" r="1.5" /><circle cx="240" cy="160" r="1.5" /><circle cx="300" cy="160" r="1.5" /><circle cx="360" cy="160" r="1.5" /><circle cx="420" cy="160" r="1.5" /><circle cx="480" cy="160" r="1.5" />
+    <circle cx="60" cy="240" r="1.5" /><circle cx="120" cy="240" r="1.5" /><circle cx="180" cy="240" r="1.5" /><circle cx="240" cy="240" r="1.5" /><circle cx="300" cy="240" r="1.5" /><circle cx="360" cy="240" r="1.5" /><circle cx="420" cy="240" r="1.5" /><circle cx="480" cy="240" r="1.5" />
+    <circle cx="60" cy="320" r="1.5" /><circle cx="120" cy="320" r="1.5" /><circle cx="180" cy="320" r="1.5" /><circle cx="240" cy="320" r="1.5" /><circle cx="300" cy="320" r="1.5" /><circle cx="360" cy="320" r="1.5" /><circle cx="420" cy="320" r="1.5" /><circle cx="480" cy="320" r="1.5" />
+    <circle cx="60" cy="400" r="1.5" /><circle cx="120" cy="400" r="1.5" /><circle cx="180" cy="400" r="1.5" /><circle cx="240" cy="400" r="1.5" /><circle cx="300" cy="400" r="1.5" /><circle cx="360" cy="400" r="1.5" /><circle cx="420" cy="400" r="1.5" /><circle cx="480" cy="400" r="1.5" />
+  </g>
+
+  <!-- Header Bar -->
+  <rect x="0" y="0" width="960" height="58" fill="#17181e" fill-opacity="0.8" />
+  <line x1="0" y1="58" x2="960" y2="58" stroke="#262830" stroke-width="1" />
+
+  <!-- Logo Icon in Warm Coral -->
+  <rect x="24" y="16" width="28" height="28" rx="8" fill="url(#coralBtn)" />
+  <text x="38" y="35" fill="#faf8f5" font-size="16" font-weight="800" class="font-sans" text-anchor="middle">❄</text>
+
+  <text x="64" y="34" fill="#faf8f5" font-size="15" font-weight="700" class="font-sans" letter-spacing="-0.2">SnowPad Scope Radar</text>
+  <rect x="238" y="20" width="105" height="20" rx="10" fill="#24262e" stroke="#363945" stroke-width="1" />
+  <text x="290" y="33" fill="#d8d4cb" font-size="10" font-weight="600" class="font-mono" text-anchor="middle">REAL-TIME</text>
+
+  <!-- Connection Status Pill -->
+  <rect x="785" y="17" width="150" height="26" rx="13" fill="#ff5a36" fill-opacity="0.12" stroke="#ff5a36" stroke-width="1" />
+  <circle cx="800" cy="30" r="4" fill="#ff5a36" filter="url(#subtleGlow)" />
+  <text x="812" y="34" fill="#faf8f5" font-size="11" font-weight="600" class="font-mono">WORKSPACE ACTIVE</text>
+
+  <!-- ================= LEFT: RADAR DISK ================= -->
+  <g transform="translate(0, 10)">
+    <!-- Warm Ambient Radial Glow Behind Radar -->
+    <circle cx="310" cy="270" r="230" fill="url(#coralAmbient)" />
+
+    <!-- Crosshair Grid in Off-White Hairline -->
+    <line x1="80" y1="270" x2="540" y2="270" stroke="#faf8f5" stroke-opacity="0.10" stroke-width="1" stroke-dasharray="3 3" />
+    <line x1="310" y1="40" x2="310" y2="500" stroke="#faf8f5" stroke-opacity="0.10" stroke-width="1" stroke-dasharray="3 3" />
+
+    <!-- Outer Orbit Ring: Parked Whims (Radius 215) -->
+    <circle cx="310" cy="270" r="215" fill="none" stroke="#faf8f5" stroke-opacity="0.12" stroke-width="1.2" stroke-dasharray="6 6" />
+    <rect x="318" y="60" width="165" height="18" rx="4" fill="#141519" fill-opacity="0.9" />
+    <text x="322" y="73" fill="#a49e94" font-size="9" font-weight="600" class="font-mono">OUTER ORBIT: WHIMS (r &gt; 1.0)</text>
+
+    <!-- Mid Orbit Ring: Borderline Debate (Radius 148) -->
+    <circle cx="310" cy="270" r="148" fill="none" stroke="#eab308" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="4 4" />
+    <rect x="318" y="126" width="175" height="18" rx="4" fill="#141519" fill-opacity="0.9" />
+    <text x="322" y="139" fill="#eab308" font-size="9" font-weight="600" class="font-mono">BORDERLINE DEBATE (r = 1.0)</text>
+
+    <!-- The Circle of Scope: Core SLA &amp; Certainty Horizon (Radius 88) -->
+    <circle cx="310" cy="270" r="88" fill="#ff5a36" fill-opacity="0.08" stroke="#ff5a36" stroke-width="2.5" filter="url(#subtleGlow)" />
+    <rect x="318" y="186" width="160" height="18" rx="4" fill="#141519" fill-opacity="0.9" />
+    <text x="322" y="199" fill="#ff5a36" font-size="9" font-weight="700" class="font-mono">THE CIRCLE OF SCOPE (r &lt;= 0.5)</text>
+
+    <!-- Radar Center Hub in Cream &amp; Coral -->
+    <circle cx="310" cy="270" r="5" fill="#faf8f5" />
+    <circle cx="310" cy="270" r="12" fill="none" stroke="#ff5a36" stroke-width="1.5" stroke-opacity="0.6" />
+
+    <!-- Sweep Ray in Vibrant Coral / Warm Orange -->
+    <path d="M 310 270 L 500 160 A 215 215 0 0 0 310 55 Z" fill="url(#coralSweep)" class="sweep-anim" opacity="0.75" />
+
+    <!-- BLIP 1: INSIDE CIRCLE (Maya Patel - Settlement Engine) -->
+    <g transform="translate(345, 230)">
+      <circle cx="0" cy="0" r="7" fill="#ff5a36" filter="url(#coralGlow)" />
+      <circle cx="0" cy="0" r="13" fill="none" stroke="#ff5a36" stroke-width="1" opacity="0.5" />
+      <rect x="14" y="-12" width="195" height="24" rx="6" fill="#17181e" fill-opacity="0.95" stroke="#ff5a36" stroke-width="1" />
+      <text x="22" y="4" fill="#faf8f5" font-size="10" font-weight="600" class="font-sans">Batched Settlement Engine</text>
+      <text x="162" y="4" fill="#ff7a45" font-size="9" font-weight="700" class="font-mono">15%</text>
+    </g>
+
+    <!-- BLIP 2: INSIDE CIRCLE (Alex Chen - Redlock) -->
+    <g transform="translate(255, 305)">
+      <circle cx="0" cy="0" r="6" fill="#ff5a36" filter="url(#coralGlow)" />
+      <rect x="-172" y="-12" width="162" height="24" rx="6" fill="#17181e" fill-opacity="0.95" stroke="#ff5a36" stroke-width="1" />
+      <text x="-164" y="4" fill="#faf8f5" font-size="10" font-weight="600" class="font-sans">Postgres Lock → Redlock</text>
+      <text x="-36" y="4" fill="#ff7a45" font-size="9" font-weight="700" class="font-mono">30%</text>
+    </g>
+
+    <!-- BLIP 3: BORDERLINE (Sam Torres - Social Sign-in Debate) -->
+    <g transform="translate(415, 335)">
+      <circle cx="0" cy="0" r="6" fill="#eab308" filter="url(#subtleGlow)" />
+      <circle cx="0" cy="0" r="11" fill="none" stroke="#eab308" stroke-width="1" stroke-dasharray="2 2" />
+      <rect x="14" y="-12" width="180" height="24" rx="6" fill="#17181e" fill-opacity="0.95" stroke="#eab308" stroke-width="1" />
+      <text x="22" y="4" fill="#faf8f5" font-size="10" font-weight="600" class="font-sans">1-Click Sign-in Pivot</text>
+      <text x="140" y="4" fill="#eab308" font-size="9" font-weight="700" class="font-mono">55% UNC</text>
+    </g>
+
+    <!-- BLIP 4: BORDERLINE (Alex Chen - Kafka Stream) -->
+    <g transform="translate(210, 165)">
+      <circle cx="0" cy="0" r="6" fill="#eab308" filter="url(#subtleGlow)" />
+      <rect x="-182" y="-12" width="172" height="24" rx="6" fill="#17181e" fill-opacity="0.95" stroke="#eab308" stroke-width="1" />
+      <text x="-174" y="4" fill="#faf8f5" font-size="10" font-weight="600" class="font-sans">SQS → Kafka Audit Log</text>
+      <text x="-44" y="4" fill="#eab308" font-size="9" font-weight="700" class="font-mono">60% UNC</text>
+    </g>
+
+    <!-- BLIP 5: OUTSIDE CIRCLE (Jordan Lee - Confetti Whim) -->
+    <g transform="translate(475, 140)">
+      <circle cx="0" cy="0" r="6" fill="#848995" />
+      <rect x="14" y="-12" width="170" height="24" rx="6" fill="#17181e" fill-opacity="0.95" stroke="#434752" stroke-width="1" />
+      <text x="22" y="4" fill="#d8d4cb" font-size="10" font-weight="500" class="font-sans">Lottie Confetti on Pay</text>
+      <text x="142" y="4" fill="#a49e94" font-size="9" font-weight="700" class="font-mono">88%</text>
+    </g>
+
+    <!-- BLIP 6: OUTSIDE CIRCLE (Jordan Lee - Theme Whim) -->
+    <g transform="translate(130, 400)">
+      <circle cx="0" cy="0" r="6" fill="#848995" />
+      <rect x="14" y="-12" width="168" height="24" rx="6" fill="#17181e" fill-opacity="0.95" stroke="#434752" stroke-width="1" />
+      <text x="22" y="4" fill="#d8d4cb" font-size="10" font-weight="500" class="font-sans">Neon Theme Redesign</text>
+      <text x="142" y="4" fill="#a49e94" font-size="9" font-weight="700" class="font-mono">95%</text>
+    </g>
+  </g>
+
+  <!-- ================= RIGHT PANEL: EDITORIAL TELEMETRY HUD ================= -->
+  <g transform="translate(650, 78)">
+    <rect width="285" height="420" rx="12" fill="url(#panelBg)" stroke="#262830" stroke-width="1.5" />
+
+    <text x="20" y="30" fill="#ff7a45" font-size="10" font-weight="700" class="font-mono" letter-spacing="1">TEAM FOCUS LEDGER</text>
+
+    <!-- Metric Card 1: Inside Circle -->
+    <rect x="16" y="44" width="253" height="66" rx="8" fill="#131418" stroke="#ff5a36" stroke-width="1" stroke-opacity="0.4" />
+    <circle cx="32" cy="68" r="5" fill="#ff5a36" />
+    <text x="46" y="72" fill="#faf8f5" font-size="13" font-weight="600" class="font-sans">Inside Circle (Locked)</text>
+    <text x="238" y="72" fill="#ff5a36" font-size="18" font-weight="800" class="font-mono" text-anchor="end">3</text>
+    <text x="46" y="93" fill="#a49e94" font-size="11" class="font-sans">Approved features moving core SLAs</text>
+
+    <!-- Metric Card 2: Borderline -->
+    <rect x="16" y="120" width="253" height="66" rx="8" fill="#131418" stroke="#363945" stroke-width="1" />
+    <circle cx="32" cy="144" r="5" fill="#eab308" />
+    <text x="46" y="148" fill="#faf8f5" font-size="13" font-weight="600" class="font-sans">Active Chat Debates</text>
+    <text x="238" y="148" fill="#eab308" font-size="18" font-weight="800" class="font-mono" text-anchor="end">2</text>
+    <text x="46" y="169" fill="#a49e94" font-size="11" class="font-sans">Uncertainty &gt; 50% • Pending resolution</text>
+
+    <!-- Metric Card 3: Parked Whims -->
+    <rect x="16" y="196" width="253" height="66" rx="8" fill="#131418" stroke="#363945" stroke-width="1" />
+    <circle cx="32" cy="220" r="5" fill="#848995" />
+    <text x="46" y="224" fill="#faf8f5" font-size="13" font-weight="600" class="font-sans">Off-Scope Whims Parked</text>
+    <text x="238" y="224" fill="#d8d4cb" font-size="18" font-weight="800" class="font-mono" text-anchor="end">2</text>
+    <text x="46" y="245" fill="#a49e94" font-size="11" class="font-sans">Safely filtered to shield dev focus</text>
+
+    <!-- Divider -->
+    <line x1="16" y1="276" x2="269" y2="276" stroke="#262830" stroke-width="1" />
+
+    <!-- Impact Counters -->
+    <text x="20" y="302" fill="#a49e94" font-size="10" font-weight="700" class="font-mono">SPRINT IMPACT SHIELD</text>
+
+    <text x="20" y="332" fill="#ff5a36" font-size="22" font-weight="800" class="font-mono">34.5 hrs</text>
+    <text x="125" y="330" fill="#d8d4cb" font-size="11" class="font-sans">distraction time saved</text>
+
+    <text x="20" y="364" fill="#faf8f5" font-size="18" font-weight="800" class="font-mono">-757 ms</text>
+    <text x="125" y="362" fill="#d8d4cb" font-size="11" class="font-sans">p99 latency shaved</text>
+
+    <!-- Primary Action Button in Vibrant Coral -->
+    <rect x="16" y="380" width="253" height="28" rx="6" fill="url(#coralBtn)" />
+    <text x="142" y="398" fill="#faf8f5" font-size="11" font-weight="700" class="font-sans" text-anchor="middle">LAUNCH SNOWPAD RADAR</text>
+  </g>
+</svg>

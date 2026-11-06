@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnowPad Team Hierarchy & Reviews</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Jira / Linear style node card styling */
+    .org-node {
+      background-color: #18181B;
+      border: 1px solid #27272A;
+      transition: all 0.15s ease;
+    }
+    .org-node:hover {
+      border-color: #3F3F46;
+      transform: translateY(-1px);
+    }
+    .org-node.selected {
+      border-color: #10B981 !important;
+      background-color: #1a1e1c;
+      box-shadow: 0 0 0 1px #10B981;
+    }
+
+    /* Tree branch connectors */
+    .tree-branch {
+      position: relative;
+    }
+    .tree-branch::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1.25rem;
+      width: 2px;
+      background: #27272A;
+    }
+
+    /* Clean custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #09090B; }
+    ::-webkit-scrollbar-thumb { background: #27272A; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3F3F46; }
+  </style>
+</head>
+<body class="bg-[#09090B] text-[#FAFAFA] min-h-screen flex flex-col antialiased selection:bg-[#10B981] selection:text-black">
+
+  <!-- Top Navigation Header (Linear / Jira Minimalist) -->
+  <header class="border-b border-[#27272A] bg-[#0E0E10] px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center space-x-4">
+      <div class="w-7 h-7 rounded-lg bg-[#10B981] flex items-center justify-center font-bold text-sm text-black">
+        ❄
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono text-[#A1A1AA]">WORKSPACE /</span>
+          <h1 class="text-sm font-semibold tracking-tight text-white">Team Hierarchy &amp; Presentations</h1>
+          <span class="text-[11px] px-2 py-0.5 rounded bg-[#18181B] text-[#10B981] border border-[#27272A] font-mono font-medium">Q4-2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Switcher Tabs -->
+    <nav class="flex items-center space-x-1 bg-[#121214] p-1 rounded-lg border border-[#27272A] text-xs font-mono">
+      <a href="radar.html" class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>🎯</span> Radar
+      </a>
+      <a href="flow.html" class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>📋</span> Board
+      </a>
+      <a href="team.html" class="px-3 py-1 rounded bg-[#27272A] text-white font-medium transition flex items-center gap-1.5">
+        <span>🌳</span> Org &amp; Slides
+      </a>
+      <a href="wrapped.html" target="_blank" class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>🎁</span> Wrapped
+      </a>
+    </nav>
+
+    <!-- Right: Workspace Status Pill -->
+    <div class="flex items-center space-x-2 text-xs font-mono bg-[#18181B] border border-[#27272A] px-3 py-1.5 rounded-lg text-[#A1A1AA]">
+      <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+      <span class="text-white font-medium">Synced from Chat</span>
+    </div>
+  </header>
+
+  <!-- Subheader Breadcrumbs & Summary -->
+  <div class="border-b border-[#27272A] bg-[#0E0E10] px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-xs font-mono text-[#A1A1AA]">
+      <div class="flex items-center gap-2">
+        <span>Select any team member in the hierarchy to inspect their performance dossier and live presentation deck:</span>
+      </div>
+      <div>
+        <span class="text-[#10B981]">4 Contributors Tracked</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main View Container: Split View -->
+  <main class="flex-1 p-6 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- LEFT COLUMN (5 Cols): Interactive Org Hierarchy Tree -->
+    <div class="lg:col-span-5 flex flex-col space-y-4">
+      
+      <div class="bg-[#121214] border border-[#27272A] rounded-xl p-4">
+        <div class="flex items-center justify-between pb-3 border-b border-[#27272A] mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#A1A1AA]">Team Hierarchy Tree</span>
+          </div>
+          <span class="text-[11px] font-mono text-[#71717A]">Auto-mapped from Discord/Slack</span>
+        </div>
+
+        <!-- Org Hierarchy Tree Structure -->
+        <div class="space-y-4">
+
+          <!-- 1. ROOT NODE: LEAD PRODUCT MANAGER -->
+          <div class="org-node p-3.5 rounded-xl cursor-pointer" id="node-sam_torres" onclick="selectMember('sam_torres')">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-lg bg-[#27272A] text-white flex items-center justify-center font-bold text-xs">S</span>
+                <div>
+                  <h3 class="text-sm font-semibold text-white leading-tight">Sam Torres</h3>
+                  <p class="text-[11px] text-[#A1A1AA]">Lead Product Manager</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#27272A] text-white">Platform Strategy</span>
+            </div>
+            <div class="flex items-center gap-2 pt-2 border-t border-[#27272A] text-[11px] font-mono">
+              <span class="text-[#A1A1AA]">Meeting Expectations</span>
+              <span class="text-[#52525B]">•</span>
+              <span class="text-white">1 RFC Debate</span>
+            </div>
+          </div>
+
+          <!-- BRANCH CONNECTOR 1 -->
+          <div class="tree-branch pl-8 space-y-3.5">
+
+            <!-- 2. ARCHITECTURE NODE: PRINCIPAL PRODUCT ARCHITECT -->
+            <div class="org-node p-3.5 rounded-xl cursor-pointer selected" id="node-maya_patel" onclick="selectMember('maya_patel')">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-7 h-7 rounded-lg bg-[#10B981] text-black flex items-center justify-center font-bold text-xs">M</span>
+                  <div>
+                    <h3 class="text-sm font-semibold text-white leading-tight">Maya Patel</h3>
+                    <p class="text-[11px] text-[#A1A1AA]">Principal Product Architect</p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30">Checkout &amp; Payments</span>
+              </div>
+              <div class="flex items-center gap-2 pt-2 border-t border-[#27272A] text-[11px] font-mono">
+                <span class="text-[#10B981] font-semibold">100.0% Focus Ratio</span>
+                <span class="text-[#52525B]">•</span>
+                <span class="text-[#10B981]">-122ms Latency</span>
+              </div>
+            </div>
+
+            <!-- SUB-BRANCH: BACKEND CORE -->
+            <div class="tree-branch pl-8">
+              <!-- 3. STAFF BACKEND ENGINEER -->
+              <div class="org-node p-3.5 rounded-xl cursor-pointer" id="node-alex_chen" onclick="selectMember('alex_chen')">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-lg bg-[#27272A] text-white flex items-center justify-center font-bold text-xs">A</span>
+                    <div>
+                      <h3 class="text-sm font-semibold text-white leading-tight">Alex Chen</h3>
+                      <p class="text-[11px] text-[#A1A1AA]">Staff Backend Engineer</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#27272A] text-white">Core Infrastructure</span>
+                </div>
+                <div class="flex items-center gap-2 pt-2 border-t border-[#27272A] text-[11px] font-mono">
+                  <span class="text-[#10B981] font-semibold">100.0% Focus Ratio</span>
+                  <span class="text-[#52525B]">•</span>
+                  <span class="text-[#10B981]">-635ms Latency</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. FRONTEND DEV NODE: GROWTH & ONBOARDING -->
+            <div class="org-node p-3.5 rounded-xl cursor-pointer" id="node-jordan_lee" onclick="selectMember('jordan_lee')">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-7 h-7 rounded-lg bg-[#27272A] text-white flex items-center justify-center font-bold text-xs">J</span>
+                  <div>
+                    <h3 class="text-sm font-semibold text-white leading-tight">Jordan Lee</h3>
+                    <p class="text-[11px] text-[#A1A1AA]">Senior UI/Frontend Engineer</p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#27272A] text-white">Growth &amp; UI</span>
+              </div>
+              <div class="flex items-center gap-2 pt-2 border-t border-[#27272A] text-[11px] font-mono">
+                <span class="text-[#71717A]">2 Whims Parked</span>
+                <span class="text-[#52525B]">•</span>
+                <span class="text-[#10B981]">+34h Focus Shielded</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN (7 Cols): Selected Member Dossier & Embedded Slide Deck -->
+    <div class="lg:col-span-7 flex flex-col space-y-4">
+
+      <div class="bg-[#121214] border border-[#27272A] rounded-xl p-5 flex flex-col">
+        
+        <!-- Header of Selected Member -->
+        <div class="flex items-start justify-between pb-4 border-b border-[#27272A]">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="activeMemberName" class="text-xl font-bold text-white">Maya Patel</h2>
+              <span id="activeMemberVerdict" class="text-[11px] font-mono px-2.5 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] font-semibold border border-[#10B981]/30">EXCEEDING EXPECTATIONS</span>
+            </div>
+            <p id="activeMemberRole" class="text-xs text-[#A1A1AA] mt-1">Principal Product Architect • Checkout &amp; Payments</p>
+          </div>
+
+          <!-- View Toggle Tabs (Slides vs Metrics) -->
+          <div class="flex items-center bg-[#18181B] border border-[#27272A] p-1 rounded-lg text-xs font-mono">
+            <button id="tabBtnSlides" class="px-3 py-1 rounded bg-[#27272A] text-white font-medium transition" onclick="switchView('slides')">
+              🖥️ Slide Deck
+            </button>
+            <button id="tabBtnMetrics" class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition" onclick="switchView('metrics')">
+              📊 Dossier Metrics
+            </button>
+          </div>
+        </div>
+
+        <!-- VIEW 1: EMBEDDED REVEAL.JS PRESENTATION DECK -->
+        <div id="viewSlides" class="mt-4 flex flex-col">
+          <div class="flex items-center justify-between pb-2 text-xs font-mono text-[#71717A]">
+            <span>Interactive Presentation (Press Space or Arrows to advance inside presentation)</span>
+            <a id="openSlidesNewTab" href="dist/maya_patel_q4_review.html" target="_blank" class="text-[#10B981] hover:underline flex items-center gap-1">
+              <span>Fullscreen Window ↗</span>
+            </a>
+          </div>
+
+          <!-- Embedded Presentation iFrame -->
+          <div class="w-full h-[520px] rounded-xl overflow-hidden border border-[#27272A] bg-[#09090B] relative shadow-2xl">
+            <iframe id="presentationFrame" src="dist/maya_patel_q4_review.html" class="w-full h-full border-0"></iframe>
+          </div>
+        </div>
+
+        <!-- VIEW 2: QUANTIFIED DOSSIER & METRICS -->
+        <div id="viewMetrics" class="mt-4 space-y-4 hidden">
+          
+          <!-- 4 Metrics Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+            <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+              <span class="text-[10px] text-[#71717A] uppercase">Circle Focus</span>
+              <p id="metricFocusRatio" class="text-xl font-bold font-mono text-[#10B981] mt-0.5">100.0%</p>
+              <span class="text-[10px] text-[#A1A1AA]">SLA Alignment</span>
+            </div>
+            <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+              <span class="text-[10px] text-[#71717A] uppercase">Confirmed Features</span>
+              <p id="metricConfirmed" class="text-xl font-bold font-mono text-white mt-0.5">1</p>
+              <span class="text-[10px] text-[#A1A1AA]">In Production</span>
+            </div>
+            <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+              <span class="text-[10px] text-[#71717A] uppercase">Whims Parked</span>
+              <p id="metricWhims" class="text-xl font-bold font-mono text-[#71717A] mt-0.5">0</p>
+              <span class="text-[10px] text-[#A1A1AA]">Shielded Distractions</span>
+            </div>
+            <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+              <span class="text-[10px] text-[#71717A] uppercase">Latency Shaved</span>
+              <p id="metricLatency" class="text-xl font-bold font-mono text-[#10B981] mt-0.5">-122.0 ms</p>
+              <span class="text-[10px] text-[#A1A1AA]">Core Endpoints</span>
+            </div>
+          </div>
+
+          <!-- Alignment Summary -->
+          <div class="bg-[#18181B] border border-[#27272A] rounded-lg p-4">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-[#71717A] font-bold">Scope Focus Summary</span>
+            <p id="metricSummary" class="text-xs text-[#FAFAFA] mt-1.5 leading-relaxed">
+              100.0% of proposals &amp; contributions locked into core business milestones.
+            </p>
+          </div>
+
+          <!-- Manager Recommendations -->
+          <div class="bg-[#18181B] border border-[#27272A] rounded-lg p-4 space-y-2">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-[#10B981] font-bold">Manager Action Items &amp; Next Steps</span>
+            <ul id="metricRecommendations" class="text-xs text-[#A1A1AA] space-y-1.5 list-disc pl-4">
+              <li>Quantified engineering impact: Contributed 122.0ms total response time reductions on critical endpoints.</li>
+              <li>Promote architecture patterns across other squads in Sprint-43.</li>
+            </ul>
+          </div>
+
+          <!-- Fast Link to Wrapped -->
+          <div class="pt-2 flex items-center justify-between text-xs font-mono text-[#71717A]">
+            <span>Quarter: Q4-2026 Executive Review</span>
+            <a id="memberWrappedLink" href="dist/maya_patel_q4_2026_wrapped.html" target="_blank" class="text-[#10B981] hover:underline">
+              Open Contributor Wrapped Story 🎁 &rarr;
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const teamMembers = {
+      maya_patel: {
+        id: "maya_patel",
+        name: "Maya Patel",
+        role: "Principal Product Architect",
+        team: "Checkout & Payments",
+        verdict: "EXCEEDING EXPECTATIONS",
+        verdictColor: "#10B981",
+        focusRatio: "100.0%",
+        confirmed: "1",
+        whims: "0",
+        latency: "-122.0 ms",
+        summary: "100.0% of proposals & contributions locked into core business milestones.",
+        recommendations: [
+          "Quantified engineering impact: Contributed 122.0ms total response time reductions on critical endpoints.",
+          "High strategic alignment: Recommended for tech leadership recognition in Q4 review cycle."
+        ],
+        slidePath: "dist/maya_patel_q4_review.html",
+        wrappedPath: "dist/maya_patel_q4_2026_wrapped.html"
+      },
+      alex_chen: {
+        id: "alex_chen",
+        name: "Alex Chen",
+        role: "Staff Backend Engineer",
+        team: "Core Infrastructure",
+        verdict: "EXCEEDING EXPECTATIONS",
+        verdictColor: "#10B981",
+        focusRatio: "100.0%",
+        confirmed: "1",
+        whims: "0",
+        latency: "-635.0 ms",
+        summary: "100.0% focus within scope; eliminated critical cascading 504 gateway timeouts on /checkout.",
+        recommendations: [
+          "Quantified engineering impact: Contributed 635.0ms total lock latency reduction during peak sales.",
+          "Action item: 1 active architectural debate regarding Kafka streaming requires PM alignment."
+        ],
+        slidePath: "dist/alex_chen_q4_review.html",
+        wrappedPath: "dist/alex_chen_q4_2026_wrapped.html"
+      },
+      sam_torres: {
+        id: "sam_torres",
+        name: "Sam Torres",
+        role: "Lead Product Manager",
+        team: "Platform Strategy",
+        verdict: "MEETING EXPECTATIONS",
+        verdictColor: "#FAFAFA",
+        focusRatio: "50.0%",
+        confirmed: "1",
+        whims: "0",
+        latency: "0.0 ms",
+        summary: "50.0% focus within core circle; actively engaged in 1-click social sign-in pivot evaluation.",
+        recommendations: [
+          "Action item: 1 active scope debate (1-Click Social Sign-in) requires fraud risk vs conversion evaluation in Sprint-43 PRD."
+        ],
+        slidePath: "dist/sam_torres_q4_review.html",
+        wrappedPath: "dist/sam_torres_q4_2026_wrapped.html"
+      },
+      jordan_lee: {
+        id: "jordan_lee",
+        name: "Jordan Lee",
+        role: "Senior UI/Frontend Engineer",
+        team: "Growth & UI",
+        verdict: "NEEDS ALIGNMENT (High Churn)",
+        verdictColor: "#71717A",
+        focusRatio: "0.0%",
+        confirmed: "0",
+        whims: "2",
+        latency: "0.0 ms",
+        summary: "0.0% inside core circle; significant chat time spent on parked whims (confetti animation & custom admin theme).",
+        recommendations: [
+          "Successfully filtered: 2 off-scope whim discussions parked outside the circle, protecting 34+ dev hours.",
+          "Guidance item: Re-align upcoming sprint focus toward core payment flow tickets."
+        ],
+        slidePath: "dist/jordan_lee_q4_review.html",
+        wrappedPath: "dist/jordan_lee_q4_2026_wrapped.html"
+      }
+    };
+
+    let activeMemberId = "maya_patel";
+    let activeView = "slides";
+
+    function selectMember(id) {
+      activeMemberId = id;
+      const mem = teamMembers[id];
+      if (!mem) return;
+
+      // Update node active states
+      document.querySelectorAll(".org-node").forEach(node => {
+        node.classList.remove("selected");
+      });
+      const selectedNode = document.getElementById(`node-${id}`);
+      if (selectedNode) selectedNode.classList.add("selected");
+
+      // Update header details
+      document.getElementById("activeMemberName").textContent = mem.name;
+      document.getElementById("activeMemberRole").textContent = `${mem.role} • ${mem.team}`;
+      
+      const verdictEl = document.getElementById("activeMemberVerdict");
+      verdictEl.textContent = mem.verdict;
+      if (mem.verdictColor === "#10B981") {
+        verdictEl.className = "text-[11px] font-mono px-2.5 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] font-semibold border border-[#10B981]/30";
+      } else if (mem.verdictColor === "#FAFAFA") {
+        verdictEl.className = "text-[11px] font-mono px-2.5 py-0.5 rounded bg-white/10 text-white font-semibold border border-white/20";
+      } else {
+        verdictEl.className = "text-[11px] font-mono px-2.5 py-0.5 rounded bg-[#18181B] text-[#71717A] font-semibold border border-[#27272A]";
+      }
+
+      // Update Slide Deck iframe
+      document.getElementById("presentationFrame").src = mem.slidePath;
+      document.getElementById("openSlidesNewTab").href = mem.slidePath;
+      document.getElementById("memberWrappedLink").href = mem.wrappedPath;
+
+      // Update Metrics view
+      document.getElementById("metricFocusRatio").textContent = mem.focusRatio;
+      document.getElementById("metricConfirmed").textContent = mem.confirmed;
+      document.getElementById("metricWhims").textContent = mem.whims;
+      document.getElementById("metricLatency").textContent = mem.latency;
+      document.getElementById("metricSummary").textContent = mem.summary;
+
+      const recsList = document.getElementById("metricRecommendations");
+      recsList.innerHTML = mem.recommendations.map(r => `<li>${r}</li>`).join("");
+    }
+
+    function switchView(view) {
+      activeView = view;
+      const viewSlides = document.getElementById("viewSlides");
+      const viewMetrics = document.getElementById("viewMetrics");
+      const btnSlides = document.getElementById("tabBtnSlides");
+      const btnMetrics = document.getElementById("tabBtnMetrics");
+
+      if (view === "slides") {
+        viewSlides.classList.remove("hidden");
+        viewMetrics.classList.add("hidden");
+        btnSlides.className = "px-3 py-1 rounded bg-[#27272A] text-white font-medium transition";
+        btnMetrics.className = "px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition";
+      } else {
+        viewSlides.classList.add("hidden");
+        viewMetrics.classList.remove("hidden");
+        btnSlides.className = "px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition";
+        btnMetrics.className = "px-3 py-1 rounded bg-[#27272A] text-white font-medium transition";
+      }
+    }
+
+    // Default select Maya
+    selectMember("maya_patel");
+  </script>
+</body>
+</html>

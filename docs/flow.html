@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnowPad Scope Board</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Jira / Linear style board column styling */
+    .kanban-col {
+      background-color: #121214;
+      border: 1px solid #27272A;
+    }
+
+    .ticket-card {
+      background-color: #18181B;
+      border: 1px solid #27272A;
+      transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .ticket-card:hover {
+      border-color: #3F3F46;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .ticket-card.selected {
+      border-color: #10B981 !important;
+      background-color: #1a1e1c;
+      box-shadow: 0 0 0 1px #10B981;
+    }
+
+    /* Clean custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #09090B;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #27272A;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3F3F46;
+    }
+  </style>
+</head>
+
+<body
+  class="bg-[#09090B] text-[#FAFAFA] min-h-screen flex flex-col antialiased selection:bg-[#10B981] selection:text-black">
+
+  <!-- Top Navigation Header (Linear / Jira Minimalist) -->
+  <header class="border-b border-[#27272A] bg-[#0E0E10] px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center space-x-4">
+      <div class="w-7 h-7 rounded-lg bg-[#10B981] flex items-center justify-center font-bold text-sm text-black">
+        ❄
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono text-[#A1A1AA]">WORKSPACE /</span>
+          <h1 class="text-sm font-semibold tracking-tight text-white">Scope Board</h1>
+          <span
+            class="text-[11px] px-2 py-0.5 rounded bg-[#18181B] text-[#10B981] border border-[#27272A] font-mono font-medium">Sprint
+            Active</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Switcher Tabs -->
+    <nav class="flex items-center space-x-1 bg-[#121214] p-1 rounded-lg border border-[#27272A] text-xs font-mono">
+      <a href="radar.html"
+        class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>🎯</span> Radar
+      </a>
+      <a href="flow.html"
+        class="px-3 py-1 rounded bg-[#27272A] text-white font-medium transition flex items-center gap-1.5">
+        <span>📋</span> Board
+      </a>
+      <a href="team.html"
+        class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>🌳</span> Org &amp; Slides
+      </a>
+      <a href="wrapped.html" target="_blank"
+        class="px-3 py-1 rounded text-[#A1A1AA] hover:text-white transition flex items-center gap-1.5">
+        <span>🎁</span> Wrapped
+      </a>
+    </nav>
+
+    <!-- Right: Workspace Status Pill -->
+    <div
+      class="flex items-center space-x-2 text-xs font-mono bg-[#18181B] border border-[#27272A] px-3 py-1.5 rounded-lg text-[#A1A1AA]">
+      <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+    </div>
+  </header>
+
+  <!-- Filter & Controls Toolbar (Jira style) -->
+  <div class="border-b border-[#27272A] bg-[#0E0E10] px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+      <div class="flex items-center gap-3">
+        <!-- Search Input -->
+        <div class="relative">
+          <input type="text" id="searchInput" placeholder="Filter issues..."
+            class="bg-[#18181B] border border-[#27272A] text-white placeholder-[#71717A] text-xs rounded-md px-3 py-1.5 w-52 focus:outline-none focus:border-[#10B981] transition font-sans">
+        </div>
+
+        <div class="h-4 w-px bg-[#27272A]"></div>
+
+        <!-- Channel Pills -->
+        <div class="flex items-center space-x-1" id="channelPills">
+          <button class="filter-pill px-2.5 py-1 rounded bg-[#27272A] text-white font-medium transition"
+            data-channel="ALL">All</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition"
+            data-channel="#product-ideas">#product-ideas</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition"
+            data-channel="#backend-core">#backend-core</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition"
+            data-channel="#growth-experiments">#growth-experiments</button>
+          <button class="filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition"
+            data-channel="#frontend-chatter">#frontend-chatter</button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Summary -->
+      <div class="flex items-center gap-4 text-[#A1A1AA]">
+        <span>Total: <strong class="text-white" id="statTotal">6</strong></span>
+        <span>Confirmed: <strong class="text-[#10B981]" id="statConfirmed">2</strong></span>
+        <span>Debates: <strong class="text-white" id="statDebates">2</strong></span>
+        <span>Parked: <strong class="text-[#71717A]" id="statParked">2</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Kanban Board Grid -->
+  <main class="flex-1 p-6 max-w-7xl mx-auto w-full flex flex-col relative overflow-x-auto">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1 items-start min-w-[900px]">
+
+      <!-- COLUMN 1: INCOMING CHATTER -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#71717A]"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[#A1A1AA]">Incoming Chatter</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#18181B] text-[#A1A1AA] border border-[#27272A]"
+            id="count-incoming">6</span>
+        </div>
+        <div class="space-y-2.5 flex-1" id="col-incoming">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- COLUMN 2: UNDER DEBATE -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-white"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-white">Under Debate</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#18181B] text-white border border-[#27272A]"
+            id="count-debates">2</span>
+        </div>
+        <div class="space-y-2.5 flex-1" id="col-debates">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- COLUMN 3: CONFIRMED SCOPE (GREEN) -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px] border-[#10B981]/40 bg-[#10B981]/[0.02]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[#10B981]">Confirmed Scope</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/30"
+            id="count-confirmed">2</span>
+        </div>
+        <div class="space-y-2.5 flex-1" id="col-confirmed">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- COLUMN 4: PARKED WHIMS -->
+      <div class="kanban-col rounded-xl p-3 flex flex-col min-h-[580px]">
+        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#27272A] px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#52525B]"></span>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[#71717A]">Parked Whims</h2>
+          </div>
+          <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#18181B] text-[#71717A] border border-[#27272A]"
+            id="count-parked">2</span>
+        </div>
+        <div class="space-y-2.5 flex-1" id="col-parked">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Slide-in Issue Detail Drawer (Jira Style) -->
+    <div id="issueDrawer"
+      class="fixed inset-y-0 right-0 w-full sm:w-[480px] bg-[#121214] border-l border-[#27272A] p-6 shadow-2xl z-50 transform translate-x-full transition-transform duration-200 flex flex-col overflow-y-auto">
+
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-[#27272A]">
+        <div class="flex items-center gap-2.5">
+          <span id="drawerKey" class="text-xs font-mono font-bold text-[#10B981]">SNOW-01</span>
+          <span class="text-[#52525B]">/</span>
+          <span id="drawerStatusBadge"
+            class="text-[11px] font-mono px-2 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] font-semibold border border-[#10B981]/30">CONFIRMED</span>
+        </div>
+        <button id="closeDrawerBtn"
+          class="w-7 h-7 rounded-md hover:bg-[#27272A] text-[#A1A1AA] hover:text-white flex items-center justify-center transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Drawer Content -->
+      <div class="py-5 space-y-5 flex-1">
+        <div>
+          <h3 id="drawerTitle" class="text-lg font-bold text-white leading-snug">Batched Settlement Engine</h3>
+          <p id="drawerChannel" class="text-xs font-mono text-[#A1A1AA] mt-1">Origin: #product-ideas</p>
+        </div>
+
+        <!-- Raw Chat Quote -->
+        <div class="bg-[#18181B] border border-[#27272A] rounded-lg p-3.5">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-[#71717A] font-bold">Chat Proposal
+            Spark</span>
+          <p id="drawerQuote" class="text-xs text-[#E4E4E7] mt-1.5 leading-relaxed italic">"Proposing Batched Settlement
+            Engine: benchmarked p95 latency drops by 120ms on Stripe batching, PR ready."</p>
+          <div class="flex items-center gap-2 mt-3 pt-2.5 border-t border-[#27272A] text-[11px] text-[#A1A1AA]">
+            <span
+              class="w-4 h-4 rounded-full bg-[#27272A] text-white flex items-center justify-center text-[9px] font-bold"
+              id="drawerAvatar">M</span>
+            <span id="drawerAuthor" class="font-medium text-white">Maya Patel</span>
+            <span class="text-[#52525B]">•</span>
+            <span id="drawerRole">Product Architect</span>
+          </div>
+        </div>
+
+        <!-- Audit & Decision Metrics -->
+        <div class="grid grid-cols-2 gap-3 text-xs font-mono">
+          <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+            <span class="text-[10px] text-[#71717A] uppercase">Uncertainty</span>
+            <p id="drawerUncertainty" class="text-base font-bold text-[#10B981] mt-0.5">15%</p>
+            <span class="text-[10px] text-[#A1A1AA]">High Certainty</span>
+          </div>
+          <div class="bg-[#18181B] p-3 rounded-lg border border-[#27272A]">
+            <span class="text-[10px] text-[#71717A] uppercase">Radar Horizon</span>
+            <p id="drawerHorizon" class="text-base font-bold text-white mt-0.5">r = 0.25</p>
+            <span class="text-[10px] text-[#A1A1AA]">Inside Circle</span>
+          </div>
+        </div>
+
+        <!-- Business & Telemetry Impact -->
+        <div class="bg-[#18181B] border border-[#27272A] rounded-lg p-3.5 space-y-2">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-[#71717A] font-bold">Verified Impact</span>
+          <p id="drawerImpact" class="text-xs font-medium text-[#10B981] leading-relaxed">-122.0 ms p95 response time
+            saved</p>
+          <div
+            class="flex items-center justify-between text-[11px] font-mono text-[#A1A1AA] pt-2 border-t border-[#27272A]">
+            <span>Target Destination:</span>
+            <strong id="drawerTarget" class="text-white">Sprint-42</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drawer Footer -->
+      <div class="pt-4 border-t border-[#27272A] flex items-center justify-between text-xs font-mono text-[#71717A]">
+        <span>SnowPad Decision Ledger</span>
+        <button id="copyDrawerBtn" class="px-3 py-1.5 rounded bg-[#27272A] hover:bg-[#3F3F46] text-white transition">
+          Copy Context
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const issues = [
+      {
+        key: "SNOW-101",
+        title: "Batched Settlement Engine",
+        author: "Maya Patel",
+        role: "Principal Product Architect",
+        avatar: "M",
+        channel: "#product-ideas",
+        quote: "Proposing Batched Settlement Engine: benchmarked p95 latency drops by 120ms on Stripe batching, PR ready.",
+        uncertaintyPct: 15,
+        horizon: "r = 0.25",
+        status: "CONFIRMED",
+        column: "confirmed",
+        impact: "⚡ -122.0 ms p95 response time saved",
+        target: "Sprint-42"
+      },
+      {
+        key: "SNOW-102",
+        title: "Redis Redlock on /checkout",
+        author: "Alex Chen",
+        role: "Staff Backend Engineer",
+        avatar: "A",
+        channel: "#backend-core",
+        quote: "Row-level PostgreSQL locks were causing 504 timeouts during flash sales. Replaced with distributed Redis Redlock.",
+        uncertaintyPct: 30,
+        horizon: "r = 0.40",
+        status: "CONFIRMED",
+        column: "confirmed",
+        impact: "⚡ Eliminated 504 gateway timeouts (-635ms)",
+        target: "Sprint-41"
+      },
+      {
+        key: "SNOW-103",
+        title: "1-Click Social Sign-in",
+        author: "Sam Torres",
+        role: "Lead Product Manager",
+        avatar: "S",
+        channel: "#growth-experiments",
+        quote: "What if we deprecate multi-step onboarding wizard for 1-click social sign-in? Might boost conversion by 18%.",
+        uncertaintyPct: 55,
+        horizon: "r = 0.85",
+        status: "UNDER_DEBATE",
+        column: "debates",
+        impact: "📄 PRD RFC: +18% signup vs unknown fraud risk",
+        target: "Backlog / RFC"
+      },
+      {
+        key: "SNOW-104",
+        title: "SQS to Kafka Audit Stream",
+        author: "Alex Chen",
+        role: "Staff Backend Engineer",
+        avatar: "A",
+        channel: "#backend-core",
+        quote: "SQS costs spiking on 10k req/sec peak. Proposing Kafka sidecar: estimated $1,400/mo AWS saving.",
+        uncertaintyPct: 60,
+        horizon: "r = 0.92",
+        status: "UNDER_DEBATE",
+        column: "debates",
+        impact: "📄 PRD RFC: $1,400/mo AWS saving vs 2-week risk",
+        target: "Sprint-43 PRD"
+      },
+      {
+        key: "SNOW-105",
+        title: "Confetti on Order Success",
+        author: "Jordan Lee",
+        role: "Senior UI Engineer",
+        avatar: "J",
+        channel: "#frontend-chatter",
+        quote: "Hey, wouldn't it be cute if confetti burst on checkout? Thinking of adding a quick Lottie animation this afternoon.",
+        uncertaintyPct: 88,
+        horizon: "r = 1.60",
+        status: "PARKED",
+        column: "parked",
+        impact: "🛡️ Protected client bundle from +140kb bloat",
+        target: "Quarantined"
+      },
+      {
+        key: "SNOW-106",
+        title: "Neon Dark Theme for Admin",
+        author: "Jordan Lee",
+        role: "Senior UI Engineer",
+        avatar: "J",
+        channel: "#frontend-chatter",
+        quote: "Thinking of redesigning the internal admin drawer with a custom neon dark theme this afternoon.",
+        uncertaintyPct: 85,
+        horizon: "r = 1.65",
+        status: "PARKED",
+        column: "parked",
+        impact: "🛡️ Shielded 22 hours of sprint focus",
+        target: "Quarantined"
+      }
+    ];
+
+    let selectedKey = null;
+    let channelFilter = "ALL";
+    let searchQuery = "";
+
+    function renderBoard() {
+      const colIncoming = document.getElementById("col-incoming");
+      const colDebates = document.getElementById("col-debates");
+      const colConfirmed = document.getElementById("col-confirmed");
+      const colParked = document.getElementById("col-parked");
+
+      colIncoming.innerHTML = "";
+      colDebates.innerHTML = "";
+      colConfirmed.innerHTML = "";
+      colParked.innerHTML = "";
+
+      const filtered = issues.filter(item => {
+        const matchChannel = channelFilter === "ALL" || item.channel === channelFilter;
+        const matchSearch = !searchQuery ||
+          item.title.toLowerCase().includes(searchQuery) ||
+          item.key.toLowerCase().includes(searchQuery) ||
+          item.author.toLowerCase().includes(searchQuery);
+        return matchChannel && matchSearch;
+      });
+
+      // Update counters
+      document.getElementById("statTotal").textContent = filtered.length;
+      document.getElementById("statConfirmed").textContent = filtered.filter(i => i.column === "confirmed").length;
+      document.getElementById("statDebates").textContent = filtered.filter(i => i.column === "debates").length;
+      document.getElementById("statParked").textContent = filtered.filter(i => i.column === "parked").length;
+
+      document.getElementById("count-incoming").textContent = filtered.length;
+      document.getElementById("count-debates").textContent = filtered.filter(i => i.column === "debates").length;
+      document.getElementById("count-confirmed").textContent = filtered.filter(i => i.column === "confirmed").length;
+      document.getElementById("count-parked").textContent = filtered.filter(i => i.column === "parked").length;
+
+      filtered.forEach(item => {
+        // Create ticket card element
+        const card = document.createElement("div");
+        const isSelected = selectedKey === item.key;
+        card.className = `ticket-card p-3 rounded-lg cursor-pointer ${isSelected ? 'selected' : ''}`;
+
+        const statusColor = item.status === "CONFIRMED" ? "text-[#10B981]" : item.status === "UNDER_DEBATE" ? "text-white" : "text-[#71717A]";
+        const uncColor = item.uncertaintyPct <= 35 ? "text-[#10B981]" : item.uncertaintyPct <= 65 ? "text-white" : "text-[#71717A]";
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-[11px] font-mono mb-1.5">
+            <span class="font-semibold text-[#A1A1AA] hover:underline">${item.key}</span>
+            <span class="text-[#71717A] text-[10px]">${item.channel}</span>
+          </div>
+          <h4 class="text-xs font-semibold text-white leading-snug mb-1.5">${item.title}</h4>
+          <p class="text-[11px] text-[#71717A] line-clamp-2 leading-relaxed mb-3">"${item.quote}"</p>
+          <div class="flex items-center justify-between pt-2 border-t border-[#27272A] text-[11px] font-mono">
+            <div class="flex items-center gap-1.5">
+              <span class="w-4 h-4 rounded-full bg-[#27272A] text-white flex items-center justify-center text-[9px] font-bold">${item.avatar}</span>
+              <span class="text-[#A1A1AA] text-[10px] truncate max-w-[75px]">${item.author.split(' ')[0]}</span>
+            </div>
+            <span class="${uncColor} font-medium">${item.uncertaintyPct}% Unc</span>
+          </div>
+        `;
+
+        card.addEventListener("click", () => openDrawer(item));
+
+        // Add to Incoming column (all items originate here)
+        colIncoming.appendChild(card.cloneNode(true));
+        colIncoming.lastChild.addEventListener("click", () => openDrawer(item));
+
+        // Add to their specific workflow stage column
+        if (item.column === "confirmed") {
+          colConfirmed.appendChild(card);
+        } else if (item.column === "debates") {
+          colDebates.appendChild(card);
+        } else if (item.column === "parked") {
+          colParked.appendChild(card);
+        }
+      });
+    }
+
+    function openDrawer(item) {
+      selectedKey = item.key;
+      document.getElementById("drawerKey").textContent = item.key;
+      document.getElementById("drawerTitle").textContent = item.title;
+      document.getElementById("drawerChannel").textContent = `Origin: ${item.channel}`;
+      document.getElementById("drawerQuote").textContent = `"${item.quote}"`;
+      document.getElementById("drawerAuthor").textContent = item.author;
+      document.getElementById("drawerRole").textContent = item.role;
+      document.getElementById("drawerAvatar").textContent = item.avatar;
+      document.getElementById("drawerUncertainty").textContent = `${item.uncertaintyPct}%`;
+      document.getElementById("drawerHorizon").textContent = item.horizon;
+      document.getElementById("drawerImpact").textContent = item.impact;
+      document.getElementById("drawerTarget").textContent = item.target;
+
+      const badge = document.getElementById("drawerStatusBadge");
+      badge.textContent = item.status;
+      if (item.status === "CONFIRMED") {
+        badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] font-semibold border border-[#10B981]/30";
+      } else if (item.status === "UNDER_DEBATE") {
+        badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-white/10 text-white font-semibold border border-white/20";
+      } else {
+        badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-[#27272A] text-[#71717A] font-semibold border border-[#3F3F46]";
+      }
+
+      document.getElementById("issueDrawer").classList.remove("translate-x-full");
+      renderBoard();
+    }
+
+    function closeDrawer() {
+      selectedKey = null;
+      document.getElementById("issueDrawer").classList.add("translate-x-full");
+      renderBoard();
+    }
+
+    document.getElementById("closeDrawerBtn").addEventListener("click", closeDrawer);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeDrawer();
+    });
+
+    // Channel Filters
+    document.querySelectorAll(".filter-pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-pill").forEach(b => {
+          b.className = "filter-pill px-2.5 py-1 rounded text-[#A1A1AA] hover:text-white transition";
+        });
+        btn.className = "filter-pill px-2.5 py-1 rounded bg-[#27272A] text-white font-medium transition";
+        channelFilter = btn.dataset.channel;
+        renderBoard();
+      });
+    });
+
+    // Search Input Filter
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderBoard();
+    });
+
+    // Copy context button
+    document.getElementById("copyDrawerBtn").addEventListener("click", () => {
+      const item = issues.find(i => i.key === selectedKey);
+      if (!item) return;
+      const copyText = `[${item.key}] ${item.title}
+Origin: ${item.channel} by ${item.author} (${item.role})
+Status: ${item.status} | Uncertainty: ${item.uncertaintyPct}%
+Quote: "${item.quote}"
+Impact: ${item.impact}`;
+
+      navigator.clipboard.writeText(copyText).then(() => {
+        const btn = document.getElementById("copyDrawerBtn");
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = "Copy Context"; }, 2000);
+      });
+    });
+
+    // Initial load
+    renderBoard();
+  </script>
+</body>
+
+</html>
