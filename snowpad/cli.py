@@ -228,6 +228,17 @@ def cmd_msg(args: argparse.Namespace) -> None:
             console.print("[dim]Message ignored (no proposal or whim detected).[/]")
 
 
+def cmd_listen(args: argparse.Namespace) -> None:
+    """Start live bot listener for Discord or Slack."""
+    platform = args.platform.lower()
+    if platform == "discord":
+        from snowpad.agent.discord_bot import start_discord_bot
+        console.print("[bold cyan]❄️ Starting SnowPad Discord Bot Listener...[/]")
+        start_discord_bot(token=args.token, guild_id=args.guild)
+    else:
+        console.print(f"[bold yellow]Platform '{platform}' is coming soon. Use '--platform discord' for live bot.[/]")
+
+
 def app() -> None:
     """Main CLI entrypoint."""
     parser = argparse.ArgumentParser(
@@ -256,6 +267,12 @@ def app() -> None:
     msg_p.add_argument("--user", default="U_MAYA_SLACK", help="User ID or handle")
     msg_p.add_argument("--channel", default="#product-ideas", help="Origin channel")
 
+    # Live listen command
+    listen_p = subparsers.add_parser("listen", help="Start live chat listener on Discord or Slack")
+    listen_p.add_argument("--platform", default="discord", choices=["discord", "slack"], help="Platform (default: discord)")
+    listen_p.add_argument("--token", default=None, help="Bot Token override")
+    listen_p.add_argument("--guild", default=None, help="Discord Guild/Server ID override")
+
     args = parser.parse_args()
 
     if args.command == "seed":
@@ -272,6 +289,8 @@ def app() -> None:
         cmd_sync(args)
     elif args.command == "msg":
         cmd_msg(args)
+    elif args.command == "listen":
+        cmd_listen(args)
     else:
         parser.print_help()
 
