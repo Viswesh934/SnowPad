@@ -12,10 +12,14 @@
 </p>
 
 <p align="center">
-  <a href="snowpad/web/radar.html"><img src="https://img.shields.io/badge/Live_HUD-Scope_Radar-10B981?style=flat-square&logo=radar" alt="Radar"></a>
-  <a href="snowpad/web/flow.html"><img src="https://img.shields.io/badge/Kanban-Scope_Board-3B82F6?style=flat-square" alt="Flow"></a>
-  <a href="dist/team_q4_2026_wrapped.html"><img src="https://img.shields.io/badge/Spotify_Style-Q4_Wrapped-EC4899?style=flat-square" alt="Wrapped"></a>
-  <a href="snowpad/web/team.html"><img src="https://img.shields.io/badge/Hierarchy-Team_Org_%26_Slides-8B5CF6?style=flat-square" alt="Team"></a>
+  <a href="https://viswesh934.github.io/SnowPad/"><img src="https://img.shields.io/badge/🚀_Live_Demo_Portal-viswesh934.github.io%2FSnowPad-10B981?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo Portal"></a>
+</p>
+
+<p align="center">
+  <a href="https://viswesh934.github.io/SnowPad/radar.html"><img src="https://img.shields.io/badge/Live_HUD-Scope_Radar-10B981?style=flat-square&logo=radar" alt="Radar"></a>
+  <a href="https://viswesh934.github.io/SnowPad/flow.html"><img src="https://img.shields.io/badge/Kanban-Scope_Board-3B82F6?style=flat-square" alt="Flow"></a>
+  <a href="https://viswesh934.github.io/SnowPad/dist/team_q4_2026_wrapped.html"><img src="https://img.shields.io/badge/Spotify_Style-Q4_Wrapped-EC4899?style=flat-square" alt="Wrapped"></a>
+  <a href="https://viswesh934.github.io/SnowPad/team.html"><img src="https://img.shields.io/badge/Hierarchy-Team_Org_%26_Slides-8B5CF6?style=flat-square" alt="Team"></a>
 </p>
 
 ---
@@ -24,12 +28,12 @@
 
 | Interactive Scope Radar HUD | Jira/Linear Style Scope Board |
 | :---: | :---: |
-| [![Scope Radar](assets/preview_radar.png)](snowpad/web/radar.html) | [![Scope Board](assets/preview_flow.png)](snowpad/web/flow.html) |
+| [![Scope Radar](assets/preview_radar.png)](https://viswesh934.github.io/SnowPad/radar.html) | [![Scope Board](assets/preview_flow.png)](https://viswesh934.github.io/SnowPad/flow.html) |
 | *Real-time 360° ray-marcher sweeping across team channels* | *Feature flow from chat proposal to sprint commitment or parked whim* |
 
 | Spotify-Wrapped Developer Velocity | Team Org Hierarchy & Embedded Slides |
 | :---: | :---: |
-| [![Team Wrapped](assets/preview_wrapped.png)](dist/team_q4_2026_wrapped.html) | [![Team Org](assets/preview_team.png)](snowpad/web/team.html) |
+| [![Team Wrapped](assets/preview_wrapped.png)](https://viswesh934.github.io/SnowPad/dist/team_q4_2026_wrapped.html) | [![Team Org](assets/preview_team.png)](https://viswesh934.github.io/SnowPad/team.html) |
 | *Quarterly wrapped celebration with archetypes & dodged bullets* | *Live org tree with embedded Reveal.js presentation decks* |
 
 <p align="center">
