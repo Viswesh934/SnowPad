@@ -141,13 +141,6 @@ class DeliverableGenerator:
             {''.join([f"<li>{r}</li>" for r in recs]) if recs else "<li>Continue high-focus feature execution within core scope.</li>"}
           </ul>
         </div>
-        <p style="font-size: 0.75em; color: #71717A; margin-top: 24px;" class="mono">Generated on-demand by SnowPad OS</p>
-      </section>
-          <ul style="font-size: 0.8em; line-height: 1.8; color: #FAF8F5;">
-            {''.join([f"<li>{r}</li>" for r in recs]) if recs else "<li>Continue high-focus feature execution within core scope.</li>"}
-          </ul>
-        </div>
-        <p style="font-size: 0.75em; color: #716B61; margin-top: 24px;" class="mono">Generated on-demand by SnowPad OS</p>
       </section>
 
     </div>
@@ -191,7 +184,7 @@ class DeliverableGenerator:
         lines = [
             "# SnowPad Sprint Refactor PRD",
             "",
-            "> **Generated on-demand from SnowPad Scope Memory**  ",
+            "> **Autonomous Scope Decision Ledger**  ",
             "> Active discussions and architectural tradeoffs requiring sprint backlog resolution.",
             "",
             "---",

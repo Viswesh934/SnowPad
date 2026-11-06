@@ -158,7 +158,7 @@ python -m snowpad.cli chatter
 python -m snowpad.cli weekly
 ```
 
-### 8. Generate Contributor Reviews &amp; Executive Presentations
+### 9. Generate Contributor Reviews & Executive Presentations
 
 ```bash
 # Terminal review dossier
@@ -169,6 +169,22 @@ python -m snowpad.cli export --actor maya_patel
 
 # Export auto-generated Sprint Refactor PRD
 python -m snowpad.cli export --prd
+```
+
+### 10. Autonomous Background Scope Scheduler ⏱️
+
+Keep deliverables, radar feeds, and weekly pulses automatically refreshed in the background:
+
+```bash
+# Run on-demand scheduled audit cycle
+python -m snowpad.cli schedule --once
+
+# Start autonomous background daemon (runs weekly or biweekly)
+python -m snowpad.cli schedule --interval weekly
+python -m snowpad.cli schedule --interval biweekly
+
+# View system crontab, Windows Task Scheduler, and agentic slash commands
+python -m snowpad.cli schedule --interval weekly --cron
 ```
 
 ---

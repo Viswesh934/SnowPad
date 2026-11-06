@@ -342,10 +342,10 @@ def cmd_wrapped(args: argparse.Namespace) -> None:
 
     # Print Spotify Wrapped terminal experience
     console.print(Panel(
-        f"[bold #FF5A36]❄️ SNOWPAD WRAPPED: {quarter.upper()}[/]\n"
+        f"[bold #10B981]❄️ SNOWPAD WRAPPED: {quarter.upper()}[/]\n"
         f"[bold white]{actor['name']}[/] [dim]({actor['role']} • {actor['team']})[/]\n\n"
         f"🎯 [bold]Scope Archetype:[/] [bold {arch['aura_color']}]{arch['name']} {arch['emoji']}[/]\n"
-        f"   [italic #FAF8F5]\"{arch['description']}\"[/]\n\n"
+        f"   [italic #FAFAFA]\"{arch['description']}\"[/]\n\n"
         f"📊 [bold]Circle Focus Ratio:[/] [bold green]{wrapped['focus_pct']}%[/]\n"
         f"⚡ [bold]Latency Shaved:[/] [bold green]-{wrapped['total_ms_shaved']} ms[/] on core endpoints\n"
         f"🛡️ [bold]Sanity Shielded:[/] [bold green]+{wrapped['hours_shielded']} hours[/] preserved from unverified churn\n"
@@ -355,13 +355,59 @@ def cmd_wrapped(args: argparse.Namespace) -> None:
         f"🚫 [bold]The Dodged Bullet:[/] [bold red]{db['title']}[/]\n"
         f"   [dim]{db['risk']} (+{db['hours_saved']}h dev sanity saved)[/]\n\n"
         f"🎧 [bold]Sprint Soundtrack:[/] [dim]{arch['soundtrack']}[/]",
-        title=f"[bold #FF5A36]🎁 SnowPad Wrapped {quarter}[/]",
-        border_style="#FF5A36",
+        title=f"[bold #10B981]🎁 SnowPad Wrapped {quarter}[/]",
+        border_style="#10B981",
         padding=(1, 2)
     ))
 
     console.print(f"[bold green]✔ Interactive Spotify Wrapped Story Generated:[/] {out_html}")
     console.print(f"[dim]Run: start {out_html} to experience your full-screen animated story deck![/]\n")
+
+
+def cmd_schedule(args: argparse.Namespace) -> None:
+    """Run autonomous background schedule for scope audits and deliverable generation."""
+    from snowpad.core.scheduler import ScopeScheduler
+
+    scheduler = ScopeScheduler()
+    interval = args.interval
+    quarter = args.quarter
+
+    if args.cron:
+        cmds = scheduler.get_schedule_commands(interval_mode=interval)
+        console.print(Panel(
+            f"[bold #10B981]📅 SnowPad Scheduled Automation Helper[/]\n\n"
+            f"[bold white]Schedule:[/] {cmds['interval_label']}\n"
+            f"[dim]{cmds['description']}[/]\n\n"
+            f"⏱️ [bold white]Standard Cron:[/] [bold cyan]{cmds['cron_expression']}[/]\n\n"
+            f"🐧 [bold #10B981]Linux / macOS Crontab Entry:[/] \n[dim]{cmds['linux_mac_crontab']}[/]\n\n"
+            f"🪟 [bold #10B981]Windows Task Scheduler Command:[/] \n[dim]{cmds['windows_task_cmd']}[/]\n\n"
+            f"🤖 [bold #10B981]Agentic Slash Command:[/] \n[cyan]{cmds['agentic_slash_command']}[/]\n\n"
+            f"⚡ [bold #10B981]Background Daemon CLI:[/] \n[green]{cmds['background_daemon_cmd']}[/]",
+            title="[bold green]❄️ SnowPad Automation Spec[/]",
+            border_style="#10B981"
+        ))
+        return
+
+    if args.once:
+        console.print("[bold cyan]❄️ Executing on-demand Scope Audit cycle...[/]")
+        report = scheduler.run_audit_cycle(quarter=quarter)
+        console.print(Panel(
+            f"[bold green]✔ Scope Audit Completed in {report['elapsed_seconds']}s[/]\n\n"
+            f"• [bold]Confirmed Milestones:[/] [green]{report['inside_circle_count']}[/]\n"
+            f"• [bold]Pending Debates:[/] [yellow]{report['pending_debates_count']}[/]\n"
+            f"• [bold]Parked Whims:[/] [dim]{report['outside_circle_count']}[/]\n"
+            f"• [bold]Updated Slide Decks:[/] {report['slide_count']} files in dist/\n"
+            f"• [bold]Updated Sprint PRD:[/] {report['prd_path']}\n"
+            f"• [bold]Updated Wrapped Stories:[/] {report['wrapped_count']} files in dist/\n\n"
+            f"[dim]{report['standup_summary']}[/]",
+            title="[bold green]❄️ SnowPad Scheduled Audit Report[/]",
+            border_style="#10B981"
+        ))
+        return
+
+    # Run daemon loop
+    custom_sec = args.seconds if args.seconds else None
+    scheduler.run_daemon(interval_mode=interval, custom_interval_sec=custom_sec, max_cycles=args.max_cycles)
 
 
 def app() -> None:
@@ -421,6 +467,15 @@ def app() -> None:
     wrapped_p.add_argument("--actor", default=None, help="Actor ID (leave empty for collective team wrapped)")
     wrapped_p.add_argument("--quarter", default="Q4-2026", help="Reporting quarter (default: Q4-2026)")
 
+    # Schedule command (Autonomous Background Pulse & Deliverables)
+    schedule_p = subparsers.add_parser("schedule", help="Autonomous background scheduler for weekly/biweekly scope audits")
+    schedule_p.add_argument("--interval", default="weekly", choices=["weekly", "biweekly", "daily", "demo"], help="Audit frequency (default: weekly)")
+    schedule_p.add_argument("--once", action="store_true", help="Run a single audit cycle immediately and exit")
+    schedule_p.add_argument("--cron", action="store_true", help="Print OS Crontab / Task Scheduler / Slash Command strings")
+    schedule_p.add_argument("--seconds", type=float, default=None, help="Custom sleep interval in seconds (for testing)")
+    schedule_p.add_argument("--max-cycles", type=int, default=None, help="Maximum daemon cycles before stopping (optional)")
+    schedule_p.add_argument("--quarter", default="Q4-2026", help="Reporting quarter (default: Q4-2026)")
+
     args = parser.parse_args()
 
     if args.command == "seed":
@@ -447,6 +502,8 @@ def app() -> None:
         cmd_flow(args)
     elif args.command == "wrapped":
         cmd_wrapped(args)
+    elif args.command == "schedule":
+        cmd_schedule(args)
     else:
         parser.print_help()
 
